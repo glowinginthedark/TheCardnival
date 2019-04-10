@@ -1,0 +1,28 @@
+{
+  "name": "bigorsmall",
+  "version": "1.0.0",
+  "description": "Big or Small Card Game using RESTFUL requests and Handlebar Templates",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "hbs": "^4.0.3",
+    "lodash": "^4.17.11",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhhe/BigOrSmall.git"
+  },
+  "author": "Bowen He, Patrick Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bhhe/BigOrSmall/issues"
+  },
+  "homepage": "https://github.com/bhhe/BigOrSmall#readme"
+}
