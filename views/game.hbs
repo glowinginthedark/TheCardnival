@@ -1,106 +1,108 @@
 <!DOCTYPE html>
 <html>
 {{> header}}
-<body background="https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6">
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <img src={{card}} alt="YourCard" style="margin: 0 auto;display: block;" >
-        </div>
-        <div class="col">
-            <h3>1.Decide if the next card is big or small compared to your current card
-                <br> 2.Suits not calculated <br> 3.Guessed card is your new Card
-                <br>4. Have fun
-            </h3>
-        </div>
-        <div class="col">
-            <img src={{card2}} alt="NextCard" style="margin: 0 auto;display: block;" >
-        </div>
-    </div>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col">
-            <h1 style="margin: 0 auto;display: block;">Hello {{username}}</h1>
-        </div>
-        <div class="col"></div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h4 style="margin: 0 auto;display: block;">Score: {{score}} Points</h4>
 
+<body
+    background="https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <img src={{card}} alt="YourCard" style="margin: 0 auto;display: block;">
+            </div>
+            <div class="col">
+                <h3>1.Decide if the next card is big or small compared to your current card
+                    <br> 2.Suits not calculated <br> 3.Guessed card is your new Card
+                    <br>4. Have fun
+                </h3>
+            </div>
+            <div class="col">
+                <img src={{card2}} alt="NextCard" style="margin: 0 auto;display: block;">
+            </div>
         </div>
-        <div class="col">
-            <h4 style="margin: 0 auto;display: block;">Remaining Cards: {{remaining}}</h4>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <h1 style="margin: 0 auto;display: block;">Hello {{username}}</h1>
+            </div>
+            <div class="col"></div>
         </div>
-        <div class="col">
-            <h4 style="color: red;">{{game_state}}</h4>
-        </div>
-    </div>
-    <br>
+        <div class="row">
+            <div class="col">
+                <h4 style="margin: 0 auto;display: block;">Score: {{score}} Points</h4>
 
-    <div class="row">
-        <div class="col"></div>
-        <div class="col">
-            <form class="container" id="form1" method="POST" action="/newgame">
-                <!--<div class="container">-->
-                <input style="margin: 0 auto;display: block;" type="submit" value="New Game">
-                <!--</div>-->
-            </form>
+            </div>
+            <div class="col">
+                <h4 style="margin: 0 auto;display: block;">Remaining Cards: {{remaining}}</h4>
+            </div>
+            <div class="col">
+                <h4 style="color: red;">{{game_state}}</h4>
+            </div>
         </div>
-        <div class="col"></div>
+        <br>
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <form class="container" id="form1" method="POST" action="/newgame">
+                    <!--<div class="container">-->
+                    <input style="margin: 0 auto;display: block;" type="submit" value="New Game">
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <form class="container" id="form1" method="POST" action="/smaller">
+                    <!--<div class="container">-->
+                    <input style="margin: 0 auto;display: block;" type="submit" value="Smaller(+1)" {{smaller}}>
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="col">
+                <form class="container" id="form1" method="POST" action="/tie">
+                    <!--<div class="container">-->
+                    <input style="margin: 0 auto;display: block;" type="submit" value="Tie(+4)" {{tie}}>
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="col">
+                <form class="container" id="form1" method="POST" action="/bigger">
+                    <!--<div class="container">-->
+                    <input style="margin: 0 auto;display: block;" type="submit" value="Bigger(+1)" {{bigger}}>
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <form class="container" id="form1" method="GET" action="/rankings">
+                    <!--<div class="container">-->
+                    <input style="margin: 0 auto;display: block;" type="submit" value="Rankings">
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="col">
+                <form class="container" id="form1" method="GET" action="/login">
+                    <!--<div class="container">-->
+                    <input style="margin: 0 auto;display: block;" type="submit" value="Sign-out">
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+        <br>
+        <br>
     </div>
-    <br>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col">
-            <form class="container" id="form1" method="POST" action="/smaller">
-                <!--<div class="container">-->
-                <input style="margin: 0 auto;display: block;" type="submit" value="Smaller(+1)" {{smaller}}>
-                <!--</div>-->
-            </form>
-        </div>
-        <div class="col">
-            <form class="container" id="form1" method="POST" action="/tie">
-                <!--<div class="container">-->
-                <input style="margin: 0 auto;display: block;"  type="submit" value="Tie(+4)" {{tie}}>
-                <!--</div>-->
-            </form>
-        </div>
-        <div class="col">
-            <form class="container" id="form1" method="POST" action="/bigger">
-                <!--<div class="container">-->
-                <input style="margin: 0 auto;display: block;" type="submit" value="Bigger(+1)" {{bigger}}>
-                <!--</div>-->
-            </form>
-        </div>
-        <div class="col"></div>
-        <div class="col"></div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col">
-            <form class="container" id="form1" method="GET" action="/rankings">
-                <!--<div class="container">-->
-                <input style="margin: 0 auto;display: block;" type="submit" value="Rankings">
-                <!--</div>-->
-            </form>
-        </div>
-        <div class="col">
-            <form class="container" id="form1" method="GET" action="/login">
-                <!--<div class="container">-->
-                <input style="margin: 0 auto;display: block;" type="submit" value="Sign-out">
-                <!--</div>-->
-            </form>
-        </div>
-        <div class="col"></div>
-        <div class="col"></div>
-    </div>
-    <br>
-    <br>
-</div>
 </body>
 <div class="row">
     <div class="col"></div>
@@ -109,4 +111,5 @@
     </div>
     <div class="col"></div>
 </div>
+
 </html>

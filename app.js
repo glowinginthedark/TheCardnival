@@ -1,6 +1,6 @@
 const hbs = require('hbs');
-const express =require('express');
-const bodyParser= require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
 const backend = require('./backend');
 
 const port = process.env.PORT || 8080;
@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({
     Make RESTFUL GET request and render the homepage of the BigOrSmall Game.
     It is also the registration page.
  */
-app.get('/', function(request, response) {
+app.get('/', function (request, response) {
     response.render('register.hbs', {
         title: 'Big or Small | Registration'
     })
@@ -49,16 +49,16 @@ app.get('/', function(request, response) {
     Make RESTFUL POST request and create new user account. Will provide
     appropriate output depending on existing user in data storage.
  */
-app.post('/register', (request,response) => {
-    try{
+app.post('/register', (request, response) => {
+    try {
         var username = request.body.username;
         var password = request.body.password;
         var signup = backend.addAccount(username, password);
         success = "";
         failed = "";
-        if (signup){
+        if (signup) {
             success = `Successfully created account ${username} `
-        }else{
+        } else {
             failed = `Account ${username} already exists`
         }
         response.render('register.hbs', {
@@ -66,7 +66,7 @@ app.post('/register', (request,response) => {
             success: success,
             failed: failed
         })
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 });
@@ -75,9 +75,9 @@ app.post('/register', (request,response) => {
     Make RESTFUL GET request and render the login screen to
     proceed to the game
  */
-app.get('/login', (request,response) => {
+app.get('/login', (request, response) => {
     current_user = undefined
-    response.render('login.hbs',{
+    response.render('login.hbs', {
         title: 'Big or Small | Login'
     })
 });
@@ -92,19 +92,19 @@ app.post('/game', async (request, response) => {
         var password = request.body.password;
         var login = backend.loginAccount(username, password);
 
-        if (login !== undefined){
+        if (login !== undefined) {
             console.log('game');
             current_user = login;
             deck = await backend.getDeck(1);
             renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
-        }else{
+        } else {
             console.log('login');
             response.render('login.hbs', {
-                title:'Big or Small | Login',
-                failed:`Account ${username} credentials are wrong or does not exist`
+                title: 'Big or Small | Login',
+                failed: `Account ${username} credentials are wrong or does not exist`
             })
         }
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 });
@@ -113,14 +113,14 @@ app.post('/game', async (request, response) => {
     Make RESTFUL POST request, render a new game with a reshuffled deck
     and new scores
  */
-app.post('/newgame', async (request,response) => {
+app.post('/newgame', async (request, response) => {
     score = 0;
     try {
         deck = await backend.shuffleDeck(deck.deck_id);
         card = await backend.drawDeck(deck.deck_id, 1);
         card2 = await backend.drawDeck(deck.deck_id, 1);
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 });
@@ -136,15 +136,15 @@ app.get('/rankings', async (request, response) => {
         high_scores.forEach(function (item, index, array) {
             output_rankings += `${index + 1}. User-${item[0]} | Points-${item[1]} \n`
         });
-        if(output_rankings.length === 0){
+        if (output_rankings.length === 0) {
             output_rankings = "No Rankings currently \n"
         }
         console.log(output_rankings);
         response.render('rankings.hbs', {
-            title:'Big or Small | Rankings',
-            rankings:output_rankings
+            title: 'Big or Small | Rankings',
+            rankings: output_rankings
         })
-    }catch(e){
+    } catch (e) {
         console.log(e.message)
     }
 });
@@ -154,24 +154,24 @@ app.get('/rankings', async (request, response) => {
     next card as BIGGER than the current card. Display results based
     on outcome. Will also save better high scores.
  */
-app.post('/bigger', async (request,response) => {
+app.post('/bigger', async (request, response) => {
     try {
-        if(getNumeric(card.cards[0].value) < getNumeric(card2.cards[0].value)){
-            score+=1;
+        if (getNumeric(card.cards[0].value) < getNumeric(card2.cards[0].value)) {
+            score += 1;
             card = card2;
-            if(card2.remaining > 0) {
+            if (card2.remaining > 0) {
                 card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining,"")
-            }else {
+                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
+            } else {
                 var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if(current_user !== undefined){
+                if (current_user !== undefined) {
                     await backend.saveHighScore(current_user.username, score)
                 }
                 renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
             }
-        }else{
+        } else {
             var lose_message = `Sorry, you have lost with ${score}`;
-            if(current_user !== undefined){
+            if (current_user !== undefined) {
                 await backend.saveHighScore(current_user.username, score);
                 lose_message = `New Personal High Score ${score}`
             }
@@ -179,7 +179,7 @@ app.post('/bigger', async (request,response) => {
                 lose_message)
             score = 0;
         }
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 });
@@ -189,32 +189,32 @@ app.post('/bigger', async (request,response) => {
     next card as TIE. Display results based on outcome. Will also
     save better high scores.
  */
-app.post('/tie', async (request,response) => {
+app.post('/tie', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) === getNumeric(card2.cards[0].value)) {
             score += 4;
             card = card2;
-            if(card2.remaining > 0) {
+            if (card2.remaining > 0) {
                 card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining,"")
-            }else{
+                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
+            } else {
                 var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if(current_user !== undefined){
+                if (current_user !== undefined) {
                     await backend.saveHighScore(current_user.username, score)
                 }
                 renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
             }
         } else {
             var lose_message = `Sorry, you have lost with ${score}`;
-            if(current_user !== undefined){
+            if (current_user !== undefined) {
                 await backend.saveHighScore(current_user.username, score);
                 lose_message = `New Personal High Score ${score}`
             }
             renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-                       lose_message);
+                lose_message);
             score = 0;
         }
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 });
@@ -225,23 +225,24 @@ app.post('/tie', async (request,response) => {
     next card as SMALLER than the current card. Display results based
     on outcome. Will also save better high scores.
  */
-app.post('/smaller', async (request,response) => {
+app.post('/smaller', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) > getNumeric(card2.cards[0].value)) {
             score += 1;
             card = card2;
-            if(card2.remaining > 0) {
+            if (card2.remaining > 0) {
                 card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining,"")
-            }else{
+                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
+            } else {
                 var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if(current_user !== undefined){
+                if (current_user !== undefined) {
                     await backend.saveHighScore(current_user.username, score)
-                }renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
+                }
+                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
             }
         } else {
             var lose_message = `Sorry, you have lost with ${score}`;
-            if(current_user !== undefined){
+            if (current_user !== undefined) {
                 await backend.saveHighScore(current_user.username, score);
                 lose_message = `New Personal High Score ${score}`
             }
@@ -249,7 +250,7 @@ app.post('/smaller', async (request,response) => {
                 lose_message)
             score = 0;
         }
-    }catch (e) {
+    } catch (e) {
         console.log(e)
     }
 });
@@ -261,7 +262,7 @@ app.get(`/deck`, async (request, response) => {
     try {
         deck = await backend.getDeck(1);
         renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 });
@@ -273,17 +274,17 @@ app.listen(port, () => {
 /*
     Convert Card strings and return appropriate corresponding values
  */
-function getNumeric(card){
+function getNumeric(card) {
     var trimmed = card.trim()
-    if(trimmed === "KING"){
+    if (trimmed === "KING") {
         return 13
-    }else if(trimmed === "QUEEN"){
+    } else if (trimmed === "QUEEN") {
         return 12
-    }else if(trimmed === "JACK"){
+    } else if (trimmed === "JACK") {
         return 11
-    }else if(trimmed === "ACE"){
+    } else if (trimmed === "ACE") {
         return 1
-    }else{
+    } else {
         return parseInt(trimmed)
     }
 }
@@ -291,17 +292,17 @@ function getNumeric(card){
 /*
     Renders the game screen with different display options based on parameters
  */
-function renderGame(request, response, state, first_card, second_card, remaining, game_state){
+function renderGame(request, response, state, first_card, second_card, remaining, game_state) {
     var name = "Guest";
-    if(current_user !== undefined){
+    if (current_user !== undefined) {
         name = current_user.username
     }
     response.render('game.hbs', {
         title: 'Big or Small | Play Game',
         card: first_card,
         card2: second_card,
-        bigger:state,
-        smaller:state,
+        bigger: state,
+        smaller: state,
         tie: state,
         score: score,
         remaining: remaining,
@@ -309,4 +310,3 @@ function renderGame(request, response, state, first_card, second_card, remaining
         game_state: game_state
     });
 }
-
