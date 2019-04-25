@@ -157,27 +157,9 @@ app.get('/rankings', async (request, response) => {
 app.post('/bigger', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) < getNumeric(card2.cards[0].value)) {
-            score += 1;
-            card = card2;
-            if (card2.remaining > 0) {
-                card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-            } else {
-                var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if (current_user !== undefined) {
-                    await backend.saveHighScore(current_user.username, score)
-                }
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
-            }
+            correctGuess(1, request, response);
         } else {
-            var lose_message = `Sorry, you have lost with ${score}`;
-            if (current_user !== undefined) {
-                await backend.saveHighScore(current_user.username, score);
-                lose_message = `New Personal High Score ${score}`
-            }
-            renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-                lose_message)
-            score = 0;
+            wrongGuess(request, response);
         }
     } catch (e) {
         console.log(e)
@@ -192,27 +174,10 @@ app.post('/bigger', async (request, response) => {
 app.post('/tie', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) === getNumeric(card2.cards[0].value)) {
-            score += 4;
-            card = card2;
-            if (card2.remaining > 0) {
-                card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-            } else {
-                var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if (current_user !== undefined) {
-                    await backend.saveHighScore(current_user.username, score)
-                }
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
-            }
+            correctGuess(4, request, response);
+
         } else {
-            var lose_message = `Sorry, you have lost with ${score}`;
-            if (current_user !== undefined) {
-                await backend.saveHighScore(current_user.username, score);
-                lose_message = `New Personal High Score ${score}`
-            }
-            renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-                lose_message);
-            score = 0;
+            wrongGuess(request, response);
         }
     } catch (e) {
         console.log(e)
@@ -228,27 +193,9 @@ app.post('/tie', async (request, response) => {
 app.post('/smaller', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) > getNumeric(card2.cards[0].value)) {
-            score += 1;
-            card = card2;
-            if (card2.remaining > 0) {
-                card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-            } else {
-                var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if (current_user !== undefined) {
-                    await backend.saveHighScore(current_user.username, score)
-                }
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
-            }
+            correctGuess(1, request, response);
         } else {
-            var lose_message = `Sorry, you have lost with ${score}`;
-            if (current_user !== undefined) {
-                await backend.saveHighScore(current_user.username, score);
-                lose_message = `New Personal High Score ${score}`
-            }
-            renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-                lose_message)
-            score = 0;
+            wrongGuess(request, response);
         }
     } catch (e) {
         console.log(e)
@@ -288,7 +235,34 @@ function getNumeric(card) {
         return parseInt(trimmed)
     }
 }
-
+async function correctGuess(weight, request, response) {
+    // console.log("right guess");
+   score += weight;
+    card = card2;
+        card2 = await backend.drawDeck(deck.deck_id, 1);
+        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
+    console.log(card2)
+     if (card2.remaining > 0) {
+    } else {
+        var win_message = `Congratulations, you have finished the deck with ${score} point`;
+        if (current_user !== undefined) {
+            await backend.saveHighScore(current_user.username, score)
+        }
+        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
+    }
+}
+async function wrongGuess(request, response) {
+    // console.log("wrong guess")
+    var lose_message = `Sorry, you have lost with ${score}`;
+    console.log(lose_message)
+    if (current_user !== undefined) {
+        await backend.saveHighScore(current_user.username, score);
+        lose_message = `New Personal High Score ${score}`
+    }
+    renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
+        lose_message)
+    score = 0;
+}
 /*
     Renders the game screen with different display options based on parameters
  */
