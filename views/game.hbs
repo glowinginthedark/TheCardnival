@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-{{> header}}
+{{> head}}
 
 <body
     background="https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6">
     <div class="container">
         <div class="row">
             <div class="col">
-                <img src={{card}} alt="YourCard" style="margin: 0 auto;display: block;">
+                <img src={{card}} alt="YourCard" class='playcard'>
             </div>
             <div class="col">
-                <h3>1.Decide if the next card is big or small compared to your current card
-                    <br> 2.Suits not calculated <br> 3.Guessed card is your new Card
-                    <br>4. Have fun
-                </h3>
+                <h3>1. Decide if the next card is big or small compared to your current card </h3>
+                <h3>2. Suits not calculated </h3>
+                <h3>3. Guessed card is your new Card</h3>
+                <h3>4. Have fun</h3>
             </div>
             <div class="col">
-                <img src={{card2}} alt="NextCard" style="margin: 0 auto;display: block;">
+                <img src={{card2}} alt="NextCard" class='playcard'>
             </div>
         </div>
         <div class="row">
@@ -103,13 +103,7 @@
         <br>
         <br>
     </div>
+    {{> footer}}
 </body>
-<div class="row">
-    <div class="col"></div>
-    <div class="col">
-        {{> footer}}
-    </div>
-    <div class="col"></div>
-</div>
 
 </html>
