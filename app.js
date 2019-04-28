@@ -2,6 +2,7 @@ const hbs = require('hbs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const backend = require('./backend');
+const firebase = require('firebase');
 
 const port = process.env.PORT || 8080;
 
@@ -13,12 +14,25 @@ var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-
 var score = 0;
 var current_user = undefined
 
+var config = {
+    apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
+    authDomain: "bigorsmall-9c0b5.firebaseapp.com",
+    databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
+    projectId: "bigorsmall-9c0b5",
+    storageBucket: "bigorsmall-9c0b5.appspot.com",
+    messagingSenderId: "369969153728"
+};
+firebase.initializeApp(config);
+var rootRef = firebase.database().ref();
+
 hbs.registerPartials(__dirname + '/views/partials');
+
 hbs.registerHelper('breaklines', function (text) {
     text = hbs.Utils.escapeExpression(text);
     text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
     return new hbs.SafeString(text);
 });
+
 hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
 });
@@ -49,18 +63,25 @@ app.get('/', function (request, response) {
     Make RESTFUL POST request and create new user account. Will provide
     appropriate output depending on existing user in data storage.
  */
-app.post('/register', (request, response) => {
+app.post('/register', async (request, response) => {
     try {
-        var username = request.body.username;
+        var email = request.body.username;
         var password = request.body.password;
-        var signup = backend.addAccount(username, password);
-        success = "";
-        failed = "";
-        if (signup) {
-            success = `Successfully created account ${username} `
-        } else {
-            failed = `Account ${username} already exists`
-        }
+        //var signup = backend.addAccount(email, password);
+        var signup = ""
+        var success = `Successfully created account ${email} `;
+        var failed = "";
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then (function success(userData) {
+                writeUserData(userData.user.uid,userData.user.email,"")
+            }).catch (function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              failed = `${errorCode}: ${errorMessage}`
+              success = ""
+            });
+
         response.render('register.hbs', {
             title: 'Big or Small | Registration',
             success: success,
@@ -77,6 +98,16 @@ app.post('/register', (request, response) => {
  */
 app.get('/login', (request, response) => {
     current_user = undefined
+    // firebase.auth().signOut().then(function() {
+    //   // Sign-out successful.
+    // }).catch(function(error) {
+    //   // An error happened.
+    // });
+    rootRef.child('Users').once('value').then(function(snapshot) {
+      var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+      console.log(snapshot.val())
+      // ...
+    });
     response.render('login.hbs', {
         title: 'Big or Small | Login'
     })
@@ -88,22 +119,31 @@ app.get('/login', (request, response) => {
  */
 app.post('/game', async (request, response) => {
     try {
-        var username = request.body.username;
+        var email = request.body.username;
         var password = request.body.password;
-        var login = backend.loginAccount(username, password);
+        var login = backend.loginAccount(email, password);
+        var failed = ''
+        await firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            failed = `${errorCode}: ${errorMessage}`
+            console.log('Login failed')
+        });
 
-        if (login !== undefined) {
-            console.log('game');
-            current_user = login;
-            deck = await backend.getDeck(1);
-            renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
-        } else {
-            console.log('login');
-            response.render('login.hbs', {
-                title: 'Big or Small | Login',
-                failed: `Account ${username} credentials are wrong or does not exist`
-            })
-        }
+        await firebase.auth().onAuthStateChanged(async function(user) {
+            if (user) {
+                current_user = user;
+                deck = await backend.getDeck(1);
+                renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
+            } else {
+                response.render('login.hbs', {
+                    title: 'Big or Small | Login',
+                    failed: failed
+                })
+            }
+        });
+
     } catch (e) {
         console.log(e)
     }
@@ -269,7 +309,7 @@ async function wrongGuess(request, response) {
 function renderGame(request, response, state, first_card, second_card, remaining, game_state) {
     var name = "Guest";
     if (current_user !== undefined) {
-        name = current_user.username
+        name = current_user.email
     }
     response.render('game.hbs', {
         title: 'Big or Small | Play Game',
@@ -283,4 +323,18 @@ function renderGame(request, response, state, first_card, second_card, remaining
         username: name,
         game_state: game_state
     });
+}
+
+function writeUserData(userId, email, imageUrl) {
+  firebase.database().ref('users/' + userId).set({
+    email: email,
+    profile_picture : imageUrl,
+    balance: 0,
+    prizes:[],
+    big_or_small: {
+        games_played: 0,
+        games_won: 0,
+        high_score: 0
+    }
+  });
 }

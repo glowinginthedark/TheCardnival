@@ -6,6 +6,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "firebase": "^5.10.1",
     "fs": "0.0.1-security",
     "hbs": "^4.0.4",
     "lodash": "^4.17.11",
