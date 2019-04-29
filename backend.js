@@ -287,6 +287,6 @@ module.exports = {
     loginAccount,
     saveHighScore,
     getHighScores,
-    retrieveAllUsers.
+    retrieveAllUsers,
     retrieveUserData
 };

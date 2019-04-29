@@ -107,7 +107,6 @@ app.post('/signout', (request, response) => {
 });
 
 app.get('/login', (request, response) => {
-    current_user = undefined
     response.render('login.hbs', {
         title: 'Big or Small | Login'
     })
@@ -124,6 +123,7 @@ app.post('/game', async (request, response) => {
         var login = await backend.loginAccount(email, password, request, response);
         current_user = login.current_user
         deck = login.deck
+        renderProfile(current_user.uid)
     } catch (e) {
         console.log(e)
     }
@@ -245,18 +245,16 @@ app.get(`/home`, async (request, response) => {
     })
 });
 
-getAllUsers()
 
-async function getAllUsers(){
-    all_users = await backend.retrieveAllUsers()
+async function renderProfile(user_id){
     var test = {}
-    for (i = 0; i < all_users.length; i++){
-        var test = all_users[i]
-        test.title = `Big or Small | ${all_users[i].email}'s Profile`
-        app.get(`/profile/:${all_users[i].email}`, async (request, response) => {
-            response.render('profile.hbs', test)
-        });
+    if(user_id != undefined){
+        var test = await backend.retrieveUserData(user_id)
     }
+    test.title = `Big or Small | Profile`
+    app.get(`/profile`, async (request, response) => {
+        await response.render('profile.hbs', test)
+    });
 }
 
 app.listen(port, () => {
