@@ -65,7 +65,7 @@ app.get('/', function (request, response) {
  */
 app.post('/register', async (request, response) => {
     try {
-        var email = request.body.username;
+        var email = request.body.email;
         var password = request.body.password;
         var result = await backend.addAccount(email, password);
 
@@ -97,7 +97,7 @@ app.post('/signout', (request, response) => {
       // An error happened.
     });
     rootRef.child('Users').once('value').then(function(snapshot) {
-      var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+      var email = (snapshot.val() && snapshot.val().email) || 'Anonymous';
       console.log(snapshot.val())
       // ...
     });
@@ -118,7 +118,7 @@ app.get('/login', (request, response) => {
  */
 app.post('/game', async (request, response) => {
     try {
-        var email = request.body.username;
+        var email = request.body.email;
         var password = request.body.password;
         var login = await backend.loginAccount(email, password, request, response);
         current_user = login.current_user;
@@ -348,7 +348,7 @@ function renderGame(request, response, state, first_card, second_card, remaining
         tie: state,
         score: score,
         remaining: remaining,
-        username: name,
+        email: name,
         game_state: game_state
     });
 }

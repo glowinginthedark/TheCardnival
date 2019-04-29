@@ -56,13 +56,13 @@ async function writeUserData(userId, email, imageUrl) {
 }
 
 async function retrieveAllUsers(){
-    var test = {}
+    var test = {};
     var sortable = [];
 
     await firebase.database().ref(`users`).once('value')
         .then(async function(snapshot) {
 
-            test = await snapshot.val()
+            test = await snapshot.val();
 
             for (var key in test) {
                 if (test.hasOwnProperty(key)) { 
@@ -70,7 +70,7 @@ async function retrieveAllUsers(){
                 }
             }
 
-        })
+        });
 
     return sortable
 }
@@ -274,7 +274,7 @@ function renderGame(request, response, state, first_card, second_card, remaining
         tie: state,
         score: score,
         remaining: remaining,
-        username: name,
+        email: name,
         game_state: game_state
     });
 }
