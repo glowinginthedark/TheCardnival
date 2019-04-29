@@ -99,12 +99,14 @@ function accountExist(username) {
 	Returns undefined if it does not. Check -> Get Login Info -> Login
 */
 var loginAccount = async (email, password, result, response) => {
-    var result = { failed : ""}
+    var result = { failed : "", deck : "", current_user : undefined }
     await firebase.auth().signInWithEmailAndPassword(email, password)
             .then(async function success(userData) {
                 current_user = userData.user;
                 retrieveUserData(current_user.uid)
+                result.current_user = userData.user
                 deck = await getDeck(1);
+                result.deck = deck
                 renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
             }).catch(function(error) {
                 // Handle Errors here.
@@ -131,33 +133,43 @@ var loginAccount = async (email, password, result, response) => {
     Saves username and their personal scores in JSON file and return
     a high score results message depending on situation.
  */
-function saveHighScore(username, score) {
+async function saveHighScore(userId, email, score, won) {
+    var score_message = `Sorry, you have lost with ${score}`;
+    var test = {}
 
-    try {
-        if (username === undefined) {
-            return "Sorry, Guests cannot be part of the rankings"
-        }
-        var readUser = fs.readFileSync(file);
-        accounts = JSON.parse(readUser);
-
-        if (score > accounts['high_scores'][username] || accounts['high_scores'][username] === undefined) {
-            accounts['high_scores'][username] = score;
-            writeToJSON()
-            return `Congratulations, you have a new high score: ${score} points`
-        } else {
-            return ""
-        }
-    } catch (e) {
-        console.log(`Error: ${e.message}`);
-        console.log(`Creating Account File`);
+    if (userId === undefined) {
+        return "Sorry, Guests cannot be part of the rankings"
     }
+
+    await firebase.database().ref(`users/${userId}`).once('value')
+        .then(async function(snapshot) {
+            test = await snapshot.val()
+            test.big_or_small.games_played += 1;
+
+            if (won) {
+                test.big_or_small.games_played += 1;
+            }
+
+            if (score >=  test.big_or_small.high_score) {
+                await firebase.database().ref(`big_or_small/${userId}/`).set({
+                    score: score,
+                    email: email
+                });
+                test.big_or_small.high_score = score
+                score_message = `New Personal High Score ${score}`
+            }
+
+            await firebase.database().ref(`users/${userId}`).set(test);
+        })
+
+    return score_message
 }
 
 /*
     Retrieve an array of high scores from JSON file and
     sort them from highest to lowest using sortable.
  */
-function getHighScores() {
+async function getHighScores() {
     try {
         var readUser = fs.readFileSync(file);
         accounts = JSON.parse(readUser);
@@ -217,7 +229,7 @@ var getDeck = (count) => {
             } else if (body.shuffled === '404') {
                 reject('No API method supports the URL')
             } else if (body.error !== undefined) {
-                reject('Currency not supported')
+                reject(body.error)
             } else {
                 deckCode = body.deck_id
                 resolve(body)
@@ -243,7 +255,7 @@ var drawDeck = (deck_id, count) => {
             } else if (body.shuffled === '404') {
                 reject('No API method supports the URL')
             } else if (body.error !== undefined) {
-                reject('Currency not supported')
+                reject(body.error)
             } else {
                 resolve(body)
             }
@@ -268,7 +280,7 @@ var shuffleDeck = (deck_id) => {
             } else if (body.shuffled === '404') {
                 reject('No API method supports the URL')
             } else if (body.error !== undefined) {
-                reject('Currency not supported')
+                reject(body.error)
             } else {
                 resolve(body)
             }

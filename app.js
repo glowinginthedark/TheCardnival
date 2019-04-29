@@ -122,6 +122,8 @@ app.post('/game', async (request, response) => {
         var email = request.body.username;
         var password = request.body.password;
         var login = await backend.loginAccount(email, password, request, response);
+        current_user = login.current_user
+        deck = login.deck
         // var failed = ''
         // await firebase.auth().signInWithEmailAndPassword(email, password)
         //     .then(async function success(userData) {
@@ -156,6 +158,7 @@ app.post('/newgame', async (request, response) => {
         deck = await backend.shuffleDeck(deck.deck_id);
         card = await backend.drawDeck(deck.deck_id, 1);
         card2 = await backend.drawDeck(deck.deck_id, 1);
+        console.log('happened')
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
     } catch (e) {
         console.log(e)
@@ -251,6 +254,15 @@ app.get(`/deck`, async (request, response) => {
     }
 });
 
+/*
+    Make RESTFUL GET request and render game
+ */
+app.get(`/home`, async (request, response) => {
+    response.render('home.hbs', {
+        title: 'Big or Small | Home'
+    })
+});
+
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`)
 });
@@ -278,12 +290,11 @@ async function correctGuess(weight, request, response) {
     card = card2;
     card2 = await backend.drawDeck(deck.deck_id, 1);
     renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-    console.log(card2)
     if (card2.remaining > 0) {
     } else {
         var win_message = `Congratulations, you have finished the deck with ${score} point`;
         if (current_user !== undefined) {
-            await backend.saveHighScore(current_user.username, score)
+            await backend.saveHighScore(current_user.uid, current_user.email, score, true);
         }
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
     }
@@ -291,16 +302,15 @@ async function correctGuess(weight, request, response) {
 
 async function wrongGuess(request, response) {
     // console.log("wrong guess")
-    var lose_message = `Sorry, you have lost with ${score}`;
-    console.log(lose_message)
+    var lose_message = ''
     if (current_user !== undefined) {
-        await backend.saveHighScore(current_user.username, score);
-        lose_message = `New Personal High Score ${score}`
+        lose_message = await backend.saveHighScore(current_user.uid, current_user.email, score, false);
     }
     renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
         lose_message)
     score = 0;
 }
+
 /*
     Renders the game screen with different display options based on parameters
  */
