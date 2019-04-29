@@ -171,8 +171,9 @@ app.post('/newgame', async (request, response) => {
  */
 app.get('/rankings', async (request, response) => {
     try {
-        var high_scores = await backend.getHighScores();
+        var high_scores = await backend.getHighScores('big_or_small');
         var output_rankings = "";
+        console.log('test 1' + high_scores)
         high_scores.forEach(function (item, index, array) {
             output_rankings += `${index + 1}. User-${item[0]} | Points-${item[1]} \n`
         });
@@ -284,6 +285,7 @@ function getNumeric(card) {
         return parseInt(trimmed)
     }
 }
+
 async function correctGuess(weight, request, response) {
     // console.log("right guess");
     score += weight;

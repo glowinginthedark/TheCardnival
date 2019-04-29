@@ -169,22 +169,28 @@ async function saveHighScore(userId, email, score, won) {
     Retrieve an array of high scores from JSON file and
     sort them from highest to lowest using sortable.
  */
-async function getHighScores() {
-    try {
-        var readUser = fs.readFileSync(file);
-        accounts = JSON.parse(readUser);
-        var sortable = [];
-        for (var user in accounts['high_scores']) {
-            sortable.push([user, accounts['high_scores'][user]])
-        }
-        sortable.sort(function (a, b) {
-            return b[1] - a[1];
-        });
-        console.log(sortable);
-        return sortable
-    } catch (e) {
-        console.log(`Error: ${e.message}`);
-    }
+async function getHighScores(game_name) {
+    var test = {}
+    var sortable = [];
+    
+    await firebase.database().ref(`${game_name}`).once('value')
+        .then(async function(snapshot) {
+
+            test = await snapshot.val()
+
+            for (var key in test) {
+                if (test.hasOwnProperty(key)) { 
+
+                    sortable.push([test[key].email, test[key].score])
+                }
+            }
+
+            sortable.sort(function (a, b) {
+                return b[1] - a[1];
+            });
+        })
+
+    return sortable
 }
 
 /*
