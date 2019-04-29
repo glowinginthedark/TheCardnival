@@ -5,7 +5,7 @@ const firebase = require('firebase');
 var deckCode = 0;
 var current_user = undefined;
 var score = 0;
-var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg"
+var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg";
 var accounts = {
     users: {},
     high_scores: {}
@@ -24,14 +24,14 @@ var addAccount = async (email, password) => {
     var failed = "";
     await firebase.auth().createUserWithEmailAndPassword(email, password)
             .then (async function success(userData) {
-                await writeUserData(userData.user.uid,userData.user.email,"")
+                await writeUserData(userData.user.uid,userData.user.email,"");
                 await retrieveUserData(userData.user.uid)
             }).catch (function(error) {
               // Handle Errors here.
               var errorCode = error.code;
               var errorMessage = error.message;
 
-              failed = `${errorCode}: ${errorMessage}`
+              failed = `${errorCode}: ${errorMessage}`;
               success = ""
             });
 
@@ -56,13 +56,13 @@ async function writeUserData(userId, email, imageUrl) {
 }
 
 async function retrieveAllUsers(){
-    var test = {}
+    var test = {};
     var sortable = [];
 
     await firebase.database().ref(`users`).once('value')
         .then(async function(snapshot) {
 
-            test = await snapshot.val()
+            test = await snapshot.val();
 
             for (var key in test) {
                 if (test.hasOwnProperty(key)) { 
@@ -70,7 +70,7 @@ async function retrieveAllUsers(){
                 }
             }
 
-        })
+        });
 
     return sortable
 }
@@ -274,7 +274,7 @@ function renderGame(request, response, state, first_card, second_card, remaining
         tie: state,
         score: score,
         remaining: remaining,
-        username: name,
+        email: name,
         game_state: game_state
     });
 }
