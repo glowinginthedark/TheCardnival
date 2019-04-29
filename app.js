@@ -2,6 +2,7 @@ const hbs = require('hbs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const backend = require('./backend');
+const firebase = require('firebase');
 
 const port = process.env.PORT || 8080;
 
@@ -13,12 +14,25 @@ var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-
 var score = 0;
 var current_user = undefined
 
+var config = {
+    apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
+    authDomain: "bigorsmall-9c0b5.firebaseapp.com",
+    databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
+    projectId: "bigorsmall-9c0b5",
+    storageBucket: "bigorsmall-9c0b5.appspot.com",
+    messagingSenderId: "369969153728"
+};
+firebase.initializeApp(config);
+var rootRef = firebase.database().ref();
+
 hbs.registerPartials(__dirname + '/views/partials');
+
 hbs.registerHelper('breaklines', function (text) {
     text = hbs.Utils.escapeExpression(text);
     text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
     return new hbs.SafeString(text);
 });
+
 hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
 });
@@ -49,22 +63,16 @@ app.get('/', function (request, response) {
     Make RESTFUL POST request and create new user account. Will provide
     appropriate output depending on existing user in data storage.
  */
-app.post('/register', (request, response) => {
+app.post('/register', async (request, response) => {
     try {
-        var username = request.body.username;
+        var email = request.body.username;
         var password = request.body.password;
-        var signup = backend.addAccount(username, password);
-        success = "";
-        failed = "";
-        if (signup) {
-            success = `Successfully created account ${username} `
-        } else {
-            failed = `Account ${username} already exists`
-        }
+        var result = await backend.addAccount(email, password);
+
         response.render('register.hbs', {
             title: 'Big or Small | Registration',
-            success: success,
-            failed: failed
+            success: result.success,
+            failed: result.failed
         })
     } catch (e) {
         console.log(e)
@@ -75,8 +83,30 @@ app.post('/register', (request, response) => {
     Make RESTFUL GET request and render the login screen to
     proceed to the game
  */
-app.get('/login', (request, response) => {
+app.post('/signout', (request, response) => {
     current_user = undefined
+    // firebase.auth().signOut().then(function() {
+    //   // Sign-out successful.
+    // }).catch(function(error) {
+    //   // An error happened.
+    // });
+    firebase.auth().signOut()
+    .then(function() {
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
+    rootRef.child('Users').once('value').then(function(snapshot) {
+      var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+      console.log(snapshot.val())
+      // ...
+    });
+    response.render('login.hbs', {
+        title: 'Big or Small | Login'
+    })
+});
+
+app.get('/login', (request, response) => {
     response.render('login.hbs', {
         title: 'Big or Small | Login'
     })
@@ -88,22 +118,12 @@ app.get('/login', (request, response) => {
  */
 app.post('/game', async (request, response) => {
     try {
-        var username = request.body.username;
+        var email = request.body.username;
         var password = request.body.password;
-        var login = backend.loginAccount(username, password);
-
-        if (login !== undefined) {
-            console.log('game');
-            current_user = login;
-            deck = await backend.getDeck(1);
-            renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
-        } else {
-            console.log('login');
-            response.render('login.hbs', {
-                title: 'Big or Small | Login',
-                failed: `Account ${username} credentials are wrong or does not exist`
-            })
-        }
+        var login = await backend.loginAccount(email, password, request, response);
+        current_user = login.current_user
+        deck = login.deck
+        renderProfile(current_user.uid)
     } catch (e) {
         console.log(e)
     }
@@ -119,6 +139,7 @@ app.post('/newgame', async (request, response) => {
         deck = await backend.shuffleDeck(deck.deck_id);
         card = await backend.drawDeck(deck.deck_id, 1);
         card2 = await backend.drawDeck(deck.deck_id, 1);
+        console.log('happened')
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
     } catch (e) {
         console.log(e)
@@ -131,8 +152,9 @@ app.post('/newgame', async (request, response) => {
  */
 app.get('/rankings', async (request, response) => {
     try {
-        var high_scores = await backend.getHighScores();
+        var high_scores = await backend.getHighScores('big_or_small');
         var output_rankings = "";
+        console.log('test 1' + high_scores)
         high_scores.forEach(function (item, index, array) {
             output_rankings += `${index + 1}. User-${item[0]} | Points-${item[1]} \n`
         });
@@ -157,27 +179,9 @@ app.get('/rankings', async (request, response) => {
 app.post('/bigger', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) < getNumeric(card2.cards[0].value)) {
-            score += 1;
-            card = card2;
-            if (card2.remaining > 0) {
-                card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-            } else {
-                var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if (current_user !== undefined) {
-                    await backend.saveHighScore(current_user.username, score)
-                }
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
-            }
+            correctGuess(1, request, response);
         } else {
-            var lose_message = `Sorry, you have lost with ${score}`;
-            if (current_user !== undefined) {
-                await backend.saveHighScore(current_user.username, score);
-                lose_message = `New Personal High Score ${score}`
-            }
-            renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-                lose_message)
-            score = 0;
+            wrongGuess(request, response);
         }
     } catch (e) {
         console.log(e)
@@ -192,27 +196,10 @@ app.post('/bigger', async (request, response) => {
 app.post('/tie', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) === getNumeric(card2.cards[0].value)) {
-            score += 4;
-            card = card2;
-            if (card2.remaining > 0) {
-                card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-            } else {
-                var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if (current_user !== undefined) {
-                    await backend.saveHighScore(current_user.username, score)
-                }
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
-            }
+            correctGuess(4, request, response);
+
         } else {
-            var lose_message = `Sorry, you have lost with ${score}`;
-            if (current_user !== undefined) {
-                await backend.saveHighScore(current_user.username, score);
-                lose_message = `New Personal High Score ${score}`
-            }
-            renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-                lose_message);
-            score = 0;
+            wrongGuess(request, response);
         }
     } catch (e) {
         console.log(e)
@@ -228,27 +215,9 @@ app.post('/tie', async (request, response) => {
 app.post('/smaller', async (request, response) => {
     try {
         if (getNumeric(card.cards[0].value) > getNumeric(card2.cards[0].value)) {
-            score += 1;
-            card = card2;
-            if (card2.remaining > 0) {
-                card2 = await backend.drawDeck(deck.deck_id, 1);
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-            } else {
-                var win_message = `Congratulations, you have finished the deck with ${score} point`;
-                if (current_user !== undefined) {
-                    await backend.saveHighScore(current_user.username, score)
-                }
-                renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
-            }
+            correctGuess(1, request, response);
         } else {
-            var lose_message = `Sorry, you have lost with ${score}`;
-            if (current_user !== undefined) {
-                await backend.saveHighScore(current_user.username, score);
-                lose_message = `New Personal High Score ${score}`
-            }
-            renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-                lose_message)
-            score = 0;
+            wrongGuess(request, response);
         }
     } catch (e) {
         console.log(e)
@@ -266,6 +235,27 @@ app.get(`/deck`, async (request, response) => {
         console.log(e)
     }
 });
+
+/*
+    Make RESTFUL GET request and render game
+ */
+app.get(`/home`, async (request, response) => {
+    response.render('home.hbs', {
+        title: 'Big or Small | Home'
+    })
+});
+
+
+async function renderProfile(user_id){
+    var test = {}
+    if(user_id != undefined){
+        var test = await backend.retrieveUserData(user_id)
+    }
+    test.title = `Big or Small | Profile`
+    app.get(`/profile`, async (request, response) => {
+        await response.render('profile.hbs', test)
+    });
+}
 
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`)
@@ -289,13 +279,40 @@ function getNumeric(card) {
     }
 }
 
+async function correctGuess(weight, request, response) {
+    // console.log("right guess");
+    score += weight;
+    card = card2;
+    card2 = await backend.drawDeck(deck.deck_id, 1);
+    renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
+    if (card2.remaining > 0) {
+    } else {
+        var win_message = `Congratulations, you have finished the deck with ${score} point`;
+        if (current_user !== undefined) {
+            await backend.saveHighScore(current_user.uid, current_user.email, score, true);
+        }
+        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
+    }
+}
+
+async function wrongGuess(request, response) {
+    // console.log("wrong guess")
+    var lose_message = ''
+    if (current_user !== undefined) {
+        lose_message = await backend.saveHighScore(current_user.uid, current_user.email, score, false);
+    }
+    renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
+        lose_message)
+    score = 0;
+}
+
 /*
     Renders the game screen with different display options based on parameters
  */
 function renderGame(request, response, state, first_card, second_card, remaining, game_state) {
     var name = "Guest";
     if (current_user !== undefined) {
-        name = current_user.username
+        name = current_user.email
     }
     response.render('game.hbs', {
         title: 'Big or Small | Play Game',
@@ -309,4 +326,36 @@ function renderGame(request, response, state, first_card, second_card, remaining
         username: name,
         game_state: game_state
     });
+}
+
+async function writeUserData(userId, email, imageUrl) {
+  await firebase.database().ref(`users/${userId}`).set({
+    email: email,
+    profile_picture : imageUrl,
+    balance: 0,
+    prizes:[],
+    big_or_small: {
+        games_played: 0,
+        games_won: 0,
+        high_score: 0
+    }
+  });
+}
+
+async function retrieveUserData(userId){
+    var test = {}
+    await firebase.database().ref(`users/${userId}`).once('value')
+        .then(async function(snapshot) {
+            await console.log(1)
+            await console.log(snapshot.val())
+            await console.log(2)
+            test = await snapshot.val()
+            test.big_or_small.games_played += 1;
+            await console.log(test)
+            await firebase.database().ref(`users/${userId}`).set(test);
+        })
+}
+
+function updateUserStat(userId, games_won,games_played, high_score) {
+    console.log(firebase.database.ref(`users/${userId}`))
 }
