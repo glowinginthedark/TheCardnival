@@ -55,43 +55,34 @@ async function writeUserData(userId, email, imageUrl) {
   });
 }
 
+async function retrieveAllUsers(){
+    var test = {}
+    var sortable = [];
+
+    await firebase.database().ref(`users`).once('value')
+        .then(async function(snapshot) {
+
+            test = await snapshot.val()
+
+            for (var key in test) {
+                if (test.hasOwnProperty(key)) { 
+                    sortable.push(test[key])
+                }
+            }
+
+        })
+
+    return sortable
+}
+
 async function retrieveUserData(userId){
     var test = {}
     await firebase.database().ref(`users/${userId}`).once('value')
         .then(async function(snapshot) {
-            await console.log(1)
-            await console.log(snapshot.val())
-            await console.log(2)
             test = await snapshot.val()
-            test.big_or_small.games_played += 1;
-            await console.log(test)
-            await firebase.database().ref(`users/${userId}`).set(test);
         })
 
-}
-
-function updateUserStat(userId, games_won,games_played, high_score) {
-    console.log(firebase.database.ref(`users/${userId}`))
-}
-
-/*
-	Overwrite/Write currently modified Game data to existing/new JSON
-*/
-function writeToJSON() {
-    var resultString = JSON.stringify(accounts);
-    fs.writeFileSync(file, resultString);
-}
-
-/*
-	Check if an user exist within JSON file
-*/
-function accountExist(username) {
-    var accExist = (accounts['users'][username] !== undefined);
-
-    if (!accExist) {
-        console.log(`Account ${username} does not exist`);
-    }
-    return accExist
+    return test
 }
 
 /*
@@ -101,14 +92,17 @@ function accountExist(username) {
 var loginAccount = async (email, password, result, response) => {
     var result = { failed : "", deck : "", current_user : undefined }
     await firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(async function success(userData) {
+
+            .then (async function success(userData) {
+
                 current_user = userData.user;
                 retrieveUserData(current_user.uid)
                 result.current_user = userData.user
                 deck = await getDeck(1);
                 result.deck = deck
                 renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
-            }).catch(function(error) {
+
+            }).catch (function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -119,12 +113,6 @@ var loginAccount = async (email, password, result, response) => {
                         failed: result.failed
                 })
             });
-    // await firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-    //     // Handle Errors here.
-    //     var errorCode = error.code;
-    //     var errorMessage = error.message;
-    //     result.failed = `${errorCode}: ${errorMessage}`
-    // });
 
     return result
 };
@@ -172,7 +160,7 @@ async function saveHighScore(userId, email, score, won) {
 async function getHighScores(game_name) {
     var test = {}
     var sortable = [];
-    
+
     await firebase.database().ref(`${game_name}`).once('value')
         .then(async function(snapshot) {
 
@@ -181,7 +169,7 @@ async function getHighScores(game_name) {
             for (var key in test) {
                 if (test.hasOwnProperty(key)) { 
 
-                    sortable.push([test[key].email, test[key].score])
+                    sortable.push([test[key].email, test[key].score, key])
                 }
             }
 
@@ -191,31 +179,6 @@ async function getHighScores(game_name) {
         })
 
     return sortable
-}
-
-/*
-	Validate Username and Password and return a value based on their validation.
-	Temporarily placed for flexibility use
-*/
-function validateCredentials(username, password) {
-    return true;
-    //return (validateAccountNum(username) && validatePassword(password));
-}
-
-/*
-	Validate account username format,
-	Temporary placement for flexibility use
-*/
-function validateAccountNum(username) {
-    return true;
-}
-
-/*
-	Validates account password's length,
-	Temporary placement for flexibility use
-*/
-function validatePassword(pass) {
-    return true;
 }
 
 
@@ -323,5 +286,7 @@ module.exports = {
     addAccount,
     loginAccount,
     saveHighScore,
-    getHighScores
+    getHighScores,
+    retrieveAllUsers.
+    retrieveUserData
 };

@@ -124,25 +124,6 @@ app.post('/game', async (request, response) => {
         var login = await backend.loginAccount(email, password, request, response);
         current_user = login.current_user
         deck = login.deck
-        // var failed = ''
-        // await firebase.auth().signInWithEmailAndPassword(email, password)
-        //     .then(async function success(userData) {
-        //         current_user = userData.user;
-        //         retrieveUserData(current_user.uid)
-        //         deck = await backend.getDeck(1);
-        //         renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
-        //     }).catch(function(error) {
-        //         // Handle Errors here.
-        //         var errorCode = error.code;
-        //         var errorMessage = error.message;
-        //         failed = `${errorCode}: ${errorMessage}`
-        //         console.log('Login failed')
-        //         response.render('login.hbs', {
-        //                 title: 'Big or Small | Login',
-        //                 failed: failed
-        //         })
-        //     });
-
     } catch (e) {
         console.log(e)
     }
@@ -264,6 +245,20 @@ app.get(`/home`, async (request, response) => {
     })
 });
 
+getAllUsers()
+
+async function getAllUsers(){
+    all_users = await backend.retrieveAllUsers()
+    var test = {}
+    for (i = 0; i < all_users.length; i++){
+        var test = all_users[i]
+        test.title = `Big or Small | ${all_users[i].email}'s Profile`
+        app.get(`/profile/:${all_users[i].email}`, async (request, response) => {
+            response.render('profile.hbs', test)
+        });
+    }
+}
+
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`)
 });
@@ -361,7 +356,6 @@ async function retrieveUserData(userId){
             await console.log(test)
             await firebase.database().ref(`users/${userId}`).set(test);
         })
-
 }
 
 function updateUserStat(userId, games_won,games_played, high_score) {
