@@ -67,25 +67,12 @@ app.post('/register', async (request, response) => {
     try {
         var email = request.body.username;
         var password = request.body.password;
-        //var signup = backend.addAccount(email, password);
-        var signup = ""
-        var success = `Successfully created account ${email} `;
-        var failed = "";
-        await firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then (function success(userData) {
-                writeUserData(userData.user.uid,userData.user.email,"")
-            }).catch (function(error) {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              failed = `${errorCode}: ${errorMessage}`
-              success = ""
-            });
+        var result = await backend.addAccount(email, password);
 
         response.render('register.hbs', {
             title: 'Big or Small | Registration',
-            success: success,
-            failed: failed
+            success: result.success,
+            failed: result.failed
         })
     } catch (e) {
         console.log(e)
@@ -96,18 +83,31 @@ app.post('/register', async (request, response) => {
     Make RESTFUL GET request and render the login screen to
     proceed to the game
  */
-app.get('/login', (request, response) => {
+app.post('/signout', (request, response) => {
     current_user = undefined
     // firebase.auth().signOut().then(function() {
     //   // Sign-out successful.
     // }).catch(function(error) {
     //   // An error happened.
     // });
+    firebase.auth().signOut()
+    .then(function() {
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
     rootRef.child('Users').once('value').then(function(snapshot) {
       var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
       console.log(snapshot.val())
       // ...
     });
+    response.render('login.hbs', {
+        title: 'Big or Small | Login'
+    })
+});
+
+app.get('/login', (request, response) => {
+    current_user = undefined
     response.render('login.hbs', {
         title: 'Big or Small | Login'
     })
@@ -121,28 +121,25 @@ app.post('/game', async (request, response) => {
     try {
         var email = request.body.username;
         var password = request.body.password;
-        var login = backend.loginAccount(email, password);
-        var failed = ''
-        await firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            failed = `${errorCode}: ${errorMessage}`
-            console.log('Login failed')
-        });
-
-        await firebase.auth().onAuthStateChanged(async function(user) {
-            if (user) {
-                current_user = user;
-                deck = await backend.getDeck(1);
-                renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
-            } else {
-                response.render('login.hbs', {
-                    title: 'Big or Small | Login',
-                    failed: failed
-                })
-            }
-        });
+        var login = await backend.loginAccount(email, password, request, response);
+        // var failed = ''
+        // await firebase.auth().signInWithEmailAndPassword(email, password)
+        //     .then(async function success(userData) {
+        //         current_user = userData.user;
+        //         retrieveUserData(current_user.uid)
+        //         deck = await backend.getDeck(1);
+        //         renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
+        //     }).catch(function(error) {
+        //         // Handle Errors here.
+        //         var errorCode = error.code;
+        //         var errorMessage = error.message;
+        //         failed = `${errorCode}: ${errorMessage}`
+        //         console.log('Login failed')
+        //         response.render('login.hbs', {
+        //                 title: 'Big or Small | Login',
+        //                 failed: failed
+        //         })
+        //     });
 
     } catch (e) {
         console.log(e)
@@ -277,12 +274,12 @@ function getNumeric(card) {
 }
 async function correctGuess(weight, request, response) {
     // console.log("right guess");
-   score += weight;
+    score += weight;
     card = card2;
-        card2 = await backend.drawDeck(deck.deck_id, 1);
-        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
+    card2 = await backend.drawDeck(deck.deck_id, 1);
+    renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
     console.log(card2)
-     if (card2.remaining > 0) {
+    if (card2.remaining > 0) {
     } else {
         var win_message = `Congratulations, you have finished the deck with ${score} point`;
         if (current_user !== undefined) {
@@ -291,6 +288,7 @@ async function correctGuess(weight, request, response) {
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
     }
 }
+
 async function wrongGuess(request, response) {
     // console.log("wrong guess")
     var lose_message = `Sorry, you have lost with ${score}`;
@@ -325,8 +323,8 @@ function renderGame(request, response, state, first_card, second_card, remaining
     });
 }
 
-function writeUserData(userId, email, imageUrl) {
-  firebase.database().ref('users/' + userId).set({
+async function writeUserData(userId, email, imageUrl) {
+  await firebase.database().ref(`users/${userId}`).set({
     email: email,
     profile_picture : imageUrl,
     balance: 0,
@@ -337,4 +335,23 @@ function writeUserData(userId, email, imageUrl) {
         high_score: 0
     }
   });
+}
+
+async function retrieveUserData(userId){
+    var test = {}
+    await firebase.database().ref(`users/${userId}`).once('value')
+        .then(async function(snapshot) {
+            await console.log(1)
+            await console.log(snapshot.val())
+            await console.log(2)
+            test = await snapshot.val()
+            test.big_or_small.games_played += 1;
+            await console.log(test)
+            await firebase.database().ref(`users/${userId}`).set(test);
+        })
+
+}
+
+function updateUserStat(userId, games_won,games_played, high_score) {
+    console.log(firebase.database.ref(`users/${userId}`))
 }
