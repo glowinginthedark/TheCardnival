@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+{{> head}}
+
+<body
+    background="https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6">
+
+    {{> header}}
+    <br>Balance {{balance}}
+    <br>Games Played{{big_or_small.games_played}}
+    <br>Games Won{{big_or_small.games_won}}
+    <br>Highest Score{{big_or_small.high_score}}
+    <br>Email: {{email}}
+    <br>Picture: {{profile_picture}}
+    {{> footer}}
+    <canvas id="myDoughnutChart" width="400" height="100"></canvas>
+</body>
+<script>
+    var ctx = document.getElementById("myDoughnutChart");
+    ctx.font = "32px Verdana";
+    ctx.fillStyle = '#000';
+    var myDoughnutChart = new Chart(ctx, {
+        "type": "doughnut",
+        "data": {
+            "labels": ["Games Played", "Games Won"],
+            "datasets": [{
+                "label":{{big_or_small.high_score}},
+                "data": [{{big_or_small.games_played}},{{big_or_small.games_won}}],
+                "backgroundColor": [
+                    "rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)"]
+            }],
+        },
+        center: {
+            text:"hi"
+        }
+    });
+</script>
+</html>
