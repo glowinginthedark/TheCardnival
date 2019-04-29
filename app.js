@@ -12,7 +12,7 @@ var card = 0;
 var card2 = 0;
 var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg"
 var score = 0;
-var current_user = undefined
+var current_user = undefined;
 
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
@@ -121,8 +121,8 @@ app.post('/game', async (request, response) => {
         var email = request.body.username;
         var password = request.body.password;
         var login = await backend.loginAccount(email, password, request, response);
-        current_user = login.current_user
-        deck = login.deck
+        current_user = login.current_user;
+        deck = login.deck;
         renderProfile(current_user.uid)
     } catch (e) {
         console.log(e)
@@ -156,7 +156,8 @@ app.get('/rankings', async (request, response) => {
         var output_rankings = "";
         console.log('test 1' + high_scores)
         high_scores.forEach(function (item, index, array) {
-            output_rankings += `${index + 1}. User-${item[0]} | Points-${item[1]} \n`
+            output_rankings += `${index + 1}. ${item[0]} | Points-${item[1]} 
+                                <a href="/profile/${item[2]}">Profile</a> <br>`
         });
         if (output_rankings.length === 0) {
             output_rankings = "No Rankings currently \n"
@@ -245,13 +246,37 @@ app.get(`/home`, async (request, response) => {
     })
 });
 
+app.get('/profile/:email', async (request, response) => {
+    var test = {};
+    var id = request.params.email
+    if (id != undefined) {
+        test = await backend.retrieveUserData(id);
+    }
+    test.title = `Big or Small | ${id} Profile`;
+    await response.render('profile.hbs', test)
+});
+
+app.get(`/profile`, async (request, response) => {
+    var test = {};
+    if(current_user != undefined){
+        test = await backend.retrieveUserData(current_user.uid);
+        test.title = `Big or Small | Your Profile`;
+        await response.render('profile.hbs', test);
+    }else{
+        await response.render('login.hbs',{
+            title: 'Big or Small | Login',
+            failed: 'Login first to view account status'
+        })
+    }
+});
 
 async function renderProfile(user_id){
-    var test = {}
+    var test = {};
     if(user_id != undefined){
-        var test = await backend.retrieveUserData(user_id)
+        test = await backend.retrieveUserData(user_id);
     }
-    test.title = `Big or Small | Profile`
+    test.title = `Big or Small | Profile`;
+
     app.get(`/profile`, async (request, response) => {
         await response.render('profile.hbs', test)
     });
@@ -297,12 +322,12 @@ async function correctGuess(weight, request, response) {
 
 async function wrongGuess(request, response) {
     // console.log("wrong guess")
-    var lose_message = ''
+    var lose_message = '';
     if (current_user !== undefined) {
         lose_message = await backend.saveHighScore(current_user.uid, current_user.email, score, false);
     }
     renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
-        lose_message)
+        lose_message);
     score = 0;
 }
 
