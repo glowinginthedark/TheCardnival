@@ -2,18 +2,88 @@
 <html>
 {{> head}}
 
-<body
-    background="https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6">
+
+
+<body style="background:url('https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6')">
 
     {{> header}}
-    <br>Balance {{balance}}
-    <br>Games Played{{big_or_small.games_played}}
-    <br>Games Won{{big_or_small.games_won}}
-    <br>Highest Score{{big_or_small.high_score}}
-    <br>Email: {{email}}
-    <br>Picture: {{profile_picture}}
+    <!--<br>Balance {balance}}-->
+    <!--<br>Games Played{big_or_small.games_played}}-->
+    <!--<br>Games Won{big_or_small.games_won}}-->
+    <!--<br>Highest Score{big_or_small.high_score}}-->
+    <!--<br>Email: {email}-->
+    <!--<br>Picture: {profile_picture}-->
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div align="left">
+                        <br>
+                        <h2 class="card-title" align="center">Profile</h2>
+                        <br>
+                        <hr class="my-4">
+                    </div>
+                    <form>
+                        <!--<h5 align="left">Profile Picture</h5><br>-->
+                        <img class="card-img-top" src=url("https://www.pexels.com/photo/programming-code-abstract-screen-of-software-developer-2194062/") alt="Profile pic" style="max-width: 300px; max-height: 300px">
+                        <div class="form-inline">
+                            <div class="box">Username   </div>
+                            <input class="form-control" id="UserName" type="text" placeholder="MyAgile" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Password   </div>
+                            <input class="form-control" id="Password" type="text" placeholder="********" disabled>
+                        </div>
+
+                        <div class="form-inline">
+                            <div class="box">E-mail   </div>
+                            <input class="form-control" id="Email" type="text" placeholder={{email}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Games played   </div>
+                            <input class="form-control" id="Played" type="text" placeholder={{big_or_small.games_played}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Games won   </div>
+                            <input class="form-control" id="Won" type="text" placeholder={{big_or_small.games_won}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">High Score   </div>
+                            <input class="form-control" id="Won" type="text" placeholder={{big_or_small.high_score}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Balance   </div>
+                            <input class="form-control" id="Balance" type="text" placeholder={{balance}} disabled>
+                        </div>
+                        <br>
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
     {{> footer}}
-    <canvas id="myDoughnutChart" width="400" height="100"></canvas>
+
+
+
 </body>
 <script>
     var ctx = document.getElementById("myDoughnutChart");
