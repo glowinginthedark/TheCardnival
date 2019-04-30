@@ -26,20 +26,35 @@ body {
     background-repeat: no-repeat;
 }
 
-.loginTitles {
-    text-align: center;
-    color: white;
-}
-
 #reg-jumbo {
     background: rgba(0, 0, 0, 0.55);
     height: 90%;
 }
 
+#rankings {
+    background: url("https://www.highreshdwallpapers.com/wp-content/uploads/2014/06/Golden-World-Cup-Trophy.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+#rank-jumbo {
+    background: rgba(255, 255, 255, 0.15);
+    height: 90%;
+}
+
+.loginTitles {
+    text-align: center;
+    color: white;
+}
+
+
+
 .playcard {
     margin: 0 auto;
     display: block;
 }
+
 
 /* Footer */
 #footer {
