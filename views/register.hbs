@@ -2,29 +2,54 @@
 <html>
 {{> head}}
 
-<body>
+<body class="signin">
     {{> header}}
-    <form class="container" id="form1" method="POST" action="/register">
-        <!--<div class="container">-->
-        <h1>Register</h1>
-        <p>Please fill in this form to create an account.</p>
-        <hr>
+    <br>
+    <br>
+    <div id='reg-jumbo' class="jumbotron container-fluid">
+        <br>
+        <br>
+        <br>
+        <form class="container " id="form1" method="POST" action="/register">
+            <h1 class="loginTitles">Register</h1>
+            <h4 class="loginTitles">Please fill in this form to create an account.</h4>
+            <hr>
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Username</span>
+                </div>
+                <input class="form-control" type="text" placeholder="Enter Username" name="username" id="username">
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Email</span>
+                </div>
+                <input class="form-control" type="text" placeholder="Enter Email" name="email" id="email" required>
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Password</span>
+                </div>
+                <input class="form-control" type="password" placeholder="Enter Password" name="password" id="password"
+                    required>
+            </div>
+            <br>
+            <button class="btn btn-info btn-lg" style="width:100%" type="submit" value="Register">Register</button>
+        </form>
+        <h5 style="text-align:center; color:lightgreen;">{{success}}</h5>
+        <h5 style="text-align:center; color:red;">{{failed}}</h5>
+        <hr class='my-2'>
+        <div class="container" style="justify-content:center">
+            <form id="form2" method="GET" action="/login">
+                <button class="btn btn-lg btn-success" style="width:100%" type="submit" value="Login Here">Already have
+                    an account? Click here to login!</button>
+            </form>
+        </div>
 
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter email" name="email" id="email" required>
+    </div>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter password" name="password" id="password" required>
-
-        <input type="submit" value="Register">
-        <!--</div>-->
-    </form>
-    <h3 style="text-align:center;color:darkgreen;">{{success}}</h3>
-    <h3 style="text-align:center;color:red;">{{failed}}</h3>
-    <form class="container" id="form2" method="GET" action="/login">
-        <h1>Already have an account?</h1>
-        <input type="submit" value="Login Here">
-    </form>
 </body>
 {{> footer}}
 
