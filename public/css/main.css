@@ -1,6 +1,6 @@
 /* Global Settings */
 div {
-    border: red solid 2px;
+    border: red solid 0px;
 }
 
 html,
@@ -21,7 +21,7 @@ body {
 
 /* Page Classes */
 .signin {
-    background-image: url('http://www.4usky.com/files/prepared/23/1920x1080-164189320-curtain-wallpapers.jpg');
+    background-image: url('/img/red_curtain.jpg');
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -48,13 +48,64 @@ body {
     color: white;
 }
 
-
+#password-strength-text {
+    color: white;
+    text-align: center;
+}
 
 .playcard {
     margin: 0 auto;
     display: block;
 }
 
+meter {
+    /* Reset the default appearance */
+    margin: 0 auto 1em;
+    width: 100%;
+    height: 0.45em;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    /* Applicable only to Firefox */
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+meter::-webkit-meter-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit based browsers */
+meter[value="1"]::-webkit-meter-optimum-value {
+    background: red;
+}
+
+meter[value="2"]::-webkit-meter-optimum-value {
+    background: orange;
+}
+
+meter[value="3"]::-webkit-meter-optimum-value {
+    background: yellow;
+}
+
+meter[value="4"]::-webkit-meter-optimum-value {
+    background: green;
+}
+
+/* Gecko based browsers */
+meter[value="1"]::-moz-meter-bar {
+    background: red;
+}
+
+meter[value="2"]::-moz-meter-bar {
+    background: orange;
+}
+
+meter[value="3"]::-moz-meter-bar {
+    background: yellow;
+}
+
+meter[value="4"]::-moz-meter-bar {
+    background: green;
+}
 
 /* Footer */
 #footer {

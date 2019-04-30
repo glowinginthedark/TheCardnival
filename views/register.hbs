@@ -11,21 +11,21 @@
         <br>
         <br>
         <form class="container " id="form1" method="POST" action="/register">
-            <h1 class="loginTitles">Register</h1>
-            <h4 class="loginTitles">Please fill in this form to create an account.</h4>
+            <h1 class="loginTitles">Welcome to the Cardnival!</h1>
+            <h4 class="loginTitles">Please fill in this form to register an account.</h4>
             <hr>
             <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
                     <span class="input-group-text">First Name</span>
                 </div>
-                <input class="form-control" type="text" placeholder="Enter First Name" name="fname" id="fname" required>
+                <input class="form-control" type="text" placeholder="Enter First Name" name="fname" id="fname">
             </div>
             <br>
             <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Last Name</span>
                 </div>
-                <input class="form-control" type="text" placeholder="Enter Last Name" name="lname" id="lname" required>
+                <input class="form-control" type="text" placeholder="Enter Last Name" name="lname" id="lname">
             </div>
             <br>
             <div class="input-group input-group-lg">
@@ -42,8 +42,11 @@
                 <input class="form-control" type="password" placeholder="Enter Password" name="password" id="password"
                     required>
             </div>
+            <meter max="4" style="width:100%" name="meter" id="password-strength-meter"></meter>
+            <p id="password-strength-text"> </p>
             <br>
-            <button class="btn btn-info btn-lg" style="width:100%" type="submit" value="Register">Register</button>
+            <button class="btn btn-info btn-lg" style="width:100%" type="submit" id="register" value="Register"
+                disabled>Register</button>
         </form>
         <h5 style="text-align:center; color:lightgreen;">{{success}}</h5>
         <h5 style="text-align:center; color:red;">{{failed}}</h5>
@@ -59,7 +62,38 @@
     <audio autoplay>
         <source src="/audio/merrygo.mp3" type="audio/mpeg">
     </audio>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+    <script>
+        var strength = {
+            0: "Too guessable: risky password. (guesses < 10^3)",
+            1: "Very guessable: protection from throttled online attacks. (guesses < 10^6)",
+            2: "Somewhat guessable: protection from unthrottled online attacks. (guesses < 10^8)",
+            3: "Safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)",
+            4: "Very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)"
+        }
+        var password = document.getElementById('password');
+        var meter = document.getElementById('password-strength-meter');
+        var text = document.getElementById('password-strength-text');
+        var register = document.getElementById('register');
+        var email = document.getElementById('email');
+
+        password.addEventListener('input', function () {
+            var val = password.value;
+            var result = zxcvbn(val);
+
+            // Update the password strength meter
+            meter.value = result.score;
+            register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank
+
+            // Update the text indicator
+            if (val !== "") {
+                text.innerHTML = "Strength: " + strength[result.score];
+            } else {
+                text.innerHTML = "";
+            }
+        });
+    </script>
+    {{> footer}}
 </body>
-{{> footer}}
 
 </html>
