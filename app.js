@@ -3,6 +3,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const backend = require('./backend');
 const firebase = require('firebase');
+const admin = require('firebase-admin');
+const serviceAccount = require("./private/my-project-1548878562718-f9971c2a556d");
+
+var storage = require('@google-cloud/storage')
 
 const port = process.env.PORT || 8080;
 
@@ -13,6 +17,7 @@ var card2 = 0;
 var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg"
 var score = 0;
 var current_user = undefined;
+var nav_email = "Guest";
 
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
@@ -23,7 +28,19 @@ var config = {
     messagingSenderId: "369969153728"
 };
 firebase.initializeApp(config);
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
+    storageBucket: "bigorsmall-9c0b5.appspot.com"
+});
 var rootRef = firebase.database().ref();
+var bucket = admin.storage().bucket();
+bucket.get('display.jpg', function(err, file, apiResponse) {
+  //Do Stuff
+  console.log(err)
+  console.log(apiResponse)
+});
 
 hbs.registerPartials(__dirname + '/views/partials');
 
@@ -55,7 +72,8 @@ app.use(bodyParser.urlencoded({
  */
 app.get('/', function (request, response) {
     response.render('register.hbs', {
-        title: 'Big or Small | Registration'
+        title: 'Big or Small | Registration',
+        nav_email: nav_email
     })
 });
 
@@ -67,11 +85,14 @@ app.post('/register', async (request, response) => {
     try {
         var email = request.body.email;
         var password = request.body.password;
-        var result = await backend.addAccount(email, password);
+        var fname = request.body.fname;
+        var lname = request.body.lname;
+        var result = await backend.addAccount(email, password, fname, lname);
         response.render('register.hbs', {
             title: 'Big or Small | Registration',
             success: result.success,
-            failed: result.failed
+            failed: result.failed,
+            nav_email: nav_email
         })
     } catch (e) {
         console.log(e)
@@ -82,32 +103,27 @@ app.post('/register', async (request, response) => {
     Make RESTFUL GET request and render the login screen to
     proceed to the game
  */
-app.post('/signout', (request, response) => {
+app.post('/signout', async (request, response) => {
     current_user = undefined
-    // firebase.auth().signOut().then(function() {
-    //   // Sign-out successful.
-    // }).catch(function(error) {
-    //   // An error happened.
-    // });
-    firebase.auth().signOut()
+
+    await firebase.auth().signOut()
         .then(function () {
             // Sign-out successful.
+            nav_email = 'Guest';
         }).catch(function (error) {
             // An error happened.
         });
-    rootRef.child('Users').once('value').then(function (snapshot) {
-        var email = (snapshot.val() && snapshot.val().email) || 'Anonymous';
-        console.log(snapshot.val())
-        // ...
-    });
+
     response.render('login.hbs', {
-        title: 'Big or Small | Login'
+        title: 'Big or Small | Login',
+        nav_email: nav_email
     })
 });
 
 app.get('/login', (request, response) => {
     response.render('login.hbs', {
-        title: 'Big or Small | Login'
+        title: 'Big or Small | Login',
+        nav_email: nav_email
     })
 });
 
@@ -121,8 +137,8 @@ app.post('/game', async (request, response) => {
         var password = request.body.password;
         var login = await backend.loginAccount(email, password, request, response);
         current_user = login.current_user;
+        nav_email = current_user.email;
         deck = login.deck;
-        renderProfile(current_user.uid)
     } catch (e) {
         console.log(e)
     }
@@ -138,7 +154,6 @@ app.post('/newgame', async (request, response) => {
         deck = await backend.shuffleDeck(deck.deck_id);
         card = await backend.drawDeck(deck.deck_id, 1);
         card2 = await backend.drawDeck(deck.deck_id, 1);
-        console.log('happened')
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
     } catch (e) {
         console.log(e)
@@ -153,18 +168,17 @@ app.get('/rankings', async (request, response) => {
     try {
         var high_scores = await backend.getHighScores('big_or_small');
         var output_rankings = "";
-        console.log('test 1' + high_scores)
         high_scores.forEach(function (item, index, array) {
-            output_rankings += `${index + 1}. ${item[0]} | Points-${item[1]} 
+            output_rankings += `${index + 1}. ${item[0]} | ${item[1]} Points 
                                 <a href="/profile/${item[2]}">Profile</a> <br>`
         });
         if (output_rankings.length === 0) {
             output_rankings = "No Rankings currently \n"
         }
-        console.log(output_rankings);
         response.render('rankings.hbs', {
             title: 'Big or Small | Rankings',
-            rankings: output_rankings
+            rankings: output_rankings,
+            nav_email: nav_email
         })
     } catch (e) {
         console.log(e.message)
@@ -260,11 +274,13 @@ app.get(`/profile`, async (request, response) => {
     if (current_user != undefined) {
         test = await backend.retrieveUserData(current_user.uid);
         test.title = `Big or Small | Your Profile`;
+        test.nav_email = nav_email;
         await response.render('profile.hbs', test);
     } else {
         await response.render('login.hbs', {
             title: 'Big or Small | Login',
-            failed: 'Login first to view account status'
+            failed: 'Login first to view account status',
+            nav_email: nav_email
         })
     }
 });
@@ -273,6 +289,8 @@ async function renderProfile(user_id) {
     var test = {};
     if (user_id != undefined) {
         test = await backend.retrieveUserData(user_id);
+        test.nav_email = nav_email;
+        await backend.retrieveImgUrl(test.profile_picture)
     }
     test.title = `Big or Small | Profile`;
 
@@ -335,7 +353,7 @@ async function wrongGuess(request, response) {
 function renderGame(request, response, state, first_card, second_card, remaining, game_state) {
     var name = "Guest";
     if (current_user !== undefined) {
-        name = current_user.email
+        name = `${current_user.fname} ${current_user.lname}`;
     }
     response.render('game.hbs', {
         title: 'Big or Small | Play Game',
@@ -346,39 +364,8 @@ function renderGame(request, response, state, first_card, second_card, remaining
         tie: state,
         score: score,
         remaining: remaining,
-        email: name,
-        game_state: game_state
+        name: name,
+        game_state: game_state,
+        nav_email: nav_email
     });
-}
-
-async function writeUserData(userId, email, imageUrl) {
-    await firebase.database().ref(`users/${userId}`).set({
-        email: email,
-        profile_picture: imageUrl,
-        balance: 0,
-        prizes: [],
-        big_or_small: {
-            games_played: 0,
-            games_won: 0,
-            high_score: 0
-        }
-    });
-}
-
-async function retrieveUserData(userId) {
-    var test = {}
-    await firebase.database().ref(`users/${userId}`).once('value')
-        .then(async function (snapshot) {
-            await console.log(1)
-            await console.log(snapshot.val())
-            await console.log(2)
-            test = await snapshot.val()
-            test.big_or_small.games_played += 1;
-            await console.log(test)
-            await firebase.database().ref(`users/${userId}`).set(test);
-        })
-}
-
-function updateUserStat(userId, games_won, games_played, high_score) {
-    console.log(firebase.database.ref(`users/${userId}`))
 }
