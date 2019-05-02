@@ -59,7 +59,7 @@
         </div>
 
     </div>
-    <audio autoplay>
+    <audio autoplay loop>
         <source src="/audio/merrygo.mp3" type="audio/mpeg">
     </audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
@@ -86,8 +86,9 @@
             
             // Update the password strength meter
             meter.value = result.score;
-            
-            register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank
+            var email_exp = /\S+@\S+\.+\S/
+            {{!-- register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank --}}
+            register.disabled = (result.score <= 2 || !email_exp.test(email.value)) //Password Strength => 3, Email != blank
 
             // Update the text indicator
             if (val !== "") {
