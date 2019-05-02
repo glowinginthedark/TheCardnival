@@ -77,12 +77,16 @@
         var register = document.getElementById('register');
         var email = document.getElementById('email');
 
-        password.addEventListener('input', function () {
+
+        let passemail = document.querySelectorAll("#password, #email");
+        passemail.forEach(function(element) {
+        element.addEventListener('input', function () {
             var val = password.value;
             var result = zxcvbn(val);
-
+            
             // Update the password strength meter
             meter.value = result.score;
+            
             register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank
 
             // Update the text indicator
@@ -91,6 +95,7 @@
             } else {
                 text.innerHTML = "";
             }
+        });
         });
     </script>
     {{> footer}}
