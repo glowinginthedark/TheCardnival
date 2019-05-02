@@ -5,8 +5,7 @@ const backend = require('./backend');
 const firebase = require('firebase');
 const admin = require('firebase-admin');
 const serviceAccount = require("./private/my-project-1548878562718-f9971c2a556d");
-
-var storage = require('@google-cloud/storage')
+var storage = require('@google-cloud/storage');
 
 const port = process.env.PORT || 8080;
 
