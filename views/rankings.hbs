@@ -2,28 +2,22 @@
 <html>
 {{> head}}
 
-<body background="https://uploads-ssl.webflow.com/5a578ef6046ca900013759b9/5c1d3e4a9279b3647f22abf6_drdisrespect6.gif"
-    style="background-repeat: no-repeat; background-position: center; background-color: black">
+
+<body id="rankings">
     {{> header}}
-    <div class="row"><br></div>
-    <div class="row"><br></div>
-    <div class="row"><br></div>
-    <div class="row"><br></div>
-    <div class="container" style="background-color:rgba(255,255,255,0.7); border-radius: 0.5">
-        <div class="row">
-            <div class="col"></div>
-            <div class="col">
-                <h1 style="text-align: center">Rankings</h1>
+    <br>
+    <br>
+    <div id='rank-jumbo' class="jumbotron container-fluid">
+        <h1 style="text-align: center">Big or Small Rankings</h1>
+        <div class='col-lg-12'>
+            <div class="card">
+                <div class="card-body">
+                    <p style="text-align: center; color:black">{{{rankings}}}</p>
+                </div>
+                <div class="col-lg"></div>
             </div>
-            <div class="col"></div>
         </div>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col">
-                <P style="text-align: center;">{{{rankings}}}</P>
-            </div>
-            <div class="col-lg"></div>
-        </div>
+
         <div class="row">
             <div class="col"></div>
             <div class="col">

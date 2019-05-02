@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a1987f72-d04a-4066-a8e7-321530916964" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/game.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/views/game.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/login.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/views/login.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/register.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/views/register.hbs" afterDir="false" />
+    <list default="true" id="a1987f72-d04a-4066-a8e7-321530916964" name="Default Changelist" comment="removed password &amp; username; added first and last name">
+      <change beforePath="$PROJECT_DIR$/views/profile.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/views/profile.hbs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -104,33 +100,72 @@
     <session id="-1866194890">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.29" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="hbs" value="59" />
+          <entry key="hbs" value="528" />
           <entry key="js" value="573" />
+          <entry key="json" value="30" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="10" />
-          <entry key="Handlebars/Mustache" value="59" />
+          <entry key="Handlebars/Mustache" value="528" />
+          <entry key="JSON" value="30" />
           <entry key="JavaScript" value="563" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="hbs" value="1" />
+          <entry key="hbs" value="3" />
           <entry key="js" value="1" />
+          <entry key="json" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Handlebars/Mustache" value="3" />
+          <entry key="JSON" value="2" />
+          <entry key="JavaScript" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+    <session id="1012176687">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.0" value="2" />
+          <entry key="project.open.time.1" value="3" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.opened" value="6" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="hbs" value="266" />
+          <entry key="txt" value="77" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Handlebars/Mustache" value="266" />
+          <entry key="PLAIN_TEXT" value="77" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="hbs" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Handlebars/Mustache" value="1" />
-          <entry key="JavaScript" value="1" />
         </counts>
       </usages-collector>
     </session>
@@ -140,38 +175,49 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="125" column="39" lean-forward="true" selection-start-line="125" selection-start-column="39" selection-end-line="125" selection-end-column="39" />
+            <state relative-caret-position="132">
+              <caret line="6" column="38" lean-forward="true" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package-lock.json">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/backend.js">
+        <entry file="file://$PROJECT_DIR$/views/profile.hbs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
-              <caret line="288" column="18" lean-forward="true" selection-start-line="288" selection-start-column="18" selection-end-line="288" selection-end-column="18" />
+            <state relative-caret-position="141">
+              <caret line="90" column="83" lean-forward="true" selection-start-line="90" selection-start-column="83" selection-end-line="90" selection-end-column="83" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_users.json">
+        <entry file="file://$PROJECT_DIR$/views/partials/footer.hbs">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="106" selection-start-column="106" selection-end-column="106" />
+            <state relative-caret-position="286">
+              <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/rankings.hbs">
+        <entry file="file://$PROJECT_DIR$/views/partials/head.hbs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="22" column="50" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
-              <folding>
-                <element signature="n#style#0;n#h1#0;n#div#1;n#div#0;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="132">
+              <caret line="6" column="72" selection-start-line="6" selection-start-column="72" selection-end-line="6" selection-end-column="72" />
             </state>
           </provider>
         </entry>
@@ -179,8 +225,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/game.hbs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="25" column="70" lean-forward="true" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="70" />
+            <state relative-caret-position="550">
+              <caret line="25" column="70" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="70" />
             </state>
           </provider>
         </entry>
@@ -188,7 +234,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/register.hbs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
+            <state relative-caret-position="286">
               <caret line="13" column="51" selection-start-line="13" selection-start-column="51" selection-end-line="13" selection-end-column="51" />
             </state>
           </provider>
@@ -197,7 +243,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/login.hbs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
+            <state relative-caret-position="264">
               <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
             </state>
           </provider>
@@ -205,11 +251,7 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/partials/header.hbs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="48" column="78" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="78" />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -255,6 +297,9 @@
         <option value="$PROJECT_DIR$/views/game.hbs" />
         <option value="$PROJECT_DIR$/views/register.hbs" />
         <option value="$PROJECT_DIR$/backend.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/views/partials/head.hbs" />
+        <option value="$PROJECT_DIR$/views/profile.hbs" />
       </list>
     </option>
   </component>
@@ -273,44 +318,33 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="10" />
-    <option name="y" value="40" />
-    <option name="width" value="1465" />
-    <option name="height" value="970" />
+    <option name="x" value="137" />
+    <option name="y" value="63" />
+    <option name="width" value="1173" />
+    <option name="height" value="777" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="HighOrLow" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HighOrLow" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HighOrLow" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HighOrLow" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HighOrLow" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HighOrLow" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="partials" type="462c0819:PsiDirectoryNode" />
+              <item name="BigOrSmall" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BigOrSmall" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Assignment3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -361,12 +395,27 @@
       <workItem from="1554880937144" duration="5966000" />
       <workItem from="1554887078090" duration="599000" />
       <workItem from="1554921699839" duration="580000" />
-      <workItem from="1556554038074" duration="4569000" />
+      <workItem from="1556554038074" duration="4978000" />
+      <workItem from="1556571187141" duration="571000" />
+      <workItem from="1556658196396" duration="296000" />
+      <workItem from="1556658542459" duration="123000" />
+      <workItem from="1556659231829" duration="38000" />
+      <workItem from="1556661270332" duration="2508000" />
+      <workItem from="1556768772713" duration="29000" />
+      <workItem from="1556768861085" duration="1942000" />
     </task>
+    <task id="LOCAL-00001" summary="updated profile page">
+      <created>1556768939924</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1556768939924</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49003000" />
+    <option name="totallyTimeSpent" value="57868000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -381,12 +430,13 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.083939195" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.109054856" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Messages" visible="true" weight="0.32907802" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32907802" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24680851" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.08652482" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -425,6 +475,11 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="updated profile page" />
+    <MESSAGE value="removed password &amp; username; added first and last name" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed password &amp; username; added first and last name" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../webapp/app2.js" />
     <entry file="file://$PROJECT_DIR$/public/main.html" />
@@ -446,29 +501,12 @@
     <entry file="file://$PROJECT_DIR$/../Assignment3/deck_api.js" />
     <entry file="file://$PROJECT_DIR$/../webapp2/app2.js" />
     <entry file="file://$PROJECT_DIR$/../webapp2/views/main.hbs" />
-    <entry file="file://$PROJECT_DIR$/views/partials/footer.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="34" lean-forward="true" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/custom.css.js" />
     <entry file="file://$PROJECT_DIR$/custom.css" />
-    <entry file="file://$PROJECT_DIR$/views/partials/header.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="48" column="78" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/rankings.hbs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="22" column="50" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
-          <folding>
-            <element signature="n#style#0;n#h1#0;n#div#1;n#div#0;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -479,38 +517,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/backend.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/partials/footer.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/partials/head.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="72" selection-start-line="6" selection-start-column="72" selection-end-line="6" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/game.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="25" column="70" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/views/register.hbs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
+        <state relative-caret-position="286">
           <caret line="13" column="51" selection-start-line="13" selection-start-column="51" selection-end-line="13" selection-end-column="51" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/login.hbs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
+        <state relative-caret-position="264">
           <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/game.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="25" column="70" lean-forward="true" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="70" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/views/partials/header.hbs">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="125" column="39" lean-forward="true" selection-start-line="125" selection-start-column="39" selection-end-line="125" selection-end-column="39" />
+        <state relative-caret-position="132">
+          <caret line="6" column="38" lean-forward="true" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend.js">
+    <entry file="file://$PROJECT_DIR$/views/profile.hbs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="288" column="18" lean-forward="true" selection-start-line="288" selection-start-column="18" selection-end-line="288" selection-end-column="18" />
+        <state relative-caret-position="141">
+          <caret line="90" column="83" lean-forward="true" selection-start-line="90" selection-start-column="83" selection-end-line="90" selection-end-column="83" />
         </state>
       </provider>
     </entry>
