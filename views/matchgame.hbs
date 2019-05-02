@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="Game2.1.css">
+</head>
+<body style="background:url('https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6')">
+
+<!--background="https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6">-->
+<!--{{> header}}-->
+<img src={{link1}}>
+<img src={{link1}}>
+<img src={{link2}}>
+<img src={{link2}}>
+
+<div class="container">
+    <div class="jumbotron">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col" align="center">
+            <h1 style="margin: 0 auto;display: block;">Matching Game</h1>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col" ></div>
+        <div class="col" align="center">
+            <h2 style="margin: 0 auto;display: block;">Hello {{email}}</h2>
+        </div>
+        <div class="col"></div>
+    </div>
+
+    </div>
+
+    <div class="jumbotron">
+
+        <div class="row">
+            <div class="col" align="center">
+                <h4 style="margin: 0 auto;display: block;">Score: {{score}} Points</h4>
+            </div>
+            <div class="col" align="center">
+                <form class="container" id="form1" method="POST" action="/newgame">
+                    <!--<div class="container">-->
+                    <input style="margin: 0 auto;display: block;" type="submit" value="New Game">
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="col" align="center">Time Remaining: </div>
+        </div>
+        <hr class="my-4">
+        <div class="row" >
+            <div class="col-3"></div>
+            <div class="gallery">
+                <img id="image" src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-01" onclick="changeImage()">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-02">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-03">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-04">
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-3"></div>
+                <div class="gallery">
+                    <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-05">
+                </div>
+                <div class="gallery">
+                    <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-06">
+                </div>
+                <div class="gallery">
+                    <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-07">
+                </div>
+                <div class="gallery">
+                    <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-08">
+                </div>
+            <div class="col-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-09">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-10">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-11">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-12">
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-13">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-14">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-15">
+            </div>
+            <div class="gallery">
+                <img src="https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg" alt="cardback-16">
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-4"></div>
+        <!--<div class="col"></div>-->
+        <div class="col-2" align="center">
+            <form class="container" id="form1" method="GET" action="/rankings">
+                <!--<div class="container">-->
+                <input style="margin: 0 auto;display: block;" type="submit" value="Rankings">
+                <!--</div>-->
+            </form>
+        </div>
+        <div class="col-2" align="center">
+            <form class="container" id="form1" method="POST" action="/signout">
+                <!--<div class="container">-->
+                <input style="margin: 0 auto;display: block;" type="submit" value="Sign-out">
+                <!--</div>-->
+            </form>
+        </div>
+        <div class="col-4"></div>
+        <!--<div class="col"></div>-->
+    </div>
+    <br>
+    <br>
+</div>
+{{> footer}}
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script></div>
+<script>
+    function changeImage() {
+        alert('HI')
+</script>
+
+</body>
+</html>
