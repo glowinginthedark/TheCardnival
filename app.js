@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const backend = require('./backend');
 const firebase = require('firebase');
 const admin = require('firebase-admin');
-const serviceAccount = require("./private/my-project-1548878562718-0a30664f0ef5");
+const serviceAccount = require("./private/my-project-1548878562718-f9971c2a556d");
 
 var storage = require('@google-cloud/storage')
 
@@ -36,9 +36,10 @@ admin.initializeApp({
 });
 var rootRef = firebase.database().ref();
 var bucket = admin.storage().bucket();
-bucket.get('default.jpg', function(err, file, apiResponse) {
+bucket.get('display.jpg', function(err, file, apiResponse) {
   //Do Stuff
   console.log(err)
+  console.log(apiResponse)
 });
 
 hbs.registerPartials(__dirname + '/views/partials');
