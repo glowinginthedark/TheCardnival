@@ -2,33 +2,57 @@
 <html>
 {{> head}}
 
-<body>
+<body class="signin">
     {{> header}}
-    <form class="container" id="form1" method="POST" action="/game">
-        <!--<div class="container">-->
-        <h1>Login</h1>
-        <p>Please fill in this form to login.</p>
-        <hr>
-
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter email" name="email" id="email" required>
-
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter password" name="password" id="password" required>
-
-        <input type="submit" value="Login">
-        <!--</div>-->
-    </form>
-    <h3 style="text-align:center;color:red;">{{failed}}</h3>
-    <form class="container" id="form2" method="GET" action="/">
-        <h1>Don't have an account?</h1>
-        <input type="submit" value="Register Account">
-    </form>
-    <form class="container" id="form2" method="GET" action="/deck">
-        <h1>Want to play the game?</h1>
-        <input type="submit" value="Play as Guest">
-
-    </form>
+    <br>
+    <br>
+    <div id='reg-jumbo' class="jumbotron container-fluid">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <form id="form1" method="POST" action="/game">
+                <h1 class="loginTitles">Login</h1>
+                <hr>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Email</span>
+                    </div>
+                    <input class="form-control" type="text" placeholder="Enter Email" name="email" id="email" required>
+                </div>
+                <br>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Password</span>
+                    </div>
+                    <input class="form-control" type="password" placeholder="Enter Password" name="password"
+                        id="password" required>
+                </div>
+                <br>
+                <button class='btn btn-lg btn-success' style="width:100%" type="submit" value="Login">Login</button>
+            </form>
+            <h5 style="text-align:center; color:red">{{failed}}</h5>
+        </div>
+        <br>
+        <div class="container">
+            <form id="form2" method="GET" action="/">
+                <button class="btn btn-lg btn-info" style="width:100%" type="submit" value="Register Account">Don't
+                    have an account? Register here!</button>
+            </form>
+        </div>
+        <hr class='my-2'>
+        <div class="container">
+            <form id="form2" method="GET" action="/deck">
+                <button class="btn btn-lg btn-secondary" style="width:100%" type="submit" value="Play as Guest"> Want to
+                    play the game? Play as Guest!</button>
+            </form>
+        </div>
+    </div>
+    <audio autoplay>
+        <source src="/audio/merrygo.mp3" type="audio/mpeg">
+    </audio>
     {{> footer}}
 </body>
 

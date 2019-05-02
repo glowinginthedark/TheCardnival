@@ -68,7 +68,6 @@ app.post('/register', async (request, response) => {
         var email = request.body.email;
         var password = request.body.password;
         var result = await backend.addAccount(email, password);
-
         response.render('register.hbs', {
             title: 'Big or Small | Registration',
             success: result.success,
@@ -91,15 +90,15 @@ app.post('/signout', (request, response) => {
     //   // An error happened.
     // });
     firebase.auth().signOut()
-    .then(function() {
-      // Sign-out successful.
-    }).catch(function(error) {
-      // An error happened.
-    });
-    rootRef.child('Users').once('value').then(function(snapshot) {
-      var email = (snapshot.val() && snapshot.val().email) || 'Anonymous';
-      console.log(snapshot.val())
-      // ...
+        .then(function () {
+            // Sign-out successful.
+        }).catch(function (error) {
+            // An error happened.
+        });
+    rootRef.child('Users').once('value').then(function (snapshot) {
+        var email = (snapshot.val() && snapshot.val().email) || 'Anonymous';
+        console.log(snapshot.val())
+        // ...
     });
     response.render('login.hbs', {
         title: 'Big or Small | Login'
@@ -258,21 +257,21 @@ app.get('/profile/:email', async (request, response) => {
 
 app.get(`/profile`, async (request, response) => {
     var test = {};
-    if(current_user != undefined){
+    if (current_user != undefined) {
         test = await backend.retrieveUserData(current_user.uid);
         test.title = `Big or Small | Your Profile`;
         await response.render('profile.hbs', test);
-    }else{
-        await response.render('login.hbs',{
+    } else {
+        await response.render('login.hbs', {
             title: 'Big or Small | Login',
             failed: 'Login first to view account status'
         })
     }
 });
 
-async function renderProfile(user_id){
+async function renderProfile(user_id) {
     var test = {};
-    if(user_id != undefined){
+    if (user_id != undefined) {
         test = await backend.retrieveUserData(user_id);
     }
     test.title = `Big or Small | Profile`;
@@ -310,8 +309,7 @@ async function correctGuess(weight, request, response) {
     card = card2;
     card2 = await backend.drawDeck(deck.deck_id, 1);
     renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-    if (card2.remaining > 0) {
-    } else {
+    if (card2.remaining > 0) {} else {
         var win_message = `Congratulations, you have finished the deck with ${score} point`;
         if (current_user !== undefined) {
             await backend.saveHighScore(current_user.uid, current_user.email, score, true);
@@ -354,23 +352,23 @@ function renderGame(request, response, state, first_card, second_card, remaining
 }
 
 async function writeUserData(userId, email, imageUrl) {
-  await firebase.database().ref(`users/${userId}`).set({
-    email: email,
-    profile_picture : imageUrl,
-    balance: 0,
-    prizes:[],
-    big_or_small: {
-        games_played: 0,
-        games_won: 0,
-        high_score: 0
-    }
-  });
+    await firebase.database().ref(`users/${userId}`).set({
+        email: email,
+        profile_picture: imageUrl,
+        balance: 0,
+        prizes: [],
+        big_or_small: {
+            games_played: 0,
+            games_won: 0,
+            high_score: 0
+        }
+    });
 }
 
-async function retrieveUserData(userId){
+async function retrieveUserData(userId) {
     var test = {}
     await firebase.database().ref(`users/${userId}`).once('value')
-        .then(async function(snapshot) {
+        .then(async function (snapshot) {
             await console.log(1)
             await console.log(snapshot.val())
             await console.log(2)
@@ -381,6 +379,6 @@ async function retrieveUserData(userId){
         })
 }
 
-function updateUserStat(userId, games_won,games_played, high_score) {
+function updateUserStat(userId, games_won, games_played, high_score) {
     console.log(firebase.database.ref(`users/${userId}`))
 }

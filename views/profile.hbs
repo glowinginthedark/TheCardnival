@@ -2,16 +2,101 @@
 <html>
 {{> head}}
 
-<body
-    background="https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6">
-    {{> header}}
-    <br>Balance {{balance}}
-    <br>Games Played{{big_or_small.games_played}}
-    <br>Games Won{{big_or_small.games_won}}
-    <br>Highest Score{{big_or_small.high_score}}
-    <br>Email: {{email}}
-    <br>Picture: {{profile_picture}}
-    {{> footer}}
-</body>
 
+
+<body style="background:url('https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6')">
+
+    {{> header}}
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div align="left">
+                        <br>
+                        <h2 class="card-title" align="center">Profile</h2>
+                        <br>
+                        <hr class="my-4">
+                    </div>
+                    <form>
+                        <img class="card-img-top" src=url("https://www.pexels.com/photo/programming-code-abstract-screen-of-software-developer-2194062/") alt="Profile pic" style="max-width: 300px; max-height: 300px">
+                        <div class="form-inline">
+                            <div class="box">First Name   </div>
+                            <input class="form-control" id="FName" type="text" placeholder="First" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Last Name  </div>
+                            <input class="form-control" id="LName" type="text" placeholder="Last" disabled>
+                        </div>
+
+                        <div class="form-inline">
+                            <div class="box">E-mail   </div>
+                            <input class="form-control" id="Email" type="text" placeholder={{email}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Games played   </div>
+                            <input class="form-control" id="Played" type="text" placeholder={{big_or_small.games_played}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Games won   </div>
+                            <input class="form-control" id="Won" type="text" placeholder={{big_or_small.games_won}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">High Score   </div>
+                            <input class="form-control" id="HScore" type="text" placeholder={{big_or_small.high_score}} disabled>
+                        </div>
+                        <div class="form-inline">
+                            <div class="box">Balance   </div>
+                            <input class="form-control" id="Balance" type="text" placeholder={{balance}} disabled>
+                        </div>
+                        <br>
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    {{> footer}}
+
+
+
+</body>
+<script>
+    var ctx = document.getElementById("myDoughnutChart");
+    ctx.font = "32px Verdana";
+    ctx.fillStyle = '#000';
+    var myDoughnutChart = new Chart(ctx, {
+        "type": "doughnut",
+        "data": {
+            "labels": ["Games Played", "Games Won"],
+            "datasets": [{
+                "label":{{big_or_small.high_score}},
+                "data": [{{big_or_small.games_played}},{{big_or_small.games_won}}],
+                "backgroundColor": [
+                    "rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)"]
+            }],
+        },
+        center: {
+            text:"hi"
+        }
+    });
+</script>
 </html>
