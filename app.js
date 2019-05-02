@@ -3,6 +3,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const backend = require('./backend');
 const firebase = require('firebase');
+const admin = require('firebase-admin');
+const serviceAccount = require("./private/my-project-1548878562718-0a30664f0ef5");
+
+var storage = require('@google-cloud/storage')
 
 const port = process.env.PORT || 8080;
 
@@ -24,7 +28,18 @@ var config = {
     messagingSenderId: "369969153728"
 };
 firebase.initializeApp(config);
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
+    storageBucket: "bigorsmall-9c0b5.appspot.com"
+});
 var rootRef = firebase.database().ref();
+var bucket = admin.storage().bucket();
+bucket.get('default.jpg', function(err, file, apiResponse) {
+  //Do Stuff
+  console.log(err)
+});
 
 hbs.registerPartials(__dirname + '/views/partials');
 
@@ -274,6 +289,7 @@ async function renderProfile(user_id) {
     if (user_id != undefined) {
         test = await backend.retrieveUserData(user_id);
         test.nav_email = nav_email;
+        await backend.retrieveImgUrl(test.profile_picture)
     }
     test.title = `Big or Small | Profile`;
 

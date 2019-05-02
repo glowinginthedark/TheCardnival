@@ -98,16 +98,6 @@
             text:"hi"
         }
     });
-    var storageRef = firebase.storage().ref();
-     var spaceRef = storageRef.child('default.jpg');
-     storageRef.child('default.jpg').getDownloadURL().then(function(url) {
-         var test = url;
-         alert(url);
-         document.querySelector('img').src = test;
-
-     }).catch(function(error) {
-
-     });
 
 </script>
 </html>

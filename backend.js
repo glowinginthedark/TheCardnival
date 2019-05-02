@@ -88,6 +88,16 @@ async function retrieveUserData(userId){
     return test
 }
 
+async function retrieveImgUrl(filename){
+    var spaceRef = storageRef.child(filename);
+    console.log(spaceRef)
+    storageRef.child(filename).getDownloadURL().then(function(url) {
+        console.log(url)
+    }).catch(function(error) {
+
+    });
+}
+
 /*
 	Check Json file to see if user exists and returns it if it does.
 	Returns undefined if it does not. Check -> Get Login Info -> Login
@@ -292,5 +302,6 @@ module.exports = {
     saveHighScore,
     getHighScores,
     retrieveAllUsers,
-    retrieveUserData
+    retrieveUserData,
+    retrieveImgUrl
 };
