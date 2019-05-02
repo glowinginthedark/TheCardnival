@@ -23,14 +23,12 @@ body {
 .signin {
     background-image: url('/img/red_curtain.jpg');
     background-size: cover;
-    background-repeat: repeat-y;
-    min-height: 100%;
-    display: block;
+    background-repeat: no-repeat;
 }
 
-#custom-jumbo {
+#reg-jumbo {
     background: rgba(0, 0, 0, 0.55);
-    min-height: 91%;
+    height: 91%;
 }
 
 #rankings {
@@ -38,6 +36,11 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     color: white;
+}
+
+#rank-jumbo {
+    background: rgba(255, 255, 255, 0.15);
+    height: 91%;
 }
 
 .loginTitles {
@@ -106,13 +109,12 @@ meter[value="4"]::-moz-meter-bar {
 
 /* Footer */
 #footer {
+    left: 0;
+    bottom: 0;
     width: 100%;
     background-color: rgb(245, 245, 245);
     color: black;
     text-align: center;
+    position: absolute;
     font-size: 18px;
-    margin-top: -40px;
-    left: 0;
-    bottom: 0;
-    height: 50px;
 }
