@@ -19,12 +19,13 @@ const file = 'test_users.json';
 /*
 	Add accounts info to JSON, CREATE GAME FILE if it doesnt exist already
 */
-var addAccount = async (email, password) => {
+var addAccount = async (email, password, fname, lname) => {
     var success = `Successfully created account ${email} `;
     var failed = "";
     await firebase.auth().createUserWithEmailAndPassword(email, password)
             .then (async function success(userData) {
-                await writeUserData(userData.user.uid,userData.user.email,"");
+                var user = userData.user
+                await writeUserData(user.uid, user.email, fname, lname, "default.jpg");
                 await retrieveUserData(userData.user.uid)
             }).catch (function(error) {
               // Handle Errors here.
@@ -41,10 +42,12 @@ var addAccount = async (email, password) => {
     }
 };
 
-async function writeUserData(userId, email, imageUrl) {
+async function writeUserData(userId, email, fname, lname, imageUrl) {
   await firebase.database().ref(`users/${userId}`).set({
     email: email,
     profile_picture : imageUrl,
+    fname: fname,
+    lname: lname,
     balance: 0,
     prizes:[],
     big_or_small: {
@@ -95,12 +98,12 @@ var loginAccount = async (email, password, result, response) => {
 
             .then (async function success(userData) {
 
-                current_user = userData.user;
-                retrieveUserData(current_user.uid)
-                result.current_user = userData.user
+                current_user = await retrieveUserData(userData.user.uid);
+                result.current_user = current_user;
+                result.current_user.uid = userData.user.uid;
                 deck = await getDeck(1);
-                result.deck = deck
-                renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
+                result.deck = deck;
+                await renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "");
 
             }).catch (function(error) {
                 // Handle Errors here.
@@ -263,7 +266,7 @@ var shuffleDeck = (deck_id) => {
 function renderGame(request, response, state, first_card, second_card, remaining, game_state) {
     var name = "Guest";
     if (current_user !== undefined) {
-        name = current_user.email
+        name = `${current_user.fname} ${current_user.lname}`
     }
     response.render('game.hbs', {
         title: 'Big or Small | Play Game',
@@ -274,8 +277,9 @@ function renderGame(request, response, state, first_card, second_card, remaining
         tie: state,
         score: score,
         remaining: remaining,
-        email: name,
-        game_state: game_state
+        name: name,
+        game_state: game_state,
+        nav_email: current_user.email
     });
 }
 

@@ -10,8 +10,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarHamburger">
                 <ul class="navbar-nav mt-2 mt-lg-0 ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" disabled>{{nav_email}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" disabled> | </a>
+                    </li>
                     <!--Menu Drop 1-->
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" style="{{logged_in}}">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">Login Portal</a>
                         <!--Drop Menu + Animation-->
@@ -42,9 +48,6 @@
                         </div>
                     </li>
                     <!--End of Menu Drop 3-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/home">Placeholder [Home]</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/rankings">Rankings</a>
                     </li>
