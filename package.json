@@ -7,7 +7,7 @@
     "@google-cloud/storage": "^2.5.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "firebase": "^5.10.1",
+    "firebase": "^5.11.0",
     "fs": "0.0.1-security",
     "hbs": "^4.0.4",
     "loader": "^2.1.1",
