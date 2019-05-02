@@ -11,8 +11,6 @@ var accounts = {
     high_scores: {}
 };
 
-
-
 const file = 'test_users.json';
 
 
