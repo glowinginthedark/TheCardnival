@@ -13,6 +13,12 @@ var accounts = {
 
 const file = 'test_users.json';
 
+/*****************************************************************************
+
+    BACKEND FIREBASE DATABASE METHODS
+
+******************************************************************************/
+
 
 /*
 	Add accounts info to JSON, CREATE GAME FILE if it doesnt exist already
@@ -39,66 +45,9 @@ var addAccount = async (email, password, fname, lname) => {
         failed : failed
     }
 };
-
-async function writeUserData(userId, email, fname, lname, imageUrl) {
-  await firebase.database().ref(`users/${userId}`).set({
-    email: email,
-    profile_picture : imageUrl,
-    fname: fname,
-    lname: lname,
-    balance: 0,
-    prizes:[],
-    big_or_small: {
-        games_played: 0,
-        games_won: 0,
-        high_score: 0
-    }
-  });
-}
-
-async function retrieveAllUsers(){
-    var test = {};
-    var sortable = [];
-
-    await firebase.database().ref(`users`).once('value')
-        .then(async function(snapshot) {
-
-            test = await snapshot.val();
-
-            for (var key in test) {
-                if (test.hasOwnProperty(key)) { 
-                    sortable.push(test[key])
-                }
-            }
-
-        });
-
-    return sortable
-}
-
-async function retrieveUserData(userId){
-    var test = {}
-    await firebase.database().ref(`users/${userId}`).once('value')
-        .then(async function(snapshot) {
-            test = await snapshot.val()
-        })
-
-    return test
-}
-
-async function retrieveImgUrl(filename){
-    var spaceRef = storageRef.child(filename);
-    console.log(spaceRef)
-    storageRef.child(filename).getDownloadURL().then(function(url) {
-        console.log(url)
-    }).catch(function(error) {
-
-    });
-}
-
 /*
-	Check Json file to see if user exists and returns it if it does.
-	Returns undefined if it does not. Check -> Get Login Info -> Login
+    Check Json file to see if user exists and returns it if it does.
+    Returns undefined if it does not. Check -> Get Login Info -> Login
 */
 var loginAccount = async (email, password, result, response) => {
     var result = { failed : "", deck : "", current_user : undefined }
@@ -111,18 +60,16 @@ var loginAccount = async (email, password, result, response) => {
                 result.current_user.uid = userData.user.uid;
                 deck = await getDeck(1);
                 result.deck = deck;
-                await renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "");
+                console.log('Login Successful')
+
+                return result
 
             }).catch (function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 result.failed = `${errorCode}: ${errorMessage}`
-                console.log('Login failed')
-                response.render('login.hbs', {
-                        title: 'Big or Small | Login',
-                        failed: result.failed
-                })
+                console.log('Login Failed')
             });
 
     return result
@@ -192,6 +139,81 @@ async function getHighScores(game_name) {
     return sortable
 }
 
+/*****************************************************************************
+
+    VOID() DATA SAVE/RETRIEVAL METHODS
+
+******************************************************************************/
+
+async function writeUserData(userId, email, fname, lname, imageUrl) {
+  await firebase.database().ref(`users/${userId}`).set({
+    email: email,
+    profile_picture : imageUrl,
+    fname: fname,
+    lname: lname,
+    balance: 0,
+    prizes:[],
+    big_or_small: {
+        games_played: 0,
+        games_won: 0,
+        high_score: 0
+    }
+  });
+}
+
+async function retrieveAllUsers(){
+    var test = {};
+    var sortable = [];
+
+    await firebase.database().ref(`users`).once('value')
+        .then(async function(snapshot) {
+
+            test = await snapshot.val();
+
+            for (var key in test) {
+                if (test.hasOwnProperty(key)) { 
+                    sortable.push(test[key]);
+                }
+            }
+            console.log('Retrieved all users')
+
+        }).catch(function(error){
+            console.log(error.message);
+        });
+
+    return sortable
+}
+
+async function retrieveUserData(userId){
+    var test = {}
+    await firebase.database().ref(`users/${userId}`).once('value')
+        .then(async function(snapshot) {
+            test = await snapshot.val()
+            console.log('Retrieved User Data')
+        })
+        .catch(function(error){
+            console.log(error.message);
+        })
+
+    return test
+}
+
+// async function retrieveImgUrl(filename){
+//     var spaceRef = storageRef.child(filename);
+//     console.log(spaceRef)
+//     storageRef.child(filename).getDownloadURL().then(function(url) {
+//         console.log(url)
+//     }).catch(function(error) {
+
+//     });
+// }
+
+
+/*****************************************************************************
+
+    DECK OF CARDS API METHODS
+
+******************************************************************************/
 
 /*
     Get X counts of new decks from deckofcards api
@@ -268,29 +290,6 @@ var shuffleDeck = (deck_id) => {
     })
 };
 
-/*
-    Renders the game screen with different display options based on parameters
- */
-function renderGame(request, response, state, first_card, second_card, remaining, game_state) {
-    var name = "Guest";
-    if (current_user !== undefined) {
-        name = `${current_user.fname} ${current_user.lname}`
-    }
-    response.render('game.hbs', {
-        title: 'Big or Small | Play Game',
-        card: first_card,
-        card2: second_card,
-        bigger: state,
-        smaller: state,
-        tie: state,
-        score: score,
-        remaining: remaining,
-        name: name,
-        game_state: game_state,
-        nav_email: current_user.email
-    });
-}
-
 module.exports = {
     shuffleDeck,
     drawDeck,
@@ -300,6 +299,5 @@ module.exports = {
     saveHighScore,
     getHighScores,
     retrieveAllUsers,
-    retrieveUserData,
-    retrieveImgUrl
+    retrieveUserData
 };
