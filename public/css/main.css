@@ -77,6 +77,12 @@ form .input-group-text {
     text-align: center;
  }
 
+ .btn-game {
+     color:black;
+ }
+ .list-text {
+     font-size: 2rem;
+ }
 
 meter {
     /* Reset the default appearance */
