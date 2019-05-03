@@ -10,65 +10,76 @@
 
     <div class="container">
 
-        <div class="row">
+        <div class="row" align="center">
+            <div class="col-3"></div>
             <div class="col-6">
                 <div class="card">
-                    <div align="left">
+                    <div align="center">
                         <br>
                         <h2 class="card-title" align="center">Profile</h2>
                         <br>
                         <hr class="my-4">
                     </div>
-                    <form>
+                    <div class="container" align="center">
                         <img class="card-img-top" src=https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/default.jpg?alt=media&token=4d525069-490a-4c38-a845-44e104608025 alt="Profile pic" style="max-width: 300px; max-height: 300px">
-                        <div class="form-inline">
-                            <div class="box">First Name   </div>
-                            <input class="form-control" id="fname" type="text" placeholder="{{fname}}" disabled>
-                        </div>
-                        <div class="form-inline">
-                            <div class="box">Last Name  </div>
-                            <input class="form-control" id="lname" type="text" placeholder="{{lname}}" disabled>
-                        </div>
+                        <br>
+                        <div class="box" align="center">
+                            <div class="form-inline" >
+                                <!--<div class="box col-2"></div>-->
+                                <div class="box col-3" align="left">First Name</div>
+                                <div class="boxinfo" id="fname" align="left">{{fname}}</div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="box col-3" align="left">Last Name</div>
+                                <div class="boxinfo" id = "lname" align="left">{{lname}}</div>
+                            </div>
 
-                        <div class="form-inline">
-                            <div class="box">E-mail   </div>
-                            <input class="form-control" id="Email" type="text" placeholder={{email}} disabled>
-                        </div>
-                        <div class="form-inline">
-                            <div class="box">Games played   </div>
-                            <input class="form-control" id="Played" type="text" placeholder={{big_or_small.games_played}} disabled>
-                        </div>
-                        <div class="form-inline">
-                            <div class="box">Games won   </div>
-                            <input class="form-control" id="Won" type="text" placeholder={{big_or_small.games_won}} disabled>
-                        </div>
-                        <div class="form-inline">
-                            <div class="box">High Score   </div>
-                            <input class="form-control" id="HScore" type="text" placeholder={{big_or_small.high_score}} disabled>
-                        </div>
-                        <div class="form-inline">
-                            <div class="box">Balance   </div>
-                            <input class="form-control" id="Balance" type="text" placeholder={{balance}} disabled>
+                            <div class="form-inline">
+                                <div class="box col-3" align="left">E-mail</div>
+                                <div class="boxinfo" align="left">{{email}}</div>
+                            </div>
+
+                            <div class="form-inline">
+                                <div class="box col-3" align="left">Balance   </div>
+                                <div class="boxinfo" align="left">{{balance}}</div>
+                            </div>
                         </div>
                         <br>
                         <br>
-                    </form>
+                        <hr class="my-4">
+                        <canvas id="myDoughnutChart" width="380" height="380"></canvas>
+                        <br>
+                        <div class="container" align="center">
+                            <div class="form-inline">
+                                <div class="box col-3" align="left">Games played</div>
+                                <div class="boxinfo" align="left">{{big_or_small.games_played}}</div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="box col-3" align="left">Games won</div>
+                                <div class="boxinfo" align="left">{{big_or_small.games_won}}</div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="box col-3" align="left">High Score</div>
+                                <div class="boxinfo" align="left">{{big_or_small.high_score}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
-                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
-                        <div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>
-                    </div>
-                </div>
+            <div class="col-3"></div>
 
-
-            </div>
+            <!--<div class="col-6">-->
+                <!--<div class="container">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-6" line-height="400px">-->
+                        <!--<div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>-->
+                        <!--<div class="col-6" line-height="400px"><canvas id="myDoughnutChart" width="380" height="380"></canvas></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
         </div>
     </div>
