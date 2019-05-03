@@ -4,12 +4,12 @@
 {{> head}}
 <body class="signin">
     {{> header}}
-    <br>
-    <br>
+    {{!-- <br>
+    <br> --}}
     <div id='custom-jumbo' class="jumbotron container-fluid">
+        {{!-- <br>
         <br>
-        <br>
-        <br>
+        <br> --}}
         <form class="container " id="form1" method="POST" action="/register">
             <h1 class="loginTitles">Welcome to the Cardnival!</h1>
             <h4 class="loginTitles">Please fill in this form to register an account.</h4>
@@ -30,14 +30,14 @@
             <br>
             <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="input-group-text">Email</span>
                 </div>
                 <input class="form-control" type="text" placeholder="Enter Email" name="email" id="email" required>
             </div>
             <br>
             <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Password&nbsp;&nbsp;</span>
+                    <span class="input-group-text">Password</span>
                 </div>
                 <input class="form-control" type="password" placeholder="Enter Password" name="password" id="password"
                     required>
@@ -59,7 +59,7 @@
         </div>
 
     </div>
-    <audio controls="controls" id="myaudio" autoplay>
+    <audio controls="controls" id="myaudio" autoplay loop>
         <source src="/audio/merrygo.mp3" type="audio/mpeg">
     </audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
@@ -79,14 +79,19 @@
         var text = document.getElementById('password-strength-text');
         var register = document.getElementById('register');
         var email = document.getElementById('email');
-        
-        password.addEventListener('input', function () {
+
+
+        let passemail = document.querySelectorAll("#password, #email");
+        passemail.forEach(function(element) {
+        element.addEventListener('input', function () {
             var val = password.value;
             var result = zxcvbn(val);
-
+            
             // Update the password strength meter
             meter.value = result.score;
-            register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank
+            var email_exp = /\S+@\S+\.\S+/
+            {{!-- register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank --}}
+            register.disabled = (result.score <= 2 || !email_exp.test(email.value)) //Password Strength => 3, Email != blank
 
             // Update the text indicator
             if (val !== "") {
@@ -94,6 +99,7 @@
             } else {
                 text.innerHTML = "";
             }
+        });
         });
     </script>
     {{> footer}}

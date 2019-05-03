@@ -72,9 +72,16 @@ describe("Test retrieving high scores from firebase", () => {
 	});
 });
 
-describe("Testing login as Chris", () => {
-	it("logging in...", async () => {
+describe("Testing login", () => {
+	it("logging in with an existing account and correct credentials... login should succeed", async () => {
 		assert((await backend.loginAccount(dummy_accounts.chris.email,
 						dummy_accounts.chris.password, null, null)).current_user.email, dummy_accounts.chris.email);
 	});
+
+	it("logging in with wrong credentials... login should fail", async () => {
+		assert((await backend.loginAccount(dummy_accounts.chris.email,
+						"random_fake_password", null, null)).failed,
+		"auth/wrong-password: The password is invalid or the user does not have a password.");
+	});
+
 });
