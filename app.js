@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const backend = require('./backend');
 const firebase = require('firebase');
+const path = require('path');
 // const admin = require('firebase-admin');
 // const serviceAccount = require("./private/my-project-1548878562718-f9971c2a556d");
 // var storage = require('@google-cloud/storage');
@@ -30,6 +31,10 @@ firebase.initializeApp(config);
 
 var rootRef = firebase.database().ref();
 
+app.listen(port, () => {
+    console.log(`Server is up on the port ${port}`)
+});
+
 // admin.initializeApp({
 //     credential: admin.credential.cert(serviceAccount),
 //     databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
@@ -43,9 +48,20 @@ var rootRef = firebase.database().ref();
 // });
 
 app.set('view engine', 'hbs');
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, '/public')));
 
-hbs.registerPartials(__dirname + '/views/partials');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+/*****************************************************************************
+
+ HBS REGISTER
+
+ ******************************************************************************/
+
+hbs.registerPartials(path.join(__dirname, '/views/partials'));
 
 hbs.registerHelper('breaklines', function (text) {
     text = hbs.Utils.escapeExpression(text);
@@ -61,10 +77,6 @@ hbs.registerHelper('message', (text) => {
     return text.toUpperCase();
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
 
 /*****************************************************************************
 
@@ -78,7 +90,7 @@ app.use(bodyParser.urlencoded({
 app.get('/', function (request, response) {
     response.render('register.hbs', {
         title: 'Big or Small | Registration',
-        nav_email: nav_email
+        nav_email: nav_email,
     })
 });
 
@@ -148,7 +160,7 @@ app.post('/game', async (request, response) => {
             current_user = login.current_user;
             nav_email = current_user.email;
             deck = login.deck;
-            console.log(current_user)
+            console.log('current user:' + current_user)
             await renderProfile(current_user.uid, request, response);
         }else{
             response.render('login.hbs', {
@@ -303,10 +315,6 @@ app.get(`/profile`, async (request, response) => {
     }
 });
 
-module.exports = app.listen(port, () => {
-    console.log(`Server is up on the port ${port}`)
-});
-
 /*
     Convert Card strings and return appropriate corresponding values
  */
@@ -384,3 +392,5 @@ async function renderProfile(user_id, request, response) {
 
     await response.render('profile.hbs', test)
 }
+
+module.exports = app;

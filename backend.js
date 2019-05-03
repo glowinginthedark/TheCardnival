@@ -1,17 +1,9 @@
-const fs = require('fs');
 const request = require('request');
 const _ = require('lodash');
 const firebase = require('firebase');
 var deckCode = 0;
 var current_user = undefined;
-var score = 0;
-var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg";
-var accounts = {
-    users: {},
-    high_scores: {}
-};
 
-const file = 'test_users.json';
 
 /*****************************************************************************
 
