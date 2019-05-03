@@ -71,3 +71,10 @@ describe("Test retrieving high scores from firebase", () => {
 		assert(Array.isArray(await backend.getHighScores("big_or_small")), true);
 	});
 });
+
+describe("Testing login as Chris", () => {
+	it("logging in...", async () => {
+		assert((await backend.loginAccount(dummy_accounts.chris.email,
+						dummy_accounts.chris.password, null, null)).current_user.email, dummy_accounts.chris.email);
+	});
+});
