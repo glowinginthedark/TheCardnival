@@ -42,6 +42,9 @@ var rootRef = firebase.database().ref();
 
 // });
 
+app.set('view engine', 'hbs');
+app.use(express.static(__dirname + '/public'));
+
 hbs.registerPartials(__dirname + '/views/partials');
 
 hbs.registerHelper('breaklines', function (text) {
@@ -58,9 +61,6 @@ hbs.registerHelper('message', (text) => {
     return text.toUpperCase();
 });
 
-
-app.set('view engine', 'hbs');
-app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -286,6 +286,7 @@ app.get('/profile/:email', async (request, response) => {
     await response.render('profile.hbs', test)
 });
 
+
 app.get(`/profile`, async (request, response) => {
     var test = {};
     if (current_user != undefined) {
@@ -302,7 +303,7 @@ app.get(`/profile`, async (request, response) => {
     }
 });
 
-app.listen(port, () => {
+module.exports = app.listen(port, () => {
     console.log(`Server is up on the port ${port}`)
 });
 
