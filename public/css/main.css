@@ -55,6 +55,14 @@ body {
     display: block;
 }
 
+.boxinfo {
+    display: inline; /* the default for span */
+    width: auto;
+    height: auto;
+    padding: 5px;
+    border: 1px solid black;
+}
+
 meter {
     /* Reset the default appearance */
     margin: 0 auto 1em;
