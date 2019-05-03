@@ -11,87 +11,64 @@
     <div class="container game_screen" id="content">
         <div class="row">
             <div class="col">
+                <h4 class="game_style">Score: {{score}} Points</h4>
+            </div>
+            <div class="col-6   ">
+                <h1 class="game_style">Hello {{name}}</h1>
+            </div>
+            <div class="col">
+
+                <h4 class="game_style">Remaining Cards: {{remaining}}</h4>
+            </div>
+        </div>
+
+
+        <br>
+        <div class="row">
+            <div class="col">
                 <img src={{card}} alt="YourCard" class='playcard'>
             </div>
-            <div class="col">
-                <h3>1. Decide if the next card is big or small compared to your current card </h3>
-                <h3>2. Suits not calculated </h3>
-                <h3>3. Guessed card is your new Card</h3>
-                <h3>4. Have fun</h3>
-            </div>
-            <div class="col">
-                <img src={{card2}} alt="NextCard" class='playcard'>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col">
-                <h1 style="margin: 0 auto;display: block;">Hello {{name}}</h1>
-            </div>
-            <div class="col"></div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <h4 style="margin: 0 auto;display: block;">Score: {{score}} Points</h4>
+            <div class="col-6">
+                <div class="container" style="padding-top:50px;">
+                <div class="row">
 
-            </div>
-            <div class="col">
-                <h4 style="margin: 0 auto;display: block;">Remaining Cards: {{remaining}}</h4>
-            </div>
-            <div class="col">
-                <h4 style="color: red;">{{game_state}}</h4>
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-            <div class="col"></div>
-            <div class="col">
-                <form class="container" id="form1" method="POST" action="/newgame">
-                    <!--<div class="container">-->
-                    <input style="margin: 0 auto;display: block;" type="submit" value="New Game">
-                    <!--</div>-->
-                </form>
-            </div>
-            <div class="col"></div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col"></div>
+                    <form class="container" id="form1" method="POST" action="/newgame">
+                    <button class="btn btn-primary game_style" type="submit" value="New Game">New Game</button>
+                    </form>`
+                </div>`
+                <div class="row">
             <div class="col">
                 <form class="container" id="form1" method="POST" action="/smaller">
                     <!--<div class="container">-->
-                    <input style="margin: 0 auto;display: block;" type="submit" value="Smaller(+1)" {{smaller}}>
+                    {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Smaller(+1)" {{smaller}}> --}}
+                    <button class="btn btn-primary game_style" type="submit" value="Smaller(+1)" {{smaller}}>Smaller(+1)</button>
                     <!--</div>-->
                 </form>
             </div>
             <div class="col">
                 <form class="container" id="form1" method="POST" action="/tie">
                     <!--<div class="container">-->
-                    <input style="margin: 0 auto;display: block;" type="submit" value="Tie(+4)" {{tie}}>
+                    {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Tie(+4)" {{tie}}> --}}
+                    <button class="btn btn-primary game_style" type="submit" value="Tie(+4)" {{tie}}>Tie(+4)</button>
                     <!--</div>-->
                 </form>
             </div>
             <div class="col">
                 <form class="container" id="form1" method="POST" action="/bigger">
                     <!--<div class="container">-->
-                    <input style="margin: 0 auto;display: block;" type="submit" value="Bigger(+1)" {{bigger}}>
+                    {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Bigger(+1)" {{bigger}}> --}}
+                    <button class="btn btn-primary game_style" type="submit" value="Bigger(+1)" {{bigger}}>Bigger(+1)</button>
                     <!--</div>-->
                 </form>
             </div>
-            <div class="col"></div>
-            <div class="col"></div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col"></div>
+                </div>
+                <br>
+            <div class="row">
             <div class="col">
                 <form class="container" id="form1" method="GET" action="/rankings">
                     <!--<div class="container">-->
                     {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Rankings"> --}}
-                    <button class="btn btn-primary" type="submit">Rankings</button>
+                    <button class="btn btn-primary game_style" type="submit">Rankings</button>
                     <!--</div>-->
                 </form>
             </div>
@@ -99,13 +76,32 @@
                 <form class="container" id="form1" method="POST" action="/signout">
                     <!--<div class="container">-->
                     {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Sign-out"> --}}
-                    <button class="btn btn-primary" type="submit">Sign Out</button>
+                    <button class="btn btn-primary game_style" type="submit">Sign Out</button>
                     <!--</div>-->
                 </form>
             </div>
-            <div class="col"></div>
-            <div class="col"></div>
+</div>
+
+                </div>
+            </div>
+            <div class="col">
+                <img src={{card2}} alt="NextCard" class='playcard'>
+            </div>
         </div>
+
+
+
+
+            <br>
+            <div class="row">
+
+            <div class="col">
+                <h3>1. Decide if the next card is big or small compared to your current card </h3>
+                <h3>2. Suits not calculated </h3>
+                <h3>3. Guessed card is your new Card</h3>
+                <h3>4. Have fun</h3>
+            </div>
+            </div>
         <br>
         <br>
     </div>

@@ -71,6 +71,13 @@ form .input-group-text {
     padding-top: 2rem;
 }
 
+ .game_style {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+ }
+
+
 meter {
     /* Reset the default appearance */
     margin: 0 auto 1em;
