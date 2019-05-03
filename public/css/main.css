@@ -67,19 +67,21 @@ form .input-group-text {
     background-image: url("/img/felt.png");
 }
 
+
 .game_screen {
     margin-top: 56px;
     padding-top: 2rem;
 }
 
  .game_style {
-    margin: 0 auto;
+    margin: 5px auto;
     display: block;
     text-align: center;
  }
 
  .big_small_responsive {
-     height: 314px;
+     min-height: 314px;
+     margin-top: 1rem;
  }
 
  .btn-game {
