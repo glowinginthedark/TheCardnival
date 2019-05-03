@@ -7,7 +7,7 @@ const should = require('chai').should;
 const request = require('supertest');
 chai.use(chaiHttp);
 const app = require('../app.js');
-
+const backend = require('../backend')
 function wait(ms){
     var start = new Date().getTime();
     var end = start;
@@ -15,20 +15,20 @@ function wait(ms){
         end = new Date().getTime();
     }
 }
-
-describe('GET /', function(){
-    this.timeout(10000);
-    it('it should load page', function(done){
-        wait(5000);
-        chai.request(app)
-            .get('/')
-            .end(function(err, res) {
-                console.log(err);
-                expect(res).to.have.status(200);
-                done();
-            });
-      });
- });
+//
+// describe('GET /', function(){
+//     this.timeout(10000);
+//     it('it should load page', function(done){
+//         wait(5000);
+//         chai.request(app)
+//             .get('/')
+//             .end(function(err, res) {
+//                 console.log(err);
+//                 expect(res).to.have.status(200);
+//                 done();
+//             });
+//       });
+//  });
 
 chai.should();
 
