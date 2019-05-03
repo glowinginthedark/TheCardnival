@@ -3,9 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const backend = require('./backend');
 const firebase = require('firebase');
-const admin = require('firebase-admin');
-const serviceAccount = require("./private/my-project-1548878562718-f9971c2a556d");
-var storage = require('@google-cloud/storage');
+// const admin = require('firebase-admin');
+// const serviceAccount = require("./private/my-project-1548878562718-f9971c2a556d");
+// var storage = require('@google-cloud/storage');
 
 const port = process.env.PORT || 8080;
 
@@ -28,18 +28,19 @@ var config = {
 };
 firebase.initializeApp(config);
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
-    storageBucket: "bigorsmall-9c0b5.appspot.com"
-});
 var rootRef = firebase.database().ref();
-var bucket = admin.storage().bucket();
-bucket.get('display.jpg', function(err, file, apiResponse) {
-  //Do Stuff
-  console.log(err)
-  console.log(apiResponse)
-});
+
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//     databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
+//     storageBucket: "bigorsmall-9c0b5.appspot.com"
+// });
+// var bucket = admin.storage().bucket();
+
+// bucket.get('display.jpg', function(err, file, apiResponse) {
+//   //Do Stuff
+
+// });
 
 hbs.registerPartials(__dirname + '/views/partials');
 
@@ -65,6 +66,11 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+/*****************************************************************************
+
+    REST ENDPOINTS
+
+******************************************************************************/
 /*
     Make RESTFUL GET request and render the homepage of the BigOrSmall Game.
     It is also the registration page.
@@ -77,8 +83,7 @@ app.get('/', function (request, response) {
 });
 
 /*
-    Make RESTFUL POST request and create new user account. Will provide
-    appropriate output depending on existing user in data storage.
+    Register Page Add Account Endpoint
  */
 app.post('/register', async (request, response) => {
     try {
@@ -99,8 +104,7 @@ app.post('/register', async (request, response) => {
 });
 
 /*
-    Make RESTFUL GET request and render the login screen to
-    proceed to the game
+    Make RESTFUL POST request and signout. Render login screen.
  */
 app.post('/signout', async (request, response) => {
     current_user = undefined
@@ -119,6 +123,10 @@ app.post('/signout', async (request, response) => {
     })
 });
 
+/*
+    Make RESTFUL GET request and render the login screen to
+    proceed to the game.
+ */
 app.get('/login', (request, response) => {
     response.render('login.hbs', {
         title: 'Big or Small | Login',
@@ -135,9 +143,19 @@ app.post('/game', async (request, response) => {
         var email = request.body.email;
         var password = request.body.password;
         var login = await backend.loginAccount(email, password, request, response);
-        current_user = login.current_user;
-        nav_email = current_user.email;
-        deck = login.deck;
+        if (login.failed == "") {
+
+            current_user = login.current_user;
+            nav_email = current_user.email;
+            deck = login.deck;
+            console.log(current_user)
+            await renderProfile(current_user.uid, request, response);
+        }else{
+            response.render('login.hbs', {
+                    title: 'Big or Small | Login',
+                    failed: login.failed
+            })
+        }
     } catch (e) {
         console.log(e)
     }
@@ -284,20 +302,6 @@ app.get(`/profile`, async (request, response) => {
     }
 });
 
-async function renderProfile(user_id) {
-    var test = {};
-    if (user_id != undefined) {
-        test = await backend.retrieveUserData(user_id);
-        test.nav_email = nav_email;
-        await backend.retrieveImgUrl(test.profile_picture)
-    }
-    test.title = `Big or Small | Profile`;
-
-    app.get(`/profile`, async (request, response) => {
-        await response.render('profile.hbs', test)
-    });
-}
-
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`)
 });
@@ -367,4 +371,15 @@ function renderGame(request, response, state, first_card, second_card, remaining
         game_state: game_state,
         nav_email: nav_email
     });
+}
+
+async function renderProfile(user_id, request, response) {
+    var test = {};
+    if (user_id != undefined) {
+        test = await backend.retrieveUserData(user_id);
+        test.nav_email = nav_email;
+    }
+    test.title = `Big or Small | Profile`;
+
+    await response.render('profile.hbs', test)
 }
