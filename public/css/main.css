@@ -36,6 +36,7 @@ body {
 
 #rankings {
     background: url("https://www.highreshdwallpapers.com/wp-content/uploads/2014/06/Golden-World-Cup-Trophy.jpg");
+    /* background: url("/img/PLACEHOLDER"); */
     background-size: cover;
     background-repeat: no-repeat;
     color: white;
@@ -75,6 +76,10 @@ form .input-group-text {
     margin: 0 auto;
     display: block;
     text-align: center;
+ }
+
+ .big_small_responsive {
+     height: 314px;
  }
 
  .btn-game {
@@ -154,6 +159,7 @@ html,body{
     text-align: center;
     font-size: 18px;
     height: 45px;
+    z-index: 1;
 }
 /* #footer {
     width:100%;
