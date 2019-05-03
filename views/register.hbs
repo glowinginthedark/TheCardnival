@@ -59,11 +59,14 @@
         </div>
 
     </div>
-    <audio autoplay loop>
+    <audio controls="controls" id="myaudio" autoplay loop>
         <source src="/audio/merrygo.mp3" type="audio/mpeg">
     </audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
     <script>
+        var audio = document.getElementById("myaudio");
+        audio.volume = 0.2;
+        
         var strength = {
             0: "Too guessable: risky password. (guesses < 10^3)",
             1: "Very guessable: protection from throttled online attacks. (guesses < 10^6)",
