@@ -352,7 +352,7 @@ async function correctGuess(weight, request, response) {
 
 async function wrongGuess(request, response) {
     // console.log("wrong guess")
-    var lose_message = '';
+    var lose_message = `Sorry, you have lost with ${score} points`;
     if (current_user !== undefined) {
         lose_message = await backend.saveHighScore(current_user.uid, current_user.email, score, false);
     }
