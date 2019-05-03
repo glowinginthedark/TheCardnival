@@ -1,1 +1,10 @@
-{"users":{"123":{"password":"123"},"432":{"password":"432"},"444":{"password":"444"},"3214":{"password":"12331"},"Bowen":{"password":"He"},"Check":{"password":"it"},"Bwwwwq":{"password":"uwu"},"bowen":{"password":"123"},"bowen.he@hotmail.com":{"password":"Krazy"},"bowen.he111@hotmail.com":{"password":"123456"},"bowen.h12321e@hotmail.com":{"password":"1234567"}},"high_scores":{"123":9,"432":1,"444":5,"Bowen":3,"Check":2}}
+{
+  "users": {
+    "123": {
+      "password": "123"
+    },
+    "high_scores": {
+      "123": 9
+    }
+  }
+}

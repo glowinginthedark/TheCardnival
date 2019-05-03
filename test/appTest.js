@@ -29,8 +29,8 @@ function wait(ms){
 //             });
 //       });
 //  });
-
-chai.should();
+//
+// chai.should();
 
 dummy_accounts = {
 	harry: {
@@ -52,7 +52,7 @@ describe("test registering an account", () => {
 		assert((await backend.addAccount(dummy_accounts.harry.email,
 						dummy_accounts.harry.password,
 						dummy_accounts.harry.fname,
-						dummy_accounts.harry.lname)).failed, 
+						dummy_accounts.harry.lname)).failed,
 			"auth/email-already-in-use: the email address is already in use by another account.");
 	});
 
