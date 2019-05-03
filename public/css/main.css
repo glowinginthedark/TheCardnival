@@ -63,6 +63,7 @@ form .input-group-text {
 
 #big_small_body {
     background-color: #006b10;
+    color: #dddddd;
     /* background-image: url("https://www.transparenttextures.com/patterns/felt.png"); */
     background-image: url("/img/felt.png");
 }
