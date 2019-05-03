@@ -37,6 +37,7 @@ var addAccount = async (email, password, fname, lname) => {
         failed : failed
     }
 };
+
 /*
     Check Json file to see if user exists and returns it if it does.
     Returns undefined if it does not. Check -> Get Login Info -> Login
