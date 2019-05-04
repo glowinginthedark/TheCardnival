@@ -284,9 +284,9 @@ app.get(`/deck`, async (request, response) => {
 /*
     Make RESTFUL GET request and render game
  */
-app.get(`/home`, async (request, response) => {
-    response.render('home.hbs', {
-        title: 'Big or Small | Home'
+app.get(`/gameportal`, async (request, response) => {
+    response.render('gameportal.hbs', {
+        title: 'Big or Small | Game Portal'
     })
 });
 
