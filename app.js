@@ -279,7 +279,8 @@ app.get(`/gameportal`, async (request, response) => {
  */
 app.get(`/store`, async (request, response) => {
     response.render('store.hbs', {
-        title: 'Big or Small | Store'
+        title: 'Big or Small | Store',
+        nav_email: nav_email
     })
 });
 
@@ -295,7 +296,8 @@ app.post(`/buy`, async (request, response) => {
     }
     response.render('store.hbs', {
             title: 'Big or Small | Store',
-            result: message
+            result: message,
+            nav_email: nav_email
     })
 });
 

@@ -109,15 +109,32 @@
                 "datasets": [{
                     "label": {{ big_or_small.high_score }},
             "data": [{{ big_or_small.games_played }}, {{ big_or_small.games_won }}],
-        "backgroundColor": [
-            "rgb(255, 99, 132)",
-            "rgb(54, 162, 235)"]
-            }],
-        },
-        center: {
-            text: "hi"
-        }
-    });
+            "backgroundColor": [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)"]
+                }],
+            },
+        });
+        
+        Chart.pluginService.register({
+          beforeDraw: function(chart) {
+            var width = chart.chart.width,
+                height = chart.chart.height,
+                ctx = chart.chart.ctx;
+
+            ctx.restore();
+            var fontSize = (height / 250).toFixed(2);
+            ctx.font = fontSize + "em sans-serif";
+            ctx.textBaseline = "middle";
+
+            var text = 'Highest:' + {{big_or_small.high_score}} + ' pts',
+                textX = Math.round((width - ctx.measureText(text).width) / 2),
+                textY = height / 2;
+
+            ctx.fillText(text, textX, textY);
+            ctx.save();
+          }
+        });
     </script>
 </body>
 
