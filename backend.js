@@ -21,7 +21,8 @@ var addAccount = async (email, password, fname, lname) => {
     await firebase.auth().createUserWithEmailAndPassword(email, password)
             .then (async function success(userData) {
                 var user = userData.user
-                await writeUserData(user.uid, user.email, fname, lname, "default.jpg");
+                await writeUserData(user.uid, user.email, fname, lname, "default", 
+                    "https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/default.jpg?alt=media&token=8579b809-6edc-442d-9363-c4a1688a4d1a");
                 await retrieveUserData(userData.user.uid)
             }).catch (function(error) {
               // Handle Errors here.
@@ -54,6 +55,13 @@ var loginAccount = async (email, password, result, response) => {
                 deck = await getDeck(1);
                 result.deck = deck;
                 console.log('Login Successful')
+                var tttest = await buyItem( 
+                    userData.user.uid, 
+                    'thanos', 
+                    'https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae',
+                    'cardback',
+                    0 )
+                console.log(tttest)
 
                 return result
 
@@ -138,10 +146,18 @@ async function getHighScores(game_name) {
 
 ******************************************************************************/
 
-async function writeUserData(userId, email, fname, lname, imageUrl) {
+async function writeUserData(userId, email, fname, lname, name, imageUrl) {
   await firebase.database().ref(`users/${userId}`).set({
     email: email,
-    profile_picture : imageUrl,
+    profile_picture : {
+        name: name,
+        url: imageUrl
+    },
+    inventory : {
+        profile_pictures: ['default'],
+        cardback:['standard_cardback'],
+        music:['carnival_music']
+    }, 
     fname: fname,
     lname: lname,
     balance: 0,
@@ -191,16 +207,108 @@ async function retrieveUserData(userId){
     return test
 }
 
-// async function retrieveImgUrl(filename){
-//     var spaceRef = storageRef.child(filename);
-//     console.log(spaceRef)
-//     storageRef.child(filename).getDownloadURL().then(function(url) {
-//         console.log(url)
-//     }).catch(function(error) {
+/*****************************************************************************
 
-//     });
-// }
+    ITEMS SHOP/INVENTORY FUNCTIONS
 
+******************************************************************************/
+
+/*
+    Saves username and their personal scores in JSON file and return
+    a high score results message depending on situation.
+ */
+async function buyItem(userId, itemId, itemUrl, type, price) {
+    var test = {}
+
+    if (userId === undefined) {
+        return "Sorry, Guests cannot buy from the store";
+    }
+
+    await firebase.database().ref(`users/${userId}`).once('value')
+        .then(async function(snapshot) {
+            test = await snapshot.val()
+
+            if ( (test.balance - price) >= 0){
+                var prebalance = test.balance
+                test.balance -= price;
+                if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
+                    test.inventory.profile_pictures.push({
+                        name: itemId,
+                        url: itemUrl
+                    })
+                }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
+                    test.inventory.cardback.push({
+                        name: itemId,
+                        url: itemUrl
+                    })
+                }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
+                    test.inventory.music.push({
+                        name: itemId,
+                        url: itemUrl
+                    })
+                }else{
+                    return `User already has ${name}`;
+                }
+                await firebase.database().ref(`users/${userId}`).set(test);
+
+                return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
+
+            } else {
+                return 'Sorry, you do not have enough balance';
+            }
+        }).catch(function(e){
+            return e.message
+        })
+}
+
+/*
+    Saves username and their personal scores in JSON file and return
+    a high score results message depending on situation.
+ */
+async function buyItem(userId, itemId, itemUrl, type, price) {
+    var test = {}
+
+    if (userId === undefined) {
+        return "Sorry, Guests cannot buy from the store";
+    }
+
+    await firebase.database().ref(`users/${userId}`).once('value')
+        .then(async function(snapshot) {
+            test = await snapshot.val()
+
+            
+            if ( (test.balance - price) >= 0){
+                var prebalance = test.balance
+                test.balance -= price;
+                if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
+                    test.inventory.profile_pictures.push({
+                        name: itemId,
+                        url: itemUrl
+                    })
+                }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
+                    test.inventory.cardback.push({
+                        name: itemId,
+                        url: itemUrl
+                    })
+                }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
+                    test.inventory.music.push({
+                        name: itemId,
+                        url: itemUrl
+                    })
+                }else{
+                    return `User already has ${name}`;
+                }
+                await firebase.database().ref(`users/${userId}`).set(test);
+
+                return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
+
+            } else {
+                return 'Sorry, you do not have enough balance';
+            }
+        }).catch(function(e){
+            return e.message
+        })
+}
 
 /*****************************************************************************
 
@@ -282,6 +390,20 @@ var shuffleDeck = (deck_id) => {
         });
     })
 };
+
+function isInArray(value, array) {
+    return array.indexOf(value) > -1;
+}
+
+function itemExists(arr, name, type) {
+
+    const found = arr.some(el => el.name === name);
+    console.log('arr ', arr)
+    console.log('name', name)
+    console.log('found ', found)
+    return found;
+}
+
 
 module.exports = {
     shuffleDeck,
