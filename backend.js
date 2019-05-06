@@ -291,52 +291,6 @@ function renderGame(request, response, state, first_card, second_card, remaining
         game_state: game_state,
         nav_email: current_user.email
     });
-}
-
-var getMatchDeck = () => {
-    return new Promise((resolve, reject) => {
-        request({
-            url: `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`,
-            json: true
-        }, (error, response, body) => {
-            if (error) {
-                reject('Cannot connect to RestCountries API')
-            } else if (body.status === '401') {
-                reject('Unauthorized Access to webpage')
-            } else if (body.shuffled === '404') {
-                reject('No API method supports the URL')
-            } else if (body.error !== undefined) {
-                reject(body.error)
-            } else {
-                deckCode = body.deck_id
-                resolve(deckCode)
-            }
-        });
-    })
-};
-
-var drawMatchDeck = (deck_id) => {
-    return new Promise((resolve, reject) => {
-        request({
-            url: `https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=8`,
-            json: true
-        }, (error, response, body) => {
-            if (error) {
-                reject('Cannot connect to RestCountries API')
-            } else if (body.status === '401') {
-                reject('Unauthorized Access to webpage')
-            } else if (body.shuffled === '404') {
-                reject('No API method supports the URL')
-            } else if (body.error !== undefined) {
-                reject(body.error)
-            } else {
-                card = body.cards[1].image
-                list = []
-                list1 = [card]
-                resolve(list1)
-            }
-        });
-    })
 };
 
 module.exports = {
@@ -349,7 +303,5 @@ module.exports = {
     getHighScores,
     retrieveAllUsers,
     retrieveUserData,
-    retrieveImgUrl,
-    getMatchDeck,
-    drawMatchDeck
+    retrieveImgUrl
 };

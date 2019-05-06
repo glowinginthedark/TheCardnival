@@ -144,24 +144,6 @@ app.post('/game', async (request, response) => {
     }
 });
 
-/* 
-    Make RESTFUL POST request, render a new matching cards game
-*/
-app.get('/match', async(request, response) => {
-    try{
-        deck = await backend.getMatchDeck();
-        cardlist1 = await backend.drawMatchDeck(deck);
-        cardlist2 = await backend.drawMatchDeck(deck);
-        list = [cardlist1, cardlist1, cardlist1, cardlist1, cardlist1, cardlist1]
-        list2 = [cardlist2, cardlist2, cardlist2, cardlist2, cardlist2, cardlist2]
-        console.log('success');
-        console.log(list);
-        renderMatch(request, response, list, list, list2)
-    } catch (e) {
-        console.log(e);
-    }
-});
-
 /*
     Make RESTFUL POST request, render a new game with a reshuffled deck
     and new scores
@@ -385,14 +367,5 @@ function renderGame(request, response, state, first_card, second_card, remaining
         name: name,
         game_state: game_state,
         nav_email: nav_email
-    });
-}
-
-function renderMatch(request, response, input1, link, link2) {
-    response.render('matchgame.hbs', {
-        title: 'Matching Cards Game',
-        card: input1,
-        link1: link[0],
-        link2: link2[0],
     });
 }
