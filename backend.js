@@ -55,13 +55,6 @@ var loginAccount = async (email, password, result, response) => {
                 deck = await getDeck(1);
                 result.deck = deck;
                 console.log('Login Successful')
-                var tttest = await buyItem( 
-                    userData.user.uid, 
-                    'thanos', 
-                    'https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae',
-                    'cardback',
-                    0 )
-                console.log(tttest)
 
                 return result
 
@@ -92,7 +85,7 @@ async function saveHighScore(userId, email, score, won) {
         .then(async function(snapshot) {
             test = await snapshot.val()
             test.big_or_small.games_played += 1;
-
+            test.balance += score;
             if (won) {
                 test.big_or_small.games_played += 1;
             }
@@ -220,11 +213,7 @@ async function retrieveUserData(userId){
 async function buyItem(userId, itemId, itemUrl, type, price) {
     var test = {}
 
-    if (userId === undefined) {
-        return "Sorry, Guests cannot buy from the store";
-    }
-
-    await firebase.database().ref(`users/${userId}`).once('value')
+    message = await firebase.database().ref(`users/${userId}`).once('value')
         .then(async function(snapshot) {
             test = await snapshot.val()
 
@@ -247,36 +236,33 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
                         url: itemUrl
                     })
                 }else{
-                    return `User already has ${name}`;
+                    return `User already has ${itemId}`;
                 }
                 await firebase.database().ref(`users/${userId}`).set(test);
-
                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
 
             } else {
                 return 'Sorry, you do not have enough balance';
             }
         }).catch(function(e){
+            console.log(e.message)
             return e.message
         })
+
+    return message;
 }
 
 /*
     Saves username and their personal scores in JSON file and return
     a high score results message depending on situation.
  */
-async function buyItem(userId, itemId, itemUrl, type, price) {
+async function getAllItems(userId) {
     var test = {}
 
-    if (userId === undefined) {
-        return "Sorry, Guests cannot buy from the store";
-    }
-
-    await firebase.database().ref(`users/${userId}`).once('value')
+    message = await firebase.database().ref(`users/${userId}/inventory`).once('value')
         .then(async function(snapshot) {
             test = await snapshot.val()
 
-            
             if ( (test.balance - price) >= 0){
                 var prebalance = test.balance
                 test.balance -= price;
@@ -296,19 +282,71 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
                         url: itemUrl
                     })
                 }else{
-                    return `User already has ${name}`;
+                    return `You already has ${itemId}`;
                 }
                 await firebase.database().ref(`users/${userId}`).set(test);
-
                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
 
             } else {
                 return 'Sorry, you do not have enough balance';
             }
         }).catch(function(e){
+            console.log(e.message)
             return e.message
         })
+
+    return message;
 }
+
+// /*
+//     Saves username and their personal scores in JSON file and return
+//     a high score results message depending on situation.
+//  */
+// async function buyItem(userId, itemId, itemUrl, type, price) {
+//     var test = {}
+
+//     if (userId === undefined) {
+//         return "Sorry, Guests cannot buy from the store";
+//     }
+
+//     await firebase.database().ref(`users/${userId}`).once('value')
+//         .then(async function(snapshot) {
+//             test = await snapshot.val()
+
+//             console.log(userId, itemId, itemUrl, type, price)
+
+//             if ( (test.balance - price) >= 0){
+//                 var prebalance = test.balance
+//                 test.balance -= price;
+//                 if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
+//                     test.inventory.profile_pictures.push({
+//                         name: itemId,
+//                         url: itemUrl
+//                     })
+//                 }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
+//                     test.inventory.cardback.push({
+//                         name: itemId,
+//                         url: itemUrl
+//                     })
+//                 }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
+//                     test.inventory.music.push({
+//                         name: itemId,
+//                         url: itemUrl
+//                     })
+//                 }else{
+//                     return `User already has ${name}`;
+//                 }
+//                 await firebase.database().ref(`users/${userId}`).set(test);
+
+//                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
+
+//             } else {
+//                 return 'Sorry, you do not have enough balance';
+//             }
+//         }).catch(function(e){
+//             return e.message
+//         })
+// }
 
 /*****************************************************************************
 
@@ -414,5 +452,6 @@ module.exports = {
     saveHighScore,
     getHighScores,
     retrieveAllUsers,
-    retrieveUserData
+    retrieveUserData,
+    buyItem
 };

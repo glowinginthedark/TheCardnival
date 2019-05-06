@@ -274,6 +274,33 @@ app.get(`/gameportal`, async (request, response) => {
     })
 });
 
+/*
+    Make RESTFUL GET request and render game
+ */
+app.get(`/store`, async (request, response) => {
+    response.render('store.hbs', {
+        title: 'Big or Small | Store',
+        nav_email: nav_email
+    })
+});
+
+/*
+    Make RESTFUL GET request and render game
+ */
+app.post(`/buy`, async (request, response) => {
+    message = "Please Login First";
+    item_info = request.body.url.split(',');
+
+    if(current_user != undefined){
+        message = await backend.buyItem(current_user.uid, item_info[0], item_info[1], item_info[2], parseInt(item_info[3], 10));
+    }
+    response.render('store.hbs', {
+            title: 'Big or Small | Store',
+            result: message,
+            nav_email: nav_email
+    })
+});
+
 app.get('/profile/:email', async (request, response) => {
     var test = {};
     var id = request.params.email
