@@ -4,16 +4,11 @@
 
 <body class="signin">
     {{> header}}
-    <br>
-    <br>
-    <div id='reg-jumbo' class="jumbotron container-fluid">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+    <br><br>
+    <div id='custom-jumbo' class="jumbotron container-fluid">
+        <br><br><br><br>
         <div class="container">
-            <form id="form1" method="POST" action="/game">
+            <form method="POST" action="/game">
                 <h1 class="loginTitles">Login</h1>
                 <hr>
                 <div class="input-group input-group-lg">
@@ -31,28 +26,32 @@
                         id="password" required>
                 </div>
                 <br>
-                <button class='btn btn-lg btn-success' style="width:100%" type="submit" value="Login">Login</button>
+                <button class='btn-block btn-lg btn-success' type="submit" value="Login">Login</button>
             </form>
             <h5 style="text-align:center; color:red">{{failed}}</h5>
         </div>
         <br>
         <div class="container">
-            <form id="form2" method="GET" action="/">
-                <button class="btn btn-lg btn-info" style="width:100%" type="submit" value="Register Account">Don't
+            <form method="GET" action="/">
+                <button class="btn-block btn-lg btn-info" type="submit" value="Register Account">Don't
                     have an account? Register here!</button>
             </form>
         </div>
         <hr class='my-2'>
         <div class="container">
-            <form id="form2" method="GET" action="/deck">
-                <button class="btn btn-lg btn-secondary" style="width:100%" type="submit" value="Play as Guest"> Want to
+            <form method="GET" action="/deck">
+                <button class="btn-block btn-lg btn-secondary" type="submit" value="Play as Guest"> Want to
                     play the game? Play as Guest!</button>
             </form>
         </div>
     </div>
-    <audio autoplay>
+    <audio id="myaudio" autoplay>
         <source src="/audio/merrygo.mp3" type="audio/mpeg">
     </audio>
+    <script>
+        var audio = document.getElementById("myaudio");
+        audio.volume = 0.2;
+    </script>
     {{> footer}}
 </body>
 

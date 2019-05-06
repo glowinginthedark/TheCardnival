@@ -1,4 +1,4 @@
-/* Global Settings */
+/*------------------------------------------------------------Global Settings------------------------------------------------------------*/
 div {
     border: red solid 0px;
 }
@@ -10,7 +10,7 @@ body {
     height: 100%;
 }
 
-/* Navbar */
+/*------------------------------------------------------------Navbar------------------------------------------------------------*/
 .navbar {
     left: 0;
     top: 0;
@@ -19,16 +19,20 @@ body {
     z-index: 1;
 }
 
-/* Page Classes */
+/*------------------------------------------------------------Individual Page Classes------------------------------------------------------------*/
 .signin {
     background-image: url('/img/red_curtain.jpg');
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
+    /* background-repeat: no-repeat; */
+    min-height: 100%;
+    display: block;
 }
 
-#reg-jumbo {
-    background: rgba(0, 0, 0, 0.55);
-    height: 90%;
+/*-------------------------Individual Page Classes-------------------------*/
+#custom-jumbo {
+    background: rgba(0, 0, 0, 0.35);
+    min-height: 92%;
 }
 
 #rankings {
@@ -38,17 +42,16 @@ body {
     color: white;
 }
 
-#rank-jumbo {
-    background: rgba(255, 255, 255, 0.15);
-    height: 90%;
-}
-
 .loginTitles {
     text-align: center;
     color: white;
 }
 
-#password-strength-text {
+form .input-group-text {
+    width: 10rem;
+}
+
+#pw-prompt {
     color: white;
     text-align: center;
 }
@@ -58,6 +61,52 @@ body {
     display: block;
 }
 
+.card-body {
+    text-align: center;
+    color: black;
+}
+
+.game_body {
+    background-image: url("/img/felt.png");
+    background-color: #006b10;
+    color: #dddddd;
+}
+
+.game_screen {
+    margin-top: 56px;
+    padding-top: 2rem;
+}
+
+.game_style {
+    margin: 5px auto;
+    display: block;
+    text-align: center;
+}
+
+.big_small_responsive {
+    min-height: 314px;
+    margin-top: 1rem;
+}
+
+.btn-game {
+    color: black;
+}
+
+.list-text {
+    font-size: 2rem;
+}
+
+.card-body p {
+    line-height: 1.5em;
+    font-size: 16px;
+}
+
+#content {
+    padding-bottom: 25px;
+    /* Height of the footer element */
+}
+
+/*------------------------------------------------------------Password Meter------------------------------------------------------------*/
 meter {
     /* Reset the default appearance */
     margin: 0 auto 1em;
@@ -107,14 +156,37 @@ meter[value="4"]::-moz-meter-bar {
     background: green;
 }
 
-/* Footer */
+/*------------------------------------------------------------Footer------------------------------------------------------------*/
 #footer {
     left: 0;
     bottom: 0;
     width: 100%;
+    margin-top: -40px;
     background-color: rgb(245, 245, 245);
     color: black;
     text-align: center;
-    position: absolute;
     font-size: 18px;
+    height: 45px;
+    z-index: 1;
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
 }
