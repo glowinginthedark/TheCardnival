@@ -4,19 +4,13 @@ const bodyParser = require('body-parser');
 const backend = require('./backend');
 const firebase = require('firebase');
 const path = require('path');
-// const admin = require('firebase-admin');
-// const serviceAccount = require("./private/my-project-1548878562718-f9971c2a556d");
-// var storage = require('@google-cloud/storage');
-
 const port = process.env.PORT || 8080;
 
 var app = express();
 var deck = 0;
 var card = 0;
 var card2 = 0;
-// var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg"
-// var cardback = "https://i.pinimg.com/originals/10/80/a4/1080a4bd1a33cec92019fab5efb3995d.png"
-var cardback = "/img/red_cardback.png";
+var cardback = "/img/cardbacks/red_cardback.png";
 var score = 0;
 var current_user = undefined;
 var nav_email = "Guest";
@@ -37,21 +31,9 @@ app.listen(port, () => {
     console.log(`Server is up on the port ${port}`)
 });
 
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount),
-//     databaseURL: "https://bigorsmall-9c0b5.firebaseio.com",
-//     storageBucket: "bigorsmall-9c0b5.appspot.com"
-// });
-// var bucket = admin.storage().bucket();
-
-// bucket.get('display.jpg', function(err, file, apiResponse) {
-//   //Do Stuff
-
-// });
-
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '/public')));
-
+app.use('/', express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -162,12 +144,12 @@ app.post('/game', async (request, response) => {
             current_user = login.current_user;
             nav_email = current_user.email;
             deck = login.deck;
-            console.log('current user:' + current_user)
+            console.log(`current user: ${current_user.email}`);
             await renderProfile(current_user.uid, request, response);
-        }else{
+        } else {
             response.render('login.hbs', {
-                    title: 'Big or Small | Login',
-                    failed: login.failed
+                title: 'Big or Small | Login',
+                failed: login.failed
             })
         }
     } catch (e) {
@@ -284,30 +266,74 @@ app.get(`/deck`, async (request, response) => {
 /*
     Make RESTFUL GET request and render game
  */
-app.get(`/home`, async (request, response) => {
-    response.render('home.hbs', {
-        title: 'Big or Small | Home'
+app.get(`/gameportal`, async (request, response) => {
+    response.render('gameportal.hbs', {
+        title: 'Big or Small | Game Portal'
+    })
+});
+
+/*
+    Make RESTFUL GET request and render game
+ */
+app.get(`/store`, async (request, response) => {
+    response.render('store.hbs', {
+        title: 'Big or Small | Store',
+        nav_email: nav_email
+    })
+});
+
+/*
+    Make RESTFUL GET request and render game
+ */
+app.post(`/buy`, async (request, response) => {
+    message = "Please Login First";
+    item_info = request.body.url.split(',');
+
+    if (current_user != undefined) {
+        message = await backend.buyItem(current_user.uid, item_info[0], item_info[1], item_info[2], parseInt(item_info[3], 10));
+    }
+    response.render('store.hbs', {
+        title: 'Big or Small | Store',
+        result: message,
+        nav_email: nav_email
     })
 });
 
 app.get('/profile/:email', async (request, response) => {
     var test = {};
     var id = request.params.email
-    if (id != undefined) {
-        test = await backend.retrieveUserData(id);
-    }
-    test.title = `Big or Small | ${id} Profile`;
-    await response.render('profile.hbs', test)
+    // if (id != undefined) {
+    //     test = await backend.retrieveUserData(id);
+    //     test.profile_picture = 'src="asset/' + test.profile_picture + '.jpg"'
+    // }
+    // test.title = `Big or Small | ${id} Profile`;
+    // await response.render('profile.hbs', test)
+    renderProfile(id, request, response);
 });
 
 
 app.get(`/profile`, async (request, response) => {
     var test = {};
     if (current_user != undefined) {
+        renderProfile(current_user.uid, request, response);
+    } else {
+        await response.render('login.hbs', {
+            title: 'Big or Small | Login',
+            failed: 'Login first to view account status',
+            nav_email: nav_email
+        })
+    }
+});
+
+app.post(`/avatar`, async (request, response) => {
+    var test = {};
+    if (current_user != undefined) {
         test = await backend.retrieveUserData(current_user.uid);
         test.title = `Big or Small | Your Profile`;
         test.nav_email = nav_email;
         await response.render('profile.hbs', test);
+
+        console.log(request.body)
     } else {
         await response.render('login.hbs', {
             title: 'Big or Small | Login',
@@ -336,7 +362,6 @@ function getNumeric(card) {
 }
 
 async function correctGuess(weight, request, response) {
-    // console.log("right guess");
     score += weight;
     card = card2;
     card2 = await backend.drawDeck(deck.deck_id, 1);
@@ -351,8 +376,7 @@ async function correctGuess(weight, request, response) {
 }
 
 async function wrongGuess(request, response) {
-    // console.log("wrong guess")
-    var lose_message = '';
+    var lose_message = `Sorry, you have lost with ${score} points`;
     if (current_user !== undefined) {
         lose_message = await backend.saveHighScore(current_user.uid, current_user.email, score, false);
     }
@@ -389,6 +413,7 @@ async function renderProfile(user_id, request, response) {
     if (user_id != undefined) {
         test = await backend.retrieveUserData(user_id);
         test.nav_email = nav_email;
+        test.profile_picture = `src="${test.profile_picture.url}"`
     }
     test.title = `Big or Small | Profile`;
 

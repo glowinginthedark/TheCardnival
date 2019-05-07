@@ -2,15 +2,13 @@
 <html>
 
 {{> head}}
+
 <body class="signin">
     {{> header}}
-    <br>
-    <br>
+    <br><br>
     <div id='custom-jumbo' class="jumbotron container-fluid">
-        {{!-- <br>
-        <br>
-        <br> --}}
-        <form class="container " id="form1" method="POST" action="/register">
+        <br><br><br>
+        <form class="container" method="POST" action="/register">
             <h1 class="loginTitles">Welcome to the Cardnival!</h1>
             <h4 class="loginTitles">Please fill in this form to register an account.</h4>
             <hr>
@@ -43,7 +41,10 @@
                     required>
             </div>
             <meter max="4" style="width:100%" name="meter" id="password-strength-meter"></meter>
-            <p id="password-strength-text"> </p>
+            <div id="pw-prompt">
+                <p id="password-strength"> </p>
+                <p id="password-warning-suggestion"> </p>
+            </div>
             <br>
             <button class="btn btn-info btn-lg" style="width:100%" type="submit" id="register" value="Register"
                 disabled>Register</button>
@@ -51,22 +52,22 @@
         <h5 style="text-align:center; color:lightgreen;">{{success}}</h5>
         <h5 style="text-align:center; color:red;">{{failed}}</h5>
         <hr class='my-2'>
-        <div class="container" style="justify-content:center">
+        <div class="container" style="justify-content: center">
             <form id="form2" method="GET" action="/login">
                 <button class="btn btn-lg btn-success" style="width:100%" type="submit" value="Login Here">Already have
                     an account? Click here to login!</button>
             </form>
         </div>
-
     </div>
-    <audio id="myaudio" autoplay loop>
+    <audio id="myaudio" autoplay='true' loop>
         <source src="/audio/merrygo.mp3" type="audio/mpeg">
     </audio>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
     <script>
         var audio = document.getElementById("myaudio");
         audio.volume = 0.2;
-        
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+    <script>
         var strength = {
             0: "Too guessable: risky password. (guesses < 10^3)",
             1: "Very guessable: protection from throttled online attacks. (guesses < 10^6)",
@@ -76,30 +77,36 @@
         }
         var password = document.getElementById('password');
         var meter = document.getElementById('password-strength-meter');
-        var text = document.getElementById('password-strength-text');
+        var pwstr = document.getElementById('password-strength');
+        var pwrst = document.getElementById('password-warning-suggestion');
         var register = document.getElementById('register');
         var email = document.getElementById('email');
 
-
         let passemail = document.querySelectorAll("#password, #email");
-        passemail.forEach(function(element) {
-        element.addEventListener('input', function () {
-            var val = password.value;
-            var result = zxcvbn(val);
-            
-            // Update the password strength meter
-            meter.value = result.score;
-            var email_exp = /\S+@\S+\.\S+/
-            {{!-- register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank --}}
-            register.disabled = (result.score <= 2 || !email_exp.test(email.value)) //Password Strength => 3, Email != blank
+        passemail.forEach(function (element) {
+            element.addEventListener('input', function () {
+                var val = password.value;
+                var result = zxcvbn(val);
 
-            // Update the text indicator
-            if (val !== "") {
-                text.innerHTML = "Strength: " + strength[result.score];
-            } else {
-                text.innerHTML = "";
-            }
-        });
+                // Update the password strength meter
+                meter.value = result.score;
+                var email_exp = /\S+@\S+\.\S+/
+                {{!--register.disabled = (result.score <= 2 || email.value == '') //Password Strength => 3, Email != blank --}}
+                register.disabled = (result.score <= 2 || !email_exp.test(email.value)) //Password Strength => 3, Email != blank
+
+                // Update the text indicator
+                if (val !== "") {
+                    pwstr.innerHTML = "Strength: " + strength[result.score];
+                    if (result.score <= 2){
+                        pwrst.innerHTML = result.feedback.warning + ' | ' + result.feedback.suggestions; 
+                    } else {
+                        pwrst.innerHTML = "";
+                    }
+                } else {
+                    pwstr.innerHTML = "";
+                    pwrst.innerHTML = "";
+                }
+            });
         });
     </script>
     {{> footer}}
