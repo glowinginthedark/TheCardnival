@@ -21,7 +21,7 @@
             <div class="row my-1 ">
                 <div class="col-lg-3 col-md-6 col-sm">
                     <div class="big_small_responsive">
-                        <img src={{card}} alt="YourCard" class='playcard'>
+                        <img src={{card}} class="gamecard" alt="YourCard" class='playcard'>
                     </div>
                     <h4 style="color: red;">{{{game_state}}}</h4>
                 </div>
@@ -38,48 +38,32 @@
                             <div class="row my-1">
                                 <div class="col-xs col-sm-6 col-lg-4">
                                     <form class="container" id="form1" method="POST" action="/smaller">
-                                        <!--<div class="container">-->
-                                        {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Smaller(+1)" {{smaller}}> --}}
                                         <button class="btn btn-dark game_style" type="submit" value="Smaller(+1)"
                                             {{smaller}}>Smaller(+1)</button>
-                                        <!--</div>-->
                                     </form>
                                 </div>
                                 <div class="col-xs col-sm col-lg-4 order-3">
                                     <form class="container" id="form1" method="POST" action="/tie">
-                                        <!--<div class="container">-->
-                                        {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Tie(+4)" {{tie}}> --}}
                                         <button class="btn btn-dark btn-sm game_style" type="submit" value="Tie(+4)"
                                             {{tie}}>Tie(+4)</button>
-                                        <!--</div>-->
                                     </form>
                                 </div>
                                 <div class="col-xs col-sm-6 col-lg-4 order-xs-4 order-sm-2 order-lg-4">
                                     <form class="container" id="form1" method="POST" action="/bigger">
-                                        <!--<div class="container">-->
-                                        {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Bigger(+1)" {{bigger}}> --}}
                                         <button class="btn btn-dark game_style" type="submit" value="Bigger(+1)"
                                             {{bigger}}>Bigger(+1)</button>
-                                        <!--</div>-->
                                     </form>
                                 </div>
                             </div>
-                            {{!-- <br> --}}
                             <div class="row my-2">
                                 <div class="col">
                                     <form class="container" id="form1" method="GET" action="/rankings">
-                                        <!--<div class="container">-->
-                                        {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Rankings"> --}}
                                         <button class="btn btn-dark game_style" type="submit">Rankings</button>
-                                        <!--</div>-->
                                     </form>
                                 </div>
                                 <div class="col">
                                     <form class="container" id="form1" method="POST" action="/signout">
-                                        <!--<div class="container">-->
-                                        {{!-- <input style="margin: 0 auto;display: block;" type="submit" value="Sign-out"> --}}
                                         <button class="btn btn-dark game_style" type="submit">Sign Out</button>
-                                        <!--</div>-->
                                     </form>
                                 </div>
                             </div>
@@ -88,8 +72,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm order-3">
                     <div class="big_small_responsive">
-
-                        <img src={{card2}} alt="NextCard" class='playcard'>
+                        <img src={{card2}} class="gamecard" alt="NextCard" class='playcard'>
                     </div>
                 </div>
             </div>

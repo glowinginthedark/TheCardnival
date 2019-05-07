@@ -1,132 +1,332 @@
 <html>
-<!--Replace Head-->
 {{> head}}
 
 <body>
     {{> header}}
     <br><br>
-    <div id='custom-jumbo' class="jumbotron container-fluid">
-        <form action="/buy" method="post">
-            <div class="row">
-                <div class="alert">
-                  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-                  <strong>{{{result}}}</strong> 
-                </div>
+    <form action="/buy" method="post">
+        <div class="row">
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>{{{result}}}</strong>
             </div>
-            <div class="row">
-                <div class="card col-lg-3">
-                    <div class="card-title" name="name" value="thanos">Thanos</div>
-                    <img class="card-img-top" src='asset/thanos.jpg' name ="thanos" alt='Avatar 1'>
-                    <div class="card-body">500 Pickle Token</div>
-                    <button class="btn btn-success" name="url" 
-                    value="thanos,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae,profile_pictures,500">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title" name="name" value="default">Default</div>
-                    <img class="card-img-top" src='asset/default.jpg' name ="default" alt='Avatar 2'>
-                    <div class="card-body">500 Pickle Token</div>
-                    <button class="btn btn-success" name="url" 
-                    value="default,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/default.jpg?alt=media&token=8579b809-6edc-442d-9363-c4a1688a4d1a,profile_pictures,500">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title" name="name" value="tony">Tony</div>
-                    <img class="card-img-top" src='asset/tony.jpg' name ="tony" alt='Avatar 3'>
-                    <div class="card-body">500 Pickle Token</div>
-                    <button class="btn btn-success" name="url" 
-                    value="tony,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/tony.jpg?alt=media&token=52382444-71be-4b6d-8e7c-b6d034f41796,profile_pictures,500">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title" name="name" value="peter">Peter</div>
-                    <img class="card-img-top" src='asset/peter.jpg' name ="peter" alt='Avatar 4'>
-                    <div class="card-body">500 Pickle Token</div>
-                    <button class="btn btn-success" name="url" 
-                    value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">Buy This!</button>
-                </div>
-            </div>
-            <br><br>
-            <div class="row">
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-            </div>
-            <br><br>
-            <div class="row">
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-            </div>
-            <br><br>
-            <div class="row">
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-                <div class="card col-lg-3">
-                    <div class="card-title">Avatar 1</div>
-                    <img class="card-img-top" src='...' alt='Avatar 1'>
-                    <div class="card-body">something</div>
-                    <button class="btn btn-success">Buy This!</button>
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+        <!-- Button trigger modal 
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertModal">
+            Launch demo modal
+        </button>-->
 
-</body>
+        <!-- Modal -->
+        <div class="modal fade" id="alertModal" role="dialog" aria-labelledby="alertModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="alertModalLabel">Hey!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{{result}}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="storebg" class="jumbotron container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="list-pp-list" data-toggle="list"
+                            href="#list-pp" role="tab" aria-controls="pp">Profile Pictures</a>
+                        <a class="list-group-item list-group-item-action" id="list-bgm-list" data-toggle="list"
+                            href="#list-bgm" role="tab" aria-controls="bgm">Background Music</a>
+                        <a class="list-group-item list-group-item-action" id="list-cardback-list" data-toggle="list"
+                            href="#list-cardback" role="tab" aria-controls="cardback">Cardbacks</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-pp" role="tabpanel" aria-labelledby="list-pp-list">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="default">Default</div>
+                                    <img class="card-img-top" src='asset/default.jpg' name="default" alt='Avatar 2'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="default,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/default.jpg?alt=media&token=8579b809-6edc-442d-9363-c4a1688a4d1a,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="thanos">Thanos</div>
+                                    <img class="card-img-top" src='asset/thanos.jpg' name="thanos" alt='Avatar 1'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="thanos,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="tony">Tony</div>
+                                    <img class="card-img-top" src='asset/tony.jpg' name="tony" alt='Avatar 3'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="tony,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/tony.jpg?alt=media&token=52382444-71be-4b6d-8e7c-b6d034f41796,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="tony">Tony</div>
+                                    <img class="card-img-top" src='asset/tony.jpg' name="tony" alt='Avatar 3'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="tony,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/tony.jpg?alt=media&token=52382444-71be-4b6d-8e7c-b6d034f41796,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="peter">Peter</div>
+                                    <img class="card-img-top" src='asset/peter.jpg' name="peter" alt='Avatar 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="peter">Peter</div>
+                                    <img class="card-img-top" src='asset/peter.jpg' name="peter" alt='Avatar 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="peter">Peter</div>
+                                    <img class="card-img-top" src='asset/peter.jpg' name="peter" alt='Avatar 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="peter">Peter</div>
+                                    <img class="card-img-top" src='asset/peter.jpg' name="peter" alt='Avatar 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="list-bgm" role="tabpanel" aria-labelledby="list-bgm">
+                    <div class="card col-lg-12">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="thanos">BGM 1</div>
+                                    <img class="card-img-top" src='asset/thanos.jpg' name="thanos" alt='Avatar 1'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="thanos,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="default">BGM 2</div>
+                                    <img class="card-img-top" src='asset/default.jpg' name="default" alt='Avatar 2'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="default,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/default.jpg?alt=media&token=8579b809-6edc-442d-9363-c4a1688a4d1a,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="tony">BGM 3</div>
+                                    <img class="card-img-top" src='asset/tony.jpg' name="tony" alt='Avatar 3'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="tony,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/tony.jpg?alt=media&token=52382444-71be-4b6d-8e7c-b6d034f41796,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="tony">BGM 3</div>
+                                    <img class="card-img-top" src='asset/tony.jpg' name="tony" alt='Avatar 3'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="tony,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/tony.jpg?alt=media&token=52382444-71be-4b6d-8e7c-b6d034f41796,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="tony">BGM 3</div>
+                                    <img class="card-img-top" src='asset/tony.jpg' name="tony" alt='Avatar 3'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="tony,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/tony.jpg?alt=media&token=52382444-71be-4b6d-8e7c-b6d034f41796,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="peter">BGM 4</div>
+                                    <img class="card-img-top" src='asset/peter.jpg' name="peter" alt='Avatar 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="peter">BGM 4</div>
+                                    <img class="card-img-top" src='asset/peter.jpg' name="peter" alt='Avatar 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-3 storeitem">
+                                    <div class="card-title" name="name" value="peter">BGM 4</div>
+                                    <img class="card-img-top" src='asset/peter.jpg' name="peter" alt='Avatar 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="list-cardback" role="tabpanel" aria-labelledby="list-cardback">
+                    <div class="card col-lg-12">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="thanos">Ditto Cardback</div>
+                                    <img class="card-img-top gamecard" src="img/cardbacks/dittodoll.jpg" name="ditto"
+                                        alt='Cardback 1'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="thanos,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="default">Thanos Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/thanos_cardback.jpg'
+                                        name="default" alt='Cardback 2'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="default,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/default.jpg?alt=media&token=8579b809-6edc-442d-9363-c4a1688a4d1a,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="tony">Ironman M-46 Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/im_cardback.jpg' name="tony"
+                                        alt='Cardback 3'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="tony,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/tony.jpg?alt=media&token=52382444-71be-4b6d-8e7c-b6d034f41796,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                                <div class="card col-lg-2 storeitem">
+                                    <div class="card-title" name="name" value="peter">Iron Spider Cardback</div>
+                                    <img class="card-img-top gamecard" src='img/cardbacks/ispider_cardback.jpg'
+                                        name="peter" alt='Cardback 4'>
+                                    <div class="card-body">description here</div>
+                                    <button class="btn btn-success" name="url"
+                                        value="peter,https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/peter.jpg?alt=media&token=a7aba130-b754-422f-bf86-cfdc226597b8,profile_pictures,500">500
+                                        Pickle Tokens</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     {{> footer}}
+    <script>
+        $(window).load(function () {
+            $('#alertModal').modal('show');
+        });
+    </script>
+</body>
+
 </html>
