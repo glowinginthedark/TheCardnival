@@ -68,6 +68,20 @@ var loginAccount = async (email, password, result, response) => {
     return result
 };
 
+var deleteAccount = async () => {
+    var user = await firebase.auth().currentUser;
+    var uid = user.uid
+    message = user.delete().then(async function() {
+        await firebase.database().ref(`users/${uid}`).remove();
+        
+        return 'delete success'
+    }).catch(function(error){
+        return error.message
+    })
+    console.log(message);
+    return message
+}
+
 /*
     Saves username and their personal scores in JSON file and return
     a high score results message depending on situation.
@@ -131,6 +145,8 @@ async function getHighScores(game_name) {
 
     return sortable
 }
+
+
 
 /*****************************************************************************
 
@@ -247,6 +263,7 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
                     return `User already has ${itemId}`;
                 }
                 await firebase.database().ref(`users/${userId}`).set(test);
+                
                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
 
             } else {
@@ -416,5 +433,6 @@ module.exports = {
     getHighScores,
     retrieveAllUsers,
     retrieveUserData,
-    buyItem
+    buyItem,
+    deleteAccount
 };

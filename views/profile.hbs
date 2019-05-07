@@ -309,6 +309,16 @@
 
     {{> footer}}
     <script>
+
+        function testFunction(name){
+            var r = confirm(`Are you sure you want to use ${name}`, 'Use Item Confirmation');
+            if(r == true){
+                console.log(r, ' works');
+            }else{
+                console.log(r, ' didnt work');
+            }
+        }
+
         var ctx = document.getElementById("myDoughnutChart");
         ctx.font = "32px Verdana";
         ctx.fillStyle = '#000';

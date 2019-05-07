@@ -163,6 +163,7 @@ app.post('/game', async (request, response) => {
  */
 app.post('/newgame', async (request, response) => {
     score = 0;
+
     try {
         deck = await backend.shuffleDeck(deck.deck_id);
         card = await backend.drawDeck(deck.deck_id, 1);
@@ -416,16 +417,14 @@ async function renderProfile(user_id, request, response) {
         user_info.nav_email = nav_email;
         user_info.profile_picture = `src="${user_info.profile_picture.url}"`
         if (current_user != undefined){
-            console.log(current_user.uid, ' vs ', user_id)
+            user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures);
+            user_info.musics = await arrObjToHTMLString(user_info.inventory.music);
+            user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback);    
+        }else{
             user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures);
             user_info.musics = await arrObjToHTMLString(user_info.inventory.music);
             user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback);
-            console.log('\nAvatars\n');
-            console.log(user_info.avatars)
-            console.log('\nMusic\n')
-            console.log(user_info.musics)
-            console.log('\ncardbacks\n')
-            console.log(user_info.cardbacks)
+        
         }
     }
     user_info.title = `Big or Small | Profile`;
@@ -454,11 +453,11 @@ async function arrObjToHTMLString(array){
             if (index % 2 == 0) {
                 html_string += `<div class="row">\n`
             }
-
+            var item = element.name + ',' + element.url
             html_string += `    <div class="card-body col-6">\n`
             html_string += `        <img src="${element.url}" alt="default"\n`
             html_string += `        style="max-width: 100%; height: auto">\n`
-            html_string += `        <button class="btn wide-btn btn-info" name="${element.name},${element.url}">Use this!</button>\n`
+            html_string += `        <button type="button" class="btn wide-btn btn-info" name="${element.name},${element.url}" onclick="testFunction('${item}')">Use this!</button>\n`
             html_string += `    </div>\n`
 
             if (index % 2 == 1) {
