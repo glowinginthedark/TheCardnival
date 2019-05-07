@@ -10,9 +10,7 @@ var app = express();
 var deck = 0;
 var card = 0;
 var card2 = 0;
-// var cardback = "https://playingcardstop1000.com/wp-content/uploads/2018/11/Back-Russian-historical-cards-200x300.jpg"
-// var cardback = "https://i.pinimg.com/originals/10/80/a4/1080a4bd1a33cec92019fab5efb3995d.png"
-var cardback = "/img/red_cardback.png";
+var cardback = "/img/cardbacks/red_cardback.png";
 var score = 0;
 var current_user = undefined;
 var nav_email = "Guest";
@@ -148,10 +146,10 @@ app.post('/game', async (request, response) => {
             deck = login.deck;
             console.log(`current user: ${current_user.email}`);
             await renderProfile(current_user.uid, request, response);
-        }else{
+        } else {
             response.render('login.hbs', {
-                    title: 'Big or Small | Login',
-                    failed: login.failed
+                title: 'Big or Small | Login',
+                failed: login.failed
             })
         }
     } catch (e) {
@@ -291,13 +289,13 @@ app.post(`/buy`, async (request, response) => {
     message = "Please Login First";
     item_info = request.body.url.split(',');
 
-    if(current_user != undefined){
+    if (current_user != undefined) {
         message = await backend.buyItem(current_user.uid, item_info[0], item_info[1], item_info[2], parseInt(item_info[3], 10));
     }
     response.render('store.hbs', {
-            title: 'Big or Small | Store',
-            result: message,
-            nav_email: nav_email
+        title: 'Big or Small | Store',
+        result: message,
+        nav_email: nav_email
     })
 });
 

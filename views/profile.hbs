@@ -2,39 +2,238 @@
 <html>
 {{> head}}
 
-<body class="game_body">
+<body>
     {{> header}}
-    <br><br>
+    <br>
     <div class="container-fluid">
-        <div class="row container-fluid">
-            <div class='col-lg-12 card' style="margin: 20px; color: black">
+        <div class="row">
+            <div class='col-lg-12 card' style="padding: 20px; color: black; background-color: rgba(255,255,255,0.5)">
                 <br>
-                <h2 class="card-title" align="center">Profile</h2>
+                <h2 id="profile-title" class="card-title" align="center">Profile</h2>
                 <hr class="my-4">
-                <div class="card-body">
+                <div class="card-body" style="">
                     <div class="row">
-                        <div class="col-4"> </div>
-                        <div class="col-4">
-                            <img class="card-img-left"
-                                {{{profile_picture}}}
-                                alt="Profile pic" style="width: 400px; height: 400px">
-                            <br>
-                            <table class="col-12">
-                                <tr>
-                                    <th>Name</th>
-                                    <td>{{fname}} {{lname}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Email</th>
-                                    <td>{{email}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Balance</th>
-                                    <td>{{balance}}</td>
-                                </tr>
-                            </table>
+                        <div class="col-lg-4">
+                            <h1>Inventory</h1>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
+                                        <a class="list-group-item list-group-item-action active" id="list-pimg-list"
+                                            data-toggle="list" href="#list-pimg" role="tab" aria-controls="pimg">Profile
+                                            Images</a>
+                                        <a class="list-group-item list-group-item-action" id="list-bgm"
+                                            data-toggle="list" href="#bgm" role="tab" aria-controls="bgm">BG
+                                            Music</a>
+                                        <a class="list-group-item list-group-item-action" id="list-cardbacks"
+                                            data-toggle="list" href="#cardbacks" role="tab"
+                                            aria-controls="cardbacks">Cardbacks</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="list-pimg" role="tabpanel"
+                                    aria-labelledby="list-pimg-list">
+                                    <div class="card">
+                                        <div class="card-body scroll">
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/default.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/peter.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/thanos.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/tony.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/thanos.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/tony.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/thanos.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/tony.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="bgm" role="tabpanel" aria-labelledby="list-bgm">
+                                    <div class="card">
+                                        <div class="card-body scroll">
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/default.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/peter.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/thanos.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/tony.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/default.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/peter.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/thanos.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/tony.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="cardbacks" role="tabpanel"
+                                    aria-labelledby="list-cardbacks">
+                                    <div class="card">
+                                        <div class="card-body scroll">
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/default.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/peter.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/thanos.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/tony.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/default.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/peter.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-body col-6">
+                                                    <img src="asset/thanos.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                                <div class="card-body col-6">
+                                                    <img src="asset/tony.jpg" alt="default"
+                                                        style="max-width: 100%; height: auto">
+                                                    <button class="btn wide-btn btn-info">Use this!</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-lg-4">
+                            <h1>Information</h1>
+                            <div class="row" style="text-align: center">
+                                <img {{{profile_picture}}} alt="Profile pic"
+                                    style="width: 400px; height: 400px; margin: 0 auto">
+                                <br>
+                                <table class="col-12">
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>{{fname}} {{lname}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Balance</th>
+                                        <td>{{balance}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Games played</th>
+                                        <td>{{big_or_small.games_played}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Games won</th>
+                                        <td>{{big_or_small.games_won}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>High Score</th>
+                                        <td>{{big_or_small.high_score}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h1>Statistics</h1>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
@@ -53,29 +252,15 @@
                                     aria-labelledby="list-bsgame-list">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1 class='card-title'>Big or Small Rankings</h1>
-                                            <canvas id="myDoughnutChart" width="380" height="380"></canvas>
-                                            <table class="col-3" align="center">
-                                                <tr>
-                                                    <th>Games played</th>
-                                                    <td>{{big_or_small.games_played}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Games won</th>
-                                                    <td>{{big_or_small.games_won}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>High Score</th>
-                                                    <td>{{big_or_small.high_score}}</td>
-                                                </tr>
-                                            </table>
+                                            <h1>Big or Small Rankings</h1>
+                                            <canvas id="myDoughnutChart" max-width="260" height="260"></canvas>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="game2" role="tabpanel" aria-labelledby="list-game2">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1 class='card-title'>Game 2 Rankings</h1>
+                                            <h1>Game 2 Rankings</h1>
                                             <p>{{{rankings}}}</p>
                                         </div>
                                     </div>
@@ -83,7 +268,7 @@
                                 <div class="tab-pane fade" id="game3" role="tabpanel" aria-labelledby="list-game3">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1 class='card-title'>Game 3 Rankings</h1>
+                                            <h1>Game 3 Rankings</h1>
                                             <p>{{{rankings}}}</p>
                                         </div>
                                     </div>
@@ -96,7 +281,8 @@
             </div>
         </div>
     </div>
-    
+    <br><br>
+
     {{> footer}}
     <script>
         var ctx = document.getElementById("myDoughnutChart");
@@ -109,30 +295,31 @@
                 "datasets": [{
                     "label": {{ big_or_small.high_score }},
             "data": [{{ big_or_small.games_played }}, {{ big_or_small.games_won }}],
-            "backgroundColor": [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)"]
+        "backgroundColor": [
+            "rgb(255, 99, 132)",
+            "rgb(54, 162, 235)"]
                 }],
             },
         });
-        
+
         Chart.pluginService.register({
-          beforeDraw: function(chart) {
-            var width = chart.chart.width,
-                height = chart.chart.height,
-                ctx = chart.chart.ctx;
+            beforeDraw: function (chart) {
+                var width = chart.chart.width,
+                    height = chart.chart.height,
+                    ctx = chart.chart.ctx;
 
-            ctx.restore();
-            var fontSize = (height / 250).toFixed(2);
-            ctx.font = fontSize + "em sans-serif";
-            ctx.textBaseline = "middle";
+                ctx.restore();
+                var fontSize = (height / 250).toFixed(2);
+                ctx.font = fontSize + "em sans-serif";
+                ctx.textBaseline = "middle";
 
-            var text = 'Highest:' + {{big_or_small.high_score}} + ' pts',
-                textX = Math.round((width - ctx.measureText(text).width) / 2),
-                textY = height / 2;
+                var text = 'Highest:' + {{ big_or_small.high_score
+        }} + ' pts',
+            textX = Math.round((width - ctx.measureText(text).width) / 2),
+            textY = height / 1.875;
 
-            ctx.fillText(text, textX, textY);
-            ctx.save();
+        ctx.fillText(text, textX, textY);
+        ctx.save();
           }
         });
     </script>
