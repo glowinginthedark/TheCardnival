@@ -409,29 +409,66 @@ function renderGame(request, response, state, first_card, second_card, remaining
 }
 
 async function renderProfile(user_id, request, response) {
-    var test = {};
+    var user_info = {};
     if (user_id != undefined) {
-        test = await backend.retrieveUserData(user_id);
-        test.nav_email = nav_email;
-        test.profile_picture = `src="${test.profile_picture.url}"`
-
-        test.inventory.cardback.forEach((element, index, array) => {
-            console.log(element);
-            console.log(array);
-        })
-        test.inventory.music.forEach((element, index, array) => {
-            console.log(element);
-            console.log(array);
-        })
-        test.inventory.profile_pictures.forEach((element, index, array) => {
-            console.log(element);
-            console.log(array);
-        })
-        
+        user_info = await backend.retrieveUserData(user_id);
+        user_info.nav_email = nav_email;
+        user_info.profile_picture = `src="${user_info.profile_picture.url}"`
+        if (current_user != undefined){
+            console.log(current_user.uid, ' vs ', user_id)
+            user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures);
+            user_info.musics = await arrObjToHTMLString(user_info.inventory.music);
+            user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback);
+            console.log('\nAvatars\n');
+            console.log(user_info.avatars)
+            console.log('\nMusic\n')
+            console.log(user_info.musics)
+            console.log('\ncardbacks\n')
+            console.log(user_info.cardbacks)
+        }
     }
-    test.title = `Big or Small | Profile`;
+    user_info.title = `Big or Small | Profile`;
 
-    await response.render('profile.hbs', test)
+    await response.render('profile.hbs', user_info)
 }
 
+
+                                                // <div class="row">
+                                                //     <div class="card-body col-6">
+                                                //         <img src="asset/default.jpg" alt="default"
+                                                //             style="max-width: 100%; height: auto">
+                                                //         <button class="btn wide-btn btn-info">Use this!</button>
+                                                //     </div>
+                                                //     <div class="card-body col-6">
+                                                //         <img src="asset/peter.jpg" alt="default"
+                                                //             style="max-width: 100%; height: auto">
+                                                //         <button class="btn wide-btn btn-info">Use this!</button>
+                                                //     </div>
+                                                // </div>
+
+async function arrObjToHTMLString(array){
+    html_string = ""
+
+    array.forEach((element, index, array) => {
+            if (index % 2 == 0) {
+                html_string += `<div class="row">\n`
+            }
+
+            html_string += `    <div class="card-body col-6">\n`
+            html_string += `        <img src="${element.url}" alt="default"\n`
+            html_string += `        style="max-width: 100%; height: auto">\n`
+            html_string += `        <button class="btn wide-btn btn-info" name="${element.name},${element.url}">Use this!</button>\n`
+            html_string += `    </div>\n`
+
+            if (index % 2 == 1) {
+                html_string += `</div>\n`
+            }
+        })
+
+    if(array.length % 2 == 1){
+        html_string += `</div>\n`
+    }
+
+    return html_string
+}
 module.exports = app;
