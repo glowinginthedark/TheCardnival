@@ -66,6 +66,10 @@ form .input-group-text {
     color: black;
 }
 
+.gamecard {
+    border-radius: 5%;
+}
+
 .game_body {
     background-image: url("/img/felt.png");
     background-color: #006b10;
@@ -104,6 +108,38 @@ form .input-group-text {
 #content {
     padding-bottom: 25px;
     /* Height of the footer element */
+}
+
+#profile-title {
+    font-size: 5rem;
+}
+
+.wide-btn {
+    width: 100%;
+}
+
+.scroll {
+    height: 525px;
+    overflow-y: auto;
+}
+
+.card .card-title {
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+#storebg {
+    background-image: url('/img/kk.png');
+}
+
+.storeitem {
+    opacity: 0.75;
+    transition: 0.5s;
+}
+
+.storeitem:hover {
+    opacity: 1;
+    transition: 0.5s;
 }
 
 /*------------------------------------------------------------Password Meter------------------------------------------------------------*/
@@ -171,22 +207,22 @@ meter[value="4"]::-moz-meter-bar {
 }
 
 .alert {
-  padding: 20px;
-  background-color: #f44336;
-  color: white;
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
 }
 
 .closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .closebtn:hover {
-  color: black;
+    color: black;
 }
