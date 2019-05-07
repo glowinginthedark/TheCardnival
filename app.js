@@ -268,7 +268,8 @@ app.get(`/deck`, async (request, response) => {
  */
 app.get(`/gameportal`, async (request, response) => {
     response.render('gameportal.hbs', {
-        title: 'Big or Small | Game Portal'
+        title: 'Big or Small | Game Portal',
+        nav_email: nav_email
     })
 });
 
