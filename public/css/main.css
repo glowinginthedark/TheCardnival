@@ -114,6 +114,10 @@ form .input-group-text {
     font-size: 5rem;
 }
 
+#list-tab .active {
+    z-index: 0;
+}
+
 .wide-btn {
     width: 100%;
 }
