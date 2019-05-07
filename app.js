@@ -163,6 +163,7 @@ app.post('/game', async (request, response) => {
  */
 app.post('/newgame', async (request, response) => {
     score = 0;
+
     try {
         deck = await backend.shuffleDeck(deck.deck_id);
         card = await backend.drawDeck(deck.deck_id, 1);
@@ -268,7 +269,8 @@ app.get(`/deck`, async (request, response) => {
  */
 app.get(`/gameportal`, async (request, response) => {
     response.render('gameportal.hbs', {
-        title: 'Big or Small | Game Portal'
+        title: 'Big or Small | Game Portal',
+        nav_email: nav_email
     })
 });
 
@@ -409,15 +411,64 @@ function renderGame(request, response, state, first_card, second_card, remaining
 }
 
 async function renderProfile(user_id, request, response) {
-    var test = {};
+    var user_info = {};
     if (user_id != undefined) {
-        test = await backend.retrieveUserData(user_id);
-        test.nav_email = nav_email;
-        test.profile_picture = `src="${test.profile_picture.url}"`
+        user_info = await backend.retrieveUserData(user_id);
+        user_info.nav_email = nav_email;
+        user_info.profile_picture = `src="${user_info.profile_picture.url}"`
+        if (current_user != undefined){
+            user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures);
+            user_info.musics = await arrObjToHTMLString(user_info.inventory.music);
+            user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback);    
+        }else{
+            user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures);
+            user_info.musics = await arrObjToHTMLString(user_info.inventory.music);
+            user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback);
+        
+        }
     }
-    test.title = `Big or Small | Profile`;
+    user_info.title = `Big or Small | Profile`;
 
-    await response.render('profile.hbs', test)
+    await response.render('profile.hbs', user_info)
 }
 
+
+                                                // <div class="row">
+                                                //     <div class="card-body col-6">
+                                                //         <img src="asset/default.jpg" alt="default"
+                                                //             style="max-width: 100%; height: auto">
+                                                //         <button class="btn wide-btn btn-info">Use this!</button>
+                                                //     </div>
+                                                //     <div class="card-body col-6">
+                                                //         <img src="asset/peter.jpg" alt="default"
+                                                //             style="max-width: 100%; height: auto">
+                                                //         <button class="btn wide-btn btn-info">Use this!</button>
+                                                //     </div>
+                                                // </div>
+
+async function arrObjToHTMLString(array){
+    html_string = ""
+
+    array.forEach((element, index, array) => {
+            if (index % 2 == 0) {
+                html_string += `<div class="row">\n`
+            }
+            var item = element.name + ',' + element.url
+            html_string += `    <div class="card-body col-6">\n`
+            html_string += `        <img src="${element.url}" alt="default"\n`
+            html_string += `        style="max-width: 100%; height: auto">\n`
+            html_string += `        <button type="button" class="btn wide-btn btn-info" name="${element.name},${element.url}" onclick="testFunction('${item}')">Use this!</button>\n`
+            html_string += `    </div>\n`
+
+            if (index % 2 == 1) {
+                html_string += `</div>\n`
+            }
+        })
+
+    if(array.length % 2 == 1){
+        html_string += `</div>\n`
+    }
+
+    return html_string
+}
 module.exports = app;

@@ -55,7 +55,6 @@ var loginAccount = async (email, password, result, response) => {
                 deck = await getDeck(1);
                 result.deck = deck;
                 console.log('Login Successful')
-
                 return result
 
             }).catch (function(error) {
@@ -68,6 +67,20 @@ var loginAccount = async (email, password, result, response) => {
 
     return result
 };
+
+var deleteAccount = async () => {
+    var user = await firebase.auth().currentUser;
+    var uid = user.uid
+    message = user.delete().then(async function() {
+        await firebase.database().ref(`users/${uid}`).remove();
+        
+        return 'delete success'
+    }).catch(function(error){
+        return error.message
+    })
+    console.log(message);
+    return message
+}
 
 /*
     Saves username and their personal scores in JSON file and return
@@ -133,6 +146,8 @@ async function getHighScores(game_name) {
     return sortable
 }
 
+
+
 /*****************************************************************************
 
     VOID() DATA SAVE/RETRIEVAL METHODS
@@ -147,9 +162,18 @@ async function writeUserData(userId, email, fname, lname, name, imageUrl) {
         url: imageUrl
     },
     inventory : {
-        profile_pictures: ['default'],
-        cardback:['standard_cardback'],
-        music:['carnival_music']
+        profile_pictures: [{
+            name: name,
+            url: imageUrl
+        }],
+        cardback:[{
+            name: 'red_cardback',
+            url: '/img/red_cardback.png'
+        }],
+        music:[{
+            name: 'none',
+            url: 'none'
+        }]
     }, 
     fname: fname,
     lname: lname,
@@ -239,6 +263,7 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
                     return `User already has ${itemId}`;
                 }
                 await firebase.database().ref(`users/${userId}`).set(test);
+                
                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
 
             } else {
@@ -252,51 +277,6 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
     return message;
 }
 
-/*
-    Saves username and their personal scores in JSON file and return
-    a high score results message depending on situation.
- */
-async function getAllItems(userId) {
-    var test = {}
-
-    message = await firebase.database().ref(`users/${userId}/inventory`).once('value')
-        .then(async function(snapshot) {
-            test = await snapshot.val()
-
-            if ( (test.balance - price) >= 0){
-                var prebalance = test.balance
-                test.balance -= price;
-                if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
-                    test.inventory.profile_pictures.push({
-                        name: itemId,
-                        url: itemUrl
-                    })
-                }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
-                    test.inventory.cardback.push({
-                        name: itemId,
-                        url: itemUrl
-                    })
-                }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
-                    test.inventory.music.push({
-                        name: itemId,
-                        url: itemUrl
-                    })
-                }else{
-                    return `You already has ${itemId}`;
-                }
-                await firebase.database().ref(`users/${userId}`).set(test);
-                return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
-
-            } else {
-                return 'Sorry, you do not have enough balance';
-            }
-        }).catch(function(e){
-            console.log(e.message)
-            return e.message
-        })
-
-    return message;
-}
 
 // /*
 //     Saves username and their personal scores in JSON file and return
@@ -453,5 +433,6 @@ module.exports = {
     getHighScores,
     retrieveAllUsers,
     retrieveUserData,
-    buyItem
+    buyItem,
+    deleteAccount
 };
