@@ -416,6 +416,20 @@ async function renderProfile(user_id, request, response) {
         test = await backend.retrieveUserData(user_id);
         test.nav_email = nav_email;
         test.profile_picture = `src="${test.profile_picture.url}"`
+
+        test.inventory.cardback.forEach((element, index, array) => {
+            console.log(element);
+            console.log(array);
+        })
+        test.inventory.music.forEach((element, index, array) => {
+            console.log(element);
+            console.log(array);
+        })
+        test.inventory.profile_pictures.forEach((element, index, array) => {
+            console.log(element);
+            console.log(array);
+        })
+        
     }
     test.title = `Big or Small | Profile`;
 
