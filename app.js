@@ -312,6 +312,18 @@ app.post(`/buy`, async (request, response) => {
     if (balance >= parseInt(item_info[3], 10)){
         balance -= parseInt(item_info[3], 10);
     }
+    if(message.startsWith('Purchased!')){
+        message = `<div class="alert bg-success col-lg-12 col-lg-offset-1 text-center" role="alert" style="display: hidden;">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>${message}</strong>
+                </div>`;
+
+    }else{
+        message = `<div class="alert bg-danger col-lg-12 col-lg-offset-1 text-center" role="alert" style="display: hidden;">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>${message}</strong>
+                </div>`;
+    }
     response.render('store.hbs', {
         title: 'Big or Small | Store',
         result: message,
@@ -405,7 +417,7 @@ async function correctGuess(weight, request, response) {
     card = card2;
     card2 = await backend.drawDeck(deck.deck_id, 1);
     if (card2.remaining > 0) {
-        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "");
+        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, `Correct Guess!`);
     } else {
         var win_message = `Congratulations, you have finished the deck with ${score} point`;
         if (current_user !== undefined) {
