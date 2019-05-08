@@ -477,24 +477,24 @@ async function renderProfile(user_id, request, response) {
                     nav_email = user_info.email;
                     user_info.nav_email = user_info.email;
                     balance = user_info.balance;
-                    user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'');
-                    user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'');
-                    user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'');
+                    user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'','profile_pictures');
+                    user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'','music');
+                    user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'cardback');
                 }else{
                     //OTHER USERS VIEW
                     user_info.nav_email = nav_email;
                     user_info.balance = balance;
-                    user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'display: none;');
-                    user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'display: none;');
-                    user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'display: none;');   
+                    user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'display: none;','profile_pictures');
+                    user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'display: none;', 'music');
+                    user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'display: none;', 'cardback');   
                 } 
             }else{
                 //GUEST VIEW
                 user_info.nav_email = 'Guest';
                 user_info.balance = undefined;
-                user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'display: none;');
-                user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'display: none;');
-                user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'display: none;');
+                user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'display: none;', 'profile_pictures');
+                user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'display: none;', 'music');
+                user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'display: none;', 'cardback');
             }
         }
         user_info.title = `Big or Small | Profile`;
@@ -508,7 +508,7 @@ async function renderProfile(user_id, request, response) {
 //type="button"
 //onclick="testFunction('${item}')"
 
-async function arrObjToHTMLString(array, not_user){
+async function arrObjToHTMLString(array, not_user, type){
     html_string = ""
 
     array.forEach((element, index, array) => {
@@ -517,8 +517,15 @@ async function arrObjToHTMLString(array, not_user){
             }
             var item = element.name + ',' + element.url
             html_string += `    <div class="card-body col-6">\n`
-            html_string += `        <img src="${element.url}" alt="default"\n`
-            html_string += `        style="max-width: 100%; height: auto">\n`
+            if(type != 'music'){
+                html_string += `        <img src="${element.url}" alt="default"\n`
+                html_string += `        style="max-width: 80%; height: auto">\n`
+            }else{
+                html_string += `        <img src="https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/PicklesCarnival.jpg?alt=media&token=88a4de84-3b22-4237-a1b9-c5f3a68dc0f5" alt="default"\n`
+                html_string += `        style="max-width: 100%; height: auto">\n`
+                html_string += `<p style="max-width: 100%; height: auto">${element.name}</p>`
+            }
+
             html_string += `        <button class="btn wide-btn btn-info" name="url" value="${element.name},${element.url}" style="${not_user}">Use this!</button>\n`
             html_string += `    </div>\n`
 
