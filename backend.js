@@ -155,11 +155,19 @@ async function getHighScores(game_name) {
 ******************************************************************************/
 
 async function writeUserData(userId, email, fname, lname, name, imageUrl) {
-  await firebase.database().ref(`users/${userId}`).set({
+    await firebase.database().ref(`users/${userId}`).set({
     email: email,
     profile_picture : {
         name: name,
         url: imageUrl
+    },
+    music : {
+        name: `merrygo.mp3`,
+        url: `merrygo.mp3`
+    },
+    cardback: {
+        name: `red_cardback.png`,
+        url: `red_cardback.png`
     },
     inventory : {
         profile_pictures: [{
@@ -184,7 +192,7 @@ async function writeUserData(userId, email, fname, lname, name, imageUrl) {
         games_won: 0,
         high_score: 0
     }
-  });
+});
 }
 
 async function retrieveAllUsers(){
@@ -277,56 +285,6 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
     return message;
 }
 
-
-// /*
-//     Saves username and their personal scores in JSON file and return
-//     a high score results message depending on situation.
-//  */
-// async function buyItem(userId, itemId, itemUrl, type, price) {
-//     var test = {}
-
-//     if (userId === undefined) {
-//         return "Sorry, Guests cannot buy from the store";
-//     }
-
-//     await firebase.database().ref(`users/${userId}`).once('value')
-//         .then(async function(snapshot) {
-//             test = await snapshot.val()
-
-//             console.log(userId, itemId, itemUrl, type, price)
-
-//             if ( (test.balance - price) >= 0){
-//                 var prebalance = test.balance
-//                 test.balance -= price;
-//                 if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
-//                     test.inventory.profile_pictures.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
-//                     test.inventory.cardback.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
-//                     test.inventory.music.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else{
-//                     return `User already has ${name}`;
-//                 }
-//                 await firebase.database().ref(`users/${userId}`).set(test);
-
-//                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
-
-//             } else {
-//                 return 'Sorry, you do not have enough balance';
-//             }
-//         }).catch(function(e){
-//             return e.message
-//         })
-// }
 
 /*****************************************************************************
 
