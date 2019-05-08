@@ -156,43 +156,43 @@ async function getHighScores(game_name) {
 
 async function writeUserData(userId, email, fname, lname, name, imageUrl) {
     await firebase.database().ref(`users/${userId}`).set({
-    email: email,
-    profile_picture : {
-        name: name,
-        url: imageUrl
-    },
-    music : {
-        name: `merrygo.mp3`,
-        url: `merrygo.mp3`
-    },
-    cardback: {
-        name: `red_cardback.png`,
-        url: `red_cardback.png`
-    },
-    inventory : {
-        profile_pictures: [{
+        email: email,
+        profile_picture : {
             name: name,
             url: imageUrl
-        }],
-        cardback:[{
-            name: 'red_cardback',
-            url: '/img/red_cardback.png'
-        }],
-        music:[{
-            name: 'none',
-            url: 'none'
-        }]
-    }, 
-    fname: fname,
-    lname: lname,
-    balance: 0,
-    prizes:[],
-    big_or_small: {
-        games_played: 0,
-        games_won: 0,
-        high_score: 0
-    }
-});
+        },
+        music : {
+            name: `none`,
+            url: `none`
+        },
+        cardback: {
+            name: `red_cardback`,
+            url: `/img/cardbacks/red_cardback.png`
+        },
+        inventory : {
+            profile_pictures: [{
+                name: name,
+                url: imageUrl
+            }],
+            cardback:[{
+                name: 'red_cardback',
+                url: '/img/cardbacks/red_cardback.png'
+            }],
+            music:[{
+                name: 'none',
+                url: 'none'
+            }]
+        }, 
+        fname: fname,
+        lname: lname,
+        balance: 0,
+        prizes:[],
+        big_or_small: {
+            games_played: 0,
+            games_won: 0,
+            high_score: 0
+        }
+    });
 }
 
 async function retrieveAllUsers(){
@@ -284,6 +284,27 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
 
     return message;
 }
+
+
+/*
+    Change user's ${type} data(ex. music, cardback, avatar) with a object
+    containing the name and url
+ */
+async function changeProfile(user_id, name, url, type){
+    message = `No changes made to ${type}`;
+
+    message = await firebase.database().ref(`users/${user_id}/${type}`).set({
+        name: name,
+        url: url
+    }).then(function(){
+        return `Successfully changed ${type}`;
+    }).catch(function(){
+        return `Failed to change ${type}`;
+    });
+
+    return message;
+}
+
 
 
 /*****************************************************************************
@@ -392,5 +413,6 @@ module.exports = {
     retrieveAllUsers,
     retrieveUserData,
     buyItem,
-    deleteAccount
+    deleteAccount,
+    changeProfile
 };
