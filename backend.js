@@ -162,8 +162,8 @@ async function writeUserData(userId, email, fname, lname, name, imageUrl) {
             url: imageUrl
         },
         music : {
-            name: `none`,
-            url: `none`
+            name: `None`,
+            url: `None`
         },
         cardback: {
             name: `red_cardback`,

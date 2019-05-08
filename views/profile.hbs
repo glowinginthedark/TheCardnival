@@ -156,7 +156,13 @@
         </div>
     </div>
     <br><br>
-
+    <audio id="myaudio" autoplay>
+        <source src={{music.url}} type="audio/mpeg">
+    </audio>
+    <script>
+        var audio = document.getElementById("myaudio");
+        audio.volume = 0.2;
+    </script>
     {{> footer}}
     <script>
         var ctx = document.getElementById("myDoughnutChart");
