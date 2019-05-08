@@ -155,36 +155,44 @@ async function getHighScores(game_name) {
 ******************************************************************************/
 
 async function writeUserData(userId, email, fname, lname, name, imageUrl) {
-  await firebase.database().ref(`users/${userId}`).set({
-    email: email,
-    profile_picture : {
-        name: name,
-        url: imageUrl
-    },
-    inventory : {
-        profile_pictures: [{
+    await firebase.database().ref(`users/${userId}`).set({
+        email: email,
+        profile_picture : {
             name: name,
             url: imageUrl
-        }],
-        cardback:[{
-            name: 'red_cardback',
-            url: '/img/red_cardback.png'
-        }],
-        music:[{
-            name: 'none',
-            url: 'none'
-        }]
-    }, 
-    fname: fname,
-    lname: lname,
-    balance: 0,
-    prizes:[],
-    big_or_small: {
-        games_played: 0,
-        games_won: 0,
-        high_score: 0
-    }
-  });
+        },
+        music : {
+            name: `none`,
+            url: `none`
+        },
+        cardback: {
+            name: `red_cardback`,
+            url: `/img/cardbacks/red_cardback.png`
+        },
+        inventory : {
+            profile_pictures: [{
+                name: name,
+                url: imageUrl
+            }],
+            cardback:[{
+                name: 'red_cardback',
+                url: '/img/cardbacks/red_cardback.png'
+            }],
+            music:[{
+                name: 'none',
+                url: 'none'
+            }]
+        }, 
+        fname: fname,
+        lname: lname,
+        balance: 0,
+        prizes:[],
+        big_or_small: {
+            games_played: 0,
+            games_won: 0,
+            high_score: 0
+        }
+    });
 }
 
 async function retrieveAllUsers(){
@@ -278,55 +286,26 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
 }
 
 
-// /*
-//     Saves username and their personal scores in JSON file and return
-//     a high score results message depending on situation.
-//  */
-// async function buyItem(userId, itemId, itemUrl, type, price) {
-//     var test = {}
+/*
+    Change user's ${type} data(ex. music, cardback, avatar) with a object
+    containing the name and url
+ */
+async function changeProfile(user_id, name, url, type){
+    message = `No changes made to ${type}`;
 
-//     if (userId === undefined) {
-//         return "Sorry, Guests cannot buy from the store";
-//     }
+    message = await firebase.database().ref(`users/${user_id}/${type}`).set({
+        name: name,
+        url: url
+    }).then(function(){
+        return `Successfully changed ${type}`;
+    }).catch(function(){
+        return `Failed to change ${type}`;
+    });
 
-//     await firebase.database().ref(`users/${userId}`).once('value')
-//         .then(async function(snapshot) {
-//             test = await snapshot.val()
+    return message;
+}
 
-//             console.log(userId, itemId, itemUrl, type, price)
 
-//             if ( (test.balance - price) >= 0){
-//                 var prebalance = test.balance
-//                 test.balance -= price;
-//                 if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
-//                     test.inventory.profile_pictures.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
-//                     test.inventory.cardback.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
-//                     test.inventory.music.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else{
-//                     return `User already has ${name}`;
-//                 }
-//                 await firebase.database().ref(`users/${userId}`).set(test);
-
-//                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
-
-//             } else {
-//                 return 'Sorry, you do not have enough balance';
-//             }
-//         }).catch(function(e){
-//             return e.message
-//         })
-// }
 
 /*****************************************************************************
 
@@ -434,5 +413,6 @@ module.exports = {
     retrieveAllUsers,
     retrieveUserData,
     buyItem,
-    deleteAccount
+    deleteAccount,
+    changeProfile
 };
