@@ -11,9 +11,11 @@ var deck = 0;
 var card = 0;
 var card2 = 0;
 var cardback = "/img/cardbacks/red_cardback.png";
+var music = "";
 var score = 0;
 var current_user = undefined;
 var nav_email = "Guest";
+var balance = undefined;
 
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
@@ -75,6 +77,7 @@ app.get('/', function (request, response) {
     response.render('register.hbs', {
         title: 'Big or Small | Registration',
         nav_email: nav_email,
+        balance : balance
     })
 });
 
@@ -92,7 +95,8 @@ app.post('/register', async (request, response) => {
             title: 'Big or Small | Registration',
             success: result.success,
             failed: result.failed,
-            nav_email: nav_email
+            nav_email: nav_email,
+            balance: balance
         })
     } catch (e) {
         console.log(e)
@@ -109,13 +113,17 @@ app.post('/signout', async (request, response) => {
         .then(function () {
             // Sign-out successful.
             nav_email = 'Guest';
+            balance = undefined;
+            cardback = "/img/cardbacks/red_cardback.png";
+            music = "";
         }).catch(function (error) {
             // An error happened.
         });
 
     response.render('login.hbs', {
         title: 'Big or Small | Login',
-        nav_email: nav_email
+        nav_email: nav_email,
+        balance: balance
     })
 });
 
@@ -126,7 +134,8 @@ app.post('/signout', async (request, response) => {
 app.get('/login', (request, response) => {
     response.render('login.hbs', {
         title: 'Big or Small | Login',
-        nav_email: nav_email
+        nav_email: nav_email,
+        balance: balance
     })
 });
 
@@ -143,13 +152,17 @@ app.post('/game', async (request, response) => {
 
             current_user = login.current_user;
             nav_email = current_user.email;
+            balance = current_user.balance;
+            cardback = current_user.cardback.url;
+            music = current_user.music.url;
             deck = login.deck;
             console.log(`current user: ${current_user.email}`);
             await renderProfile(current_user.uid, request, response);
         } else {
             response.render('login.hbs', {
                 title: 'Big or Small | Login',
-                failed: login.failed
+                failed: login.failed,
+                nav_email: nav_email,
             })
         }
     } catch (e) {
@@ -163,6 +176,7 @@ app.post('/game', async (request, response) => {
  */
 app.post('/newgame', async (request, response) => {
     score = 0;
+
     try {
         deck = await backend.shuffleDeck(deck.deck_id);
         card = await backend.drawDeck(deck.deck_id, 1);
@@ -191,7 +205,8 @@ app.get('/rankings', async (request, response) => {
         response.render('rankings.hbs', {
             title: 'Big or Small | Rankings',
             rankings: output_rankings,
-            nav_email: nav_email
+            nav_email: nav_email,
+            balance: balance
         })
     } catch (e) {
         console.log(e.message)
@@ -268,7 +283,9 @@ app.get(`/deck`, async (request, response) => {
  */
 app.get(`/gameportal`, async (request, response) => {
     response.render('gameportal.hbs', {
-        title: 'Big or Small | Game Portal'
+        title: 'Big or Small | Game Portal',
+        nav_email: nav_email,
+        balance: balance
     })
 });
 
@@ -278,7 +295,8 @@ app.get(`/gameportal`, async (request, response) => {
 app.get(`/store`, async (request, response) => {
     response.render('store.hbs', {
         title: 'Big or Small | Store',
-        nav_email: nav_email
+        nav_email: nav_email,
+        balance: balance
     })
 });
 
@@ -288,26 +306,35 @@ app.get(`/store`, async (request, response) => {
 app.post(`/buy`, async (request, response) => {
     message = "Please Login First";
     item_info = request.body.url.split(',');
-
     if (current_user != undefined) {
         message = await backend.buyItem(current_user.uid, item_info[0], item_info[1], item_info[2], parseInt(item_info[3], 10));
+    }
+    if (balance >= parseInt(item_info[3], 10)){
+        balance -= parseInt(item_info[3], 10);
+    }
+    if(message.startsWith('Purchased!')){
+        message = `<div class="alert bg-success col-lg-12 col-lg-offset-1 text-center" role="alert" style="display: hidden;">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>${message}</strong>
+                </div>`;
+
+    }else{
+        message = `<div class="alert bg-danger col-lg-12 col-lg-offset-1 text-center" role="alert" style="display: hidden;">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>${message}</strong>
+                </div>`;
     }
     response.render('store.hbs', {
         title: 'Big or Small | Store',
         result: message,
-        nav_email: nav_email
+        nav_email: nav_email,
+        balance: balance
     })
 });
 
 app.get('/profile/:email', async (request, response) => {
     var test = {};
     var id = request.params.email
-    // if (id != undefined) {
-    //     test = await backend.retrieveUserData(id);
-    //     test.profile_picture = 'src="asset/' + test.profile_picture + '.jpg"'
-    // }
-    // test.title = `Big or Small | ${id} Profile`;
-    // await response.render('profile.hbs', test)
     renderProfile(id, request, response);
 });
 
@@ -320,26 +347,50 @@ app.get(`/profile`, async (request, response) => {
         await response.render('login.hbs', {
             title: 'Big or Small | Login',
             failed: 'Login first to view account status',
-            nav_email: nav_email
+            nav_email: nav_email,
         })
     }
 });
 
 app.post(`/avatar`, async (request, response) => {
     var test = {};
+    var name_url = request.body.url.split(',');
     if (current_user != undefined) {
-        test = await backend.retrieveUserData(current_user.uid);
-        test.title = `Big or Small | Your Profile`;
-        test.nav_email = nav_email;
-        await response.render('profile.hbs', test);
-
-        console.log(request.body)
+        message = await backend.changeProfile(current_user.uid, name_url[0], name_url[1], 'profile_picture')
+        console.log(message);
+        renderProfile(current_user.uid, request, response);
     } else {
-        await response.render('login.hbs', {
-            title: 'Big or Small | Login',
-            failed: 'Login first to view account status',
-            nav_email: nav_email
-        })
+        renderProfile(current_user.uid, request, response);
+    }
+});
+
+app.post(`/music`, async (request, response) => {
+    var test = {};
+    var name_url = request.body.url.split(',');
+    if (current_user != undefined) {
+        message = await backend.changeProfile(current_user.uid, name_url[0], name_url[1], 'music')
+        test = await backend.retrieveUserData(current_user.uid)
+        music = test.music.url;
+
+        console.log(message);
+        renderProfile(current_user.uid, request, response);
+    } else {
+        renderProfile(current_user.uid, request, response);
+    }
+});
+
+app.post(`/cardback`, async (request, response) => {
+    var test = {};
+    var name_url = request.body.url.split(',');
+    if (current_user != undefined) {
+        message = await backend.changeProfile(current_user.uid, name_url[0], name_url[1], 'cardback')
+        test = await backend.retrieveUserData(current_user.uid)
+        cardback = test.cardback.url;
+        
+        console.log(message);
+        renderProfile(current_user.uid, request, response);
+    } else {
+        renderProfile(current_user.uid, request, response);
     }
 });
 
@@ -365,11 +416,13 @@ async function correctGuess(weight, request, response) {
     score += weight;
     card = card2;
     card2 = await backend.drawDeck(deck.deck_id, 1);
-    renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
-    if (card2.remaining > 0) {} else {
+    if (card2.remaining > 0) {
+        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, `Correct Guess!`);
+    } else {
         var win_message = `Congratulations, you have finished the deck with ${score} point`;
         if (current_user !== undefined) {
             await backend.saveHighScore(current_user.uid, current_user.email, score, true);
+            balance += score;
         }
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
     }
@@ -379,6 +432,7 @@ async function wrongGuess(request, response) {
     var lose_message = `Sorry, you have lost with ${score} points`;
     if (current_user !== undefined) {
         lose_message = await backend.saveHighScore(current_user.uid, current_user.email, score, false);
+        balance += score;
     }
     renderGame(request, response, "disabled", card.cards[0].image, card2.cards[0].image, card.remaining,
         lose_message);
@@ -404,20 +458,79 @@ function renderGame(request, response, state, first_card, second_card, remaining
         remaining: remaining,
         name: name,
         game_state: game_state,
-        nav_email: nav_email
+        nav_email: nav_email,
+        balance: balance,
+        music: music,
+        cardback: cardback
     });
 }
 
 async function renderProfile(user_id, request, response) {
-    var test = {};
-    if (user_id != undefined) {
-        test = await backend.retrieveUserData(user_id);
-        test.nav_email = nav_email;
-        test.profile_picture = `src="${test.profile_picture.url}"`
-    }
-    test.title = `Big or Small | Profile`;
+    var user_info = {};
+    try{
+        if (user_id != undefined) {
+            user_info = await backend.retrieveUserData(user_id);
+            user_info.profile_picture = `src="${user_info.profile_picture.url}"`
+            if (current_user != undefined){
+                if(current_user.uid == user_id){
+                    //SELF VIEW
+                    nav_email = user_info.email;
+                    user_info.nav_email = user_info.email;
+                    balance = user_info.balance;
+                    user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'');
+                    user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'');
+                    user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'');
+                }else{
+                    //OTHER USERS VIEW
+                    user_info.nav_email = nav_email;
+                    user_info.balance = balance;
+                    user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'display: none;');
+                    user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'display: none;');
+                    user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'display: none;');   
+                } 
+            }else{
+                //GUEST VIEW
+                user_info.nav_email = 'Guest';
+                user_info.balance = undefined;
+                user_info.avatars = await arrObjToHTMLString(user_info.inventory.profile_pictures,'display: none;');
+                user_info.musics = await arrObjToHTMLString(user_info.inventory.music,'display: none;');
+                user_info.cardbacks = await arrObjToHTMLString(user_info.inventory.cardback,'display: none;');
+            }
+        }
+        user_info.title = `Big or Small | Profile`;
 
-    await response.render('profile.hbs', test)
+        await response.render('profile.hbs', user_info)
+    }catch(error){
+
+    }
 }
 
+//type="button"
+//onclick="testFunction('${item}')"
+
+async function arrObjToHTMLString(array, not_user){
+    html_string = ""
+
+    array.forEach((element, index, array) => {
+            if (index % 2 == 0) {
+                html_string += `<div class="row">\n`
+            }
+            var item = element.name + ',' + element.url
+            html_string += `    <div class="card-body col-6">\n`
+            html_string += `        <img src="${element.url}" alt="default"\n`
+            html_string += `        style="max-width: 100%; height: auto">\n`
+            html_string += `        <button class="btn wide-btn btn-info" name="url" value="${element.name},${element.url}" style="${not_user}">Use this!</button>\n`
+            html_string += `    </div>\n`
+
+            if (index % 2 == 1) {
+                html_string += `</div>\n`
+            }
+        })
+
+    if(array.length % 2 == 1){
+        html_string += `</div>\n`
+    }
+
+    return html_string
+}
 module.exports = app;

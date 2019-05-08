@@ -55,7 +55,6 @@ var loginAccount = async (email, password, result, response) => {
                 deck = await getDeck(1);
                 result.deck = deck;
                 console.log('Login Successful')
-
                 return result
 
             }).catch (function(error) {
@@ -68,6 +67,20 @@ var loginAccount = async (email, password, result, response) => {
 
     return result
 };
+
+var deleteAccount = async () => {
+    var user = await firebase.auth().currentUser;
+    var uid = user.uid
+    message = user.delete().then(async function() {
+        await firebase.database().ref(`users/${uid}`).remove();
+        
+        return 'delete success'
+    }).catch(function(error){
+        return error.message
+    })
+    console.log(message);
+    return message
+}
 
 /*
     Saves username and their personal scores in JSON file and return
@@ -133,6 +146,8 @@ async function getHighScores(game_name) {
     return sortable
 }
 
+
+
 /*****************************************************************************
 
     VOID() DATA SAVE/RETRIEVAL METHODS
@@ -140,27 +155,44 @@ async function getHighScores(game_name) {
 ******************************************************************************/
 
 async function writeUserData(userId, email, fname, lname, name, imageUrl) {
-  await firebase.database().ref(`users/${userId}`).set({
-    email: email,
-    profile_picture : {
-        name: name,
-        url: imageUrl
-    },
-    inventory : {
-        profile_pictures: ['default'],
-        cardback:['standard_cardback'],
-        music:['carnival_music']
-    }, 
-    fname: fname,
-    lname: lname,
-    balance: 0,
-    prizes:[],
-    big_or_small: {
-        games_played: 0,
-        games_won: 0,
-        high_score: 0
-    }
-  });
+    await firebase.database().ref(`users/${userId}`).set({
+        email: email,
+        profile_picture : {
+            name: name,
+            url: imageUrl
+        },
+        music : {
+            name: `none`,
+            url: `none`
+        },
+        cardback: {
+            name: `red_cardback`,
+            url: `/img/cardbacks/red_cardback.png`
+        },
+        inventory : {
+            profile_pictures: [{
+                name: name,
+                url: imageUrl
+            }],
+            cardback:[{
+                name: 'red_cardback',
+                url: '/img/cardbacks/red_cardback.png'
+            }],
+            music:[{
+                name: 'none',
+                url: 'none'
+            }]
+        }, 
+        fname: fname,
+        lname: lname,
+        balance: 0,
+        prizes:[],
+        big_or_small: {
+            games_played: 0,
+            games_won: 0,
+            high_score: 0
+        }
+    });
 }
 
 async function retrieveAllUsers(){
@@ -239,6 +271,7 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
                     return `User already has ${itemId}`;
                 }
                 await firebase.database().ref(`users/${userId}`).set(test);
+                
                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
 
             } else {
@@ -251,102 +284,28 @@ async function buyItem(userId, itemId, itemUrl, type, price) {
 
     return message;
 }
+
 
 /*
-    Saves username and their personal scores in JSON file and return
-    a high score results message depending on situation.
+    Change user's ${type} data(ex. music, cardback, avatar) with a object
+    containing the name and url
  */
-async function getAllItems(userId) {
-    var test = {}
+async function changeProfile(user_id, name, url, type){
+    message = `No changes made to ${type}`;
 
-    message = await firebase.database().ref(`users/${userId}/inventory`).once('value')
-        .then(async function(snapshot) {
-            test = await snapshot.val()
-
-            if ( (test.balance - price) >= 0){
-                var prebalance = test.balance
-                test.balance -= price;
-                if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
-                    test.inventory.profile_pictures.push({
-                        name: itemId,
-                        url: itemUrl
-                    })
-                }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
-                    test.inventory.cardback.push({
-                        name: itemId,
-                        url: itemUrl
-                    })
-                }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
-                    test.inventory.music.push({
-                        name: itemId,
-                        url: itemUrl
-                    })
-                }else{
-                    return `You already has ${itemId}`;
-                }
-                await firebase.database().ref(`users/${userId}`).set(test);
-                return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
-
-            } else {
-                return 'Sorry, you do not have enough balance';
-            }
-        }).catch(function(e){
-            console.log(e.message)
-            return e.message
-        })
+    message = await firebase.database().ref(`users/${user_id}/${type}`).set({
+        name: name,
+        url: url
+    }).then(function(){
+        return `Successfully changed ${type}`;
+    }).catch(function(){
+        return `Failed to change ${type}`;
+    });
 
     return message;
 }
 
-// /*
-//     Saves username and their personal scores in JSON file and return
-//     a high score results message depending on situation.
-//  */
-// async function buyItem(userId, itemId, itemUrl, type, price) {
-//     var test = {}
 
-//     if (userId === undefined) {
-//         return "Sorry, Guests cannot buy from the store";
-//     }
-
-//     await firebase.database().ref(`users/${userId}`).once('value')
-//         .then(async function(snapshot) {
-//             test = await snapshot.val()
-
-//             console.log(userId, itemId, itemUrl, type, price)
-
-//             if ( (test.balance - price) >= 0){
-//                 var prebalance = test.balance
-//                 test.balance -= price;
-//                 if ( !itemExists(test.inventory.profile_pictures, itemId) && (type == "profile_pictures")) {
-//                     test.inventory.profile_pictures.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else if ( !itemExists(test.inventory.cardback, itemId) && (type == "cardback")) {
-//                     test.inventory.cardback.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else if ( !itemExists(test.inventory.music, itemId) && (type == "music")) {
-//                     test.inventory.music.push({
-//                         name: itemId,
-//                         url: itemUrl
-//                     })
-//                 }else{
-//                     return `User already has ${name}`;
-//                 }
-//                 await firebase.database().ref(`users/${userId}`).set(test);
-
-//                 return `Purchased! ${prebalance} - ${price} = ${test.balance}`;
-
-//             } else {
-//                 return 'Sorry, you do not have enough balance';
-//             }
-//         }).catch(function(e){
-//             return e.message
-//         })
-// }
 
 /*****************************************************************************
 
@@ -453,5 +412,7 @@ module.exports = {
     getHighScores,
     retrieveAllUsers,
     retrieveUserData,
-    buyItem
+    buyItem,
+    deleteAccount,
+    changeProfile
 };
