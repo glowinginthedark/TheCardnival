@@ -90,6 +90,13 @@
             </div>
         </div>
     </div>
+    <audio id="myaudio" autoplay>
+        <source src={{music}} type="audio/mpeg">
+    </audio>
+    <script>
+        var audio = document.getElementById("myaudio");
+        audio.volume = 0.2;
+    </script>
     {{> footer}}
 </body>
 
