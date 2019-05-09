@@ -5,7 +5,7 @@
 	<title>5 Card Gamble</title>
 </head>
 <body>
-	<form action="/flip" method="POST">
+	<form action="/flip1" method="POST">
 		<h1>{{title}}</h1>
 		<div class="guessing-card-container" style="display: inline-block;">
 			<div class="guessing-card">
@@ -13,12 +13,15 @@
 			</div>
 			{{{button1}}}
 		</div>
+	</form>
+	<form action="/flip2" method="POST">
 		<div class="guessing-card-container" style="display: inline-block;">
 			<div class="guessing-card">
 				<img src={{card2}} alt="card" height="300" id="2">
 			</div>
 			{{{button2}}}
 		</div>
+	</form>
 		<div class="guessing-card-container" style="display: inline-block;">
 			<div class="guessing-card">
 				<img src={{card3}} alt="card" height="300" id="3">
@@ -38,29 +41,10 @@
 			{{{button5}}}
 		</div>
 
+		
+
 		<h2>Your moves left: {{movesleft}}</h2>
 		<h2>{{message}}</h2>
-
-		<script>
-			var cardimgs = [
-				"https://deckofcardsapi.com/static/img/AS.png",
-				"https://deckofcardsapi.com/static/img/3H.png",
-				"https://deckofcardsapi.com/static/img/0C.png",
-				"https://deckofcardsapi.com/static/img/JS.png",
-				"https://deckofcardsapi.com/static/img/QD.png",
-			];
-			var cardbackimg = "https://ksr-ugc.imgix.net/assets/002/787/525/33dbbecb974f965302fd1d70c0260806_original.png?ixlib=rb-1.1.0&w=680&fit=max&v=1414034665&auto=format&gif-q=50&lossless=true&s=6884e85c031b9b151c73c64f9936a2f3"
-			function flipCard(value) {
-				console.log(value);
-				var card = document.getElementById(value);
-				if (card.src != cardbackimg) {
-					card.src = cardbackimg;
-				}
-				else {
-					card.src = cardimgs[value-1];
-				}
-			}
-		</script>
-	</form>
+	<button onclick="location.reload();">Refresh Page</button>
 </body>
 </html>
