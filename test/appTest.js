@@ -105,9 +105,21 @@ describe("Store tests", async () => {
 		console.log('adding fake free points to Chris\' profile');
 		await backend.saveHighScore(uid, dummy_accounts.chris.email, 1500, true);
 
-		console.log((await backend.buyItem(uid,
+		assert((await backend.buyItem(uid,
 			'thanos',
 			'https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae',
-			'profile_pictures', 500)));
+			'profile_pictures', 500)), "Purchased! 1500 - 500 = 1000");
+	});
+
+	it("Testing buying the same item again", async () => {
+		var login = await backend.loginAccount(dummy_accounts.chris.email, dummy_accounts.chris.password, null, null);
+		var uid = login.current_user.uid;
+
+		assert((await backend.buyItem(uid,
+			'thanos',
+			'https://firebasestorage.googleapis.com/v0/b/bigorsmall-9c0b5.appspot.com/o/thanos.jpg?alt=media&token=d3ff7293-0ea9-4bae-805e-a7c59c7210ae',
+			'profile_pictures', 500)), "User already has thanos");
+	
+		await backend.deleteAccount();
 	});
 });
