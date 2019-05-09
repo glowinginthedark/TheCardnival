@@ -59,9 +59,9 @@ hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
 });
 
-hbs.registerHelper('message', (text) => {
-    return text.toUpperCase();
-});
+// hbs.registerHelper('message', (text) => {
+//     return text.toUpperCase();
+// });
 
 
 /*****************************************************************************
@@ -393,6 +393,103 @@ app.post(`/cardback`, async (request, response) => {
         renderProfile(current_user.uid, request, response);
     }
 });
+
+var turnsleft = 3;
+var jdeck = 0;
+var jhand = 0;
+var jscore = 0;
+
+app.get('/jack', async (request, response) => {
+    var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
+    var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
+    var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
+    var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
+    var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
+    try {
+        jdeck = await backend.getDeck(1);
+        jhand = await backend.drawDeck(jdeck.deck_id,5);
+        message = ""
+        renderJack(request, response, "", cardback, cardback, cardback, cardback, cardback, turnsleft, message, button1, button2, button3, button4, button5)
+        // renderJack(request, response, "", jhand.cards[0].image, jhand.cards[1].image, jhand.cards[2].image, jhand.cards[3].image, jhand.cards[4].image, turnsleft, message)
+        return jhand
+    }
+    catch (e){
+        console.log(e);
+    }
+});
+
+app.post('/newjack', async (request, response) => {
+    var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
+    var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
+    var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
+    var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
+    var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
+    try {
+        jdeck = await backend.shuffleDeck(jdeck.deck_id);
+        jhand = await backend.drawDeck(jdeck.deck_id,5);
+        message = ""
+        renderJack(request, response, "", cardback, cardback, cardback, cardback, cardback, turnsleft = 3, message, button1, button2, button3, button4, button5)
+        // renderJack(request, response, "", jhand.cards[0].image, jhand.cards[1].image, jhand.cards[2].image, jhand.cards[3].image, jhand.cards[4].image, turnsleft = 3, message)
+        return jhand
+    } catch (e) {
+        console.log(e)
+    }
+});
+
+// Is it possible for async to take parameters?
+// -> See backend.js.loginaccount for ref (uses result, not request)
+app.post('/flip/:id', async (request, response) => {
+    var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
+    var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
+    var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
+    var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
+    var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
+    var card_id = request.params.id;
+    var card_param = [cardback, cardback, cardback, cardback, cardback];
+    for (var i=0; i < card_param.length; i++){
+        if (card_id == i) {
+            card_param[i] = jhand.cards[i].image
+        }
+    }
+
+    message = ""
+    if (jhand.cards[card_id].value == "JACK") {
+        jscore = turnsleft;
+        message = `Congradulations, you have won ${jscore} tokens!`
+        renderJack(request, response, "disabled", card_param[0], card_param[1], card_param[2], card_param[3], card_param[4], turnsleft, message)
+    }
+    else{
+        turnsleft -= 1;
+        if (turnsleft == 0){
+            message = `Out of turns! You Lose!`
+            renderJack(request, response, "disabled", card_param[0], card_param[1], card_param[2], card_param[3], card_param[4], turnsleft, message)
+        }
+        else{
+            renderJack(request, response, "", card_param[0], card_param[1], card_param[2], card_param[3], card_param[4], turnsleft, message, button1, button2, button3, button4, button5)
+        }
+    }
+});
+
+function renderJack(request, response, state, card1, card2, card3, card4, card5, turnsleft, message, flipbutton1, flipbutton2, flipbutton3, flipbutton4, flipbutton5) {
+    response.render('jack2.hbs', {
+        title: 'Jack | Play Game',
+        state: state,
+        jdeck: jdeck,
+        card: card1,
+        card2: card2,
+        card3: card3,
+        card4: card4,
+        card5: card5,
+        turnsleft: turnsleft,
+        jscore: jscore,
+        message: message,
+        button1: flipbutton1,
+        button2: flipbutton2,
+        button3: flipbutton3,
+        button4: flipbutton4,
+        button5: flipbutton5
+    });
+}
 
 /*
     Convert Card strings and return appropriate corresponding values
