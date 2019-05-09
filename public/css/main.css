@@ -1,0 +1,228 @@
+/*------------------------------------------------------------Global Settings------------------------------------------------------------*/
+div {
+    border: red solid 0px;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/*------------------------------------------------------------Navbar------------------------------------------------------------*/
+.navbar {
+    left: 0;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+/*------------------------------------------------------------Individual Page Classes------------------------------------------------------------*/
+.signin {
+    background-image: url('/img/red_curtain.jpg');
+    background-size: cover;
+    background-repeat: repeat-y;
+    /* background-repeat: no-repeat; */
+    min-height: 100%;
+    display: block;
+}
+
+/*-------------------------Individual Page Classes-------------------------*/
+#custom-jumbo {
+    background: rgba(0, 0, 0, 0.35);
+    min-height: 92%;
+}
+
+#rankings {
+    background: url("https://www.highreshdwallpapers.com/wp-content/uploads/2014/06/Golden-World-Cup-Trophy.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.loginTitles {
+    text-align: center;
+    color: white;
+}
+
+form .input-group-text {
+    width: 10rem;
+}
+
+#pw-prompt {
+    color: white;
+    text-align: center;
+}
+
+.playcard {
+    margin: 0 auto;
+    display: block;
+}
+
+.card-body {
+    text-align: center;
+    color: black;
+}
+
+.gamecard {
+    border-radius: 5%;
+}
+
+.game_body {
+    background-image: url("/img/felt.png");
+    background-color: #006b10;
+    color: #dddddd;
+}
+
+.game_screen {
+    margin-top: 56px;
+    padding-top: 2rem;
+}
+
+.game_style {
+    margin: 5px auto;
+    display: block;
+    text-align: center;
+}
+
+.big_small_responsive {
+    min-height: 314px;
+    margin-top: 1rem;
+}
+
+.btn-game {
+    color: black;
+}
+
+.list-text {
+    font-size: 2rem;
+}
+
+.card-body p {
+    line-height: 1.5em;
+    font-size: 16px;
+}
+
+#content {
+    padding-bottom: 25px;
+    /* Height of the footer element */
+}
+
+#profile-title {
+    font-size: 5rem;
+}
+
+.wide-btn {
+    width: 100%;
+}
+
+.scroll {
+    height: 525px;
+    overflow-y: auto;
+}
+
+.card .card-title {
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+#storebg {
+    background-image: url('/img/kk.png');
+}
+
+.storeitem {
+    opacity: 0.75;
+    transition: 0.5s;
+}
+
+.storeitem:hover {
+    opacity: 1;
+    transition: 0.5s;
+}
+
+/*------------------------------------------------------------Password Meter------------------------------------------------------------*/
+meter {
+    /* Reset the default appearance */
+    margin: 0 auto 1em;
+    width: 100%;
+    height: 0.45em;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    /* Applicable only to Firefox */
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+meter::-webkit-meter-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit based browsers */
+meter[value="1"]::-webkit-meter-optimum-value {
+    background: red;
+}
+
+meter[value="2"]::-webkit-meter-optimum-value {
+    background: orange;
+}
+
+meter[value="3"]::-webkit-meter-optimum-value {
+    background: yellow;
+}
+
+meter[value="4"]::-webkit-meter-optimum-value {
+    background: green;
+}
+
+/* Gecko based browsers */
+meter[value="1"]::-moz-meter-bar {
+    background: red;
+}
+
+meter[value="2"]::-moz-meter-bar {
+    background: orange;
+}
+
+meter[value="3"]::-moz-meter-bar {
+    background: yellow;
+}
+
+meter[value="4"]::-moz-meter-bar {
+    background: green;
+}
+
+/*------------------------------------------------------------Footer------------------------------------------------------------*/
+#footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin-top: -40px;
+    background-color: rgb(245, 245, 245);
+    color: black;
+    text-align: center;
+    font-size: 18px;
+    height: 45px;
+    z-index: 1;
+}
+
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}

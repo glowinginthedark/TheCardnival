@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+{{> head}}
+
+<body class="signin">
+    {{> header}}
+    <br><br>
+    <div id='custom-jumbo' class="jumbotron container-fluid">
+        <br><br><br><br>
+        <div class="container">
+            <form method="POST" action="/game">
+                <h1 class="loginTitles">Login</h1>
+                <hr>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Email</span>
+                    </div>
+                    <input class="form-control" type="text" placeholder="Enter Email" name="email" id="email" required>
+                </div>
+                <br>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Password</span>
+                    </div>
+                    <input class="form-control" type="password" placeholder="Enter Password" name="password"
+                        id="password" required>
+                </div>
+                <br>
+                <button class='btn-block btn-lg btn-success' type="submit" value="Login">Login</button>
+            </form>
+            <h5 style="text-align:center; color:red">{{failed}}</h5>
+        </div>
+        <br>
+        <div class="container">
+            <form method="GET" action="/">
+                <button class="btn-block btn-lg btn-info" type="submit" value="Register Account">Don't
+                    have an account? Register here!</button>
+            </form>
+        </div>
+        <hr class='my-2'>
+        <div class="container">
+            <form method="GET" action="/deck">
+                <button class="btn-block btn-lg btn-secondary" type="submit" value="Play as Guest"> Want to
+                    play the game? Play as Guest!</button>
+            </form>
+        </div>
+    </div>
+    <audio id="myaudio" autoplay>
+        <source src="/audio/merrygo.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        var audio = document.getElementById("myaudio");
+        audio.volume = 0.2;
+    </script>
+    {{> footer}}
+</body>
+
+</html>
