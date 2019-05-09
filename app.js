@@ -59,9 +59,9 @@ hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
 });
 
-hbs.registerHelper('message', (text) => {
-    return text.toUpperCase();
-});
+// hbs.registerHelper('message', (text) => {
+//     return text.toUpperCase();
+// });
 
 
 /*****************************************************************************
@@ -213,6 +213,47 @@ app.get('/rankings', async (request, response) => {
     }
 });
 
+app.post('/flip', async (request, response) => {
+    var flip1 = `<button class="button1" name="flip1">Flip This Card</button>\n`
+    var flip2 = `<button class="button2" name="flip2">Flip This Card</button>\n`
+    var flip3 = `<button class="button3" name="flip3">Flip This Card</button>\n`
+    var flip4 = `<button class="button4" name="flip4">Flip This Card</button>\n`
+    var flip5 = `<button class="button5" name="flip5">Flip This Card</button>\n`
+    deck_id = await backend.getDeck(1)
+    cards = await backend.drawDeck(deck_id.deck_id, 5)
+    message = ""
+    movesleft = 5
+    if(movesleft > 0){
+        if (cards.cards[0].image == "https://deckofcardsapi.com/static/img/JS.png" || cards.cards[0].image == "https://deckofcardsapi.com/static/img/JD.png" || 
+            cards.cards[0].image == "https://deckofcardsapi.com/static/img/JH.png" || cards.cards[0].image == "https://deckofcardsapi.com/static/img/JC.png") {
+            message = "Congradulations, you have won!"
+        renderJack(request, response, "", cards.cards[0].image, cardback, cardback, cardback, cardback, movesleft, message)
+        }else if (cards.cards[1].image == "https://deckofcardsapi.com/static/img/JS.png" || cards.cards[1].image == "https://deckofcardsapi.com/static/img/JD.png" || 
+            cards.cards[1].image == "https://deckofcardsapi.com/static/img/JH.png" || cards.cards[1].image == "https://deckofcardsapi.com/static/img/JC.png") {
+            message = "Congradulations, you have won!"
+        renderJack(request, response, "", cardback, cards.cards[1].image, cardback, cardback, cardback, movesleft, message)
+        }else if (cards.cards[2].image == "https://deckofcardsapi.com/static/img/JS.png" || cards.cards[2].image == "https://deckofcardsapi.com/static/img/JD.png" || 
+            cards.cards[2].image == "https://deckofcardsapi.com/static/img/JH.png" || cards.cards[2].image == "https://deckofcardsapi.com/static/img/JC.png") {
+            message = "Congradulations, you have won!"
+        renderJack(request, response, "", cardback, cardback, cards.cards[2].image, cardback, cardback, movesleft, message)
+        }else if (cards.cards[3].image == "https://deckofcardsapi.com/static/img/JS.png" || cards.cards[3].image == "https://deckofcardsapi.com/static/img/JD.png" || 
+            cards.cards[3].image == "https://deckofcardsapi.com/static/img/JH.png" || cards.cards[3].image == "https://deckofcardsapi.com/static/img/JC.png") {
+            message = "Congradulations, you have won!"
+        renderJack(request, response, "", cardback, cardback, cardback, cardback, cards.cards[3].image, movesleft, message)
+        }else if (cards.cards[4].image == "https://deckofcardsapi.com/static/img/JS.png" || cards.cards[4].image == "https://deckofcardsapi.com/static/img/JD.png" || 
+            cards.cards[4].image == "https://deckofcardsapi.com/static/img/JH.png" || cards.cards[4].image == "https://deckofcardsapi.com/static/img/JC.png") {
+            message = "Congradulations, you have won!"
+        renderJack(request, response, "", cardback, cardback, cardback, cardback, cards.cards[4].image, movesleft, message)
+        }
+        else{
+        renderJack(request, response, "", cards.cards[0].image, cards.cards[1].image, cards.cards[2].image, cards.cards[3].image, cards.cards[4].image, movesleft, message, flip1, flip2, flip3, flip4, flip5)    
+        }
+    }
+    else{
+        renderJack(request, response, "disabled", cards.cards[0].image, cards.cards[1].image, cards.cards[2].image, cards.cards[3].image, cards.cards[4].image, 0, "You have run out of turns, you lose")
+    }
+});
+
 /*
     Make RESTFUL POST request and determine results if player picked
     next card as BIGGER than the current card. Display results based
@@ -266,6 +307,19 @@ app.post('/smaller', async (request, response) => {
     }
 });
 
+// if user flips jack, correct guess
+// app.post('/flip', async (request, response) => {
+//     try {
+//         if () {
+//             correctGuess(1, request, response);
+//         } else {
+//             wrongGuess(request, response);
+//         }
+//     } catch (e) {
+//         console.log(e)
+//     }
+// });
+
 /*
     Make RESTFUL GET request and render game
  */
@@ -275,6 +329,21 @@ app.get(`/deck`, async (request, response) => {
         renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
     } catch (e) {
         console.log(e)
+    }
+});
+
+app.get('/jack', async (request, response) => {
+    try {
+        message = ""
+        var flip1 = `<button class="button1" name="flip1">Flip This Card</button>\n`
+        var flip2 = `<button class="button2" name="flip2">Flip This Card</button>\n`
+        var flip3 = `<button class="button3" name="flip3">Flip This Card</button>\n`
+        var flip4 = `<button class="button4" name="flip4">Flip This Card</button>\n`
+        var flip5 = `<button class="button5" name="flip5">Flip This Card</button>\n`
+        renderJack(request, response, "", cardback, cardback, cardback, cardback, cardback, 5, message, flip1, flip2, flip3, flip4, flip5)
+    }
+    catch (e){
+        console.log(e);
     }
 });
 
@@ -465,6 +534,26 @@ function renderGame(request, response, state, first_card, second_card, remaining
     });
 }
 
+function renderJack(request, response, state, card1, card2, card3, card4, card5, movesleft, message, button1, button2, button3, button4, button5) {
+    response.render('jack.hbs', {
+        title: 'Jack | Play Game',
+        state: state,
+        card: card1,
+        card2: card2,
+        card3: card3,
+        card4: card4,
+        card5: card5,
+        movesleft: movesleft,
+        message: message,
+        button1: button1,
+        button2: button2,
+        button3: button3,
+        button4: button4,
+        button5: button5
+    });
+}
+
+
 async function renderProfile(user_id, request, response) {
     var user_info = {};
     try{
@@ -526,7 +615,7 @@ async function arrObjToHTMLString(array, not_user){
                 html_string += `</div>\n`
             }
         })
-
+ 
     if(array.length % 2 == 1){
         html_string += `</div>\n`
     }
