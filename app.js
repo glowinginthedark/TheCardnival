@@ -399,18 +399,30 @@ var jdeck = 0;
 var jhand = 0;
 var jscore = 0;
 
+
 app.get('/jack', async (request, response) => {
-    var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
-    var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
-    var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
-    var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
-    var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
+    // var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
+    // var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
+    // var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
+    // var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
+    // var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
     try {
+    var card_param = [cardback, cardback, cardback, cardback, cardback];
+
         jdeck = await backend.getDeck(1);
         jhand = await backend.drawDeck(jdeck.deck_id,5);
-        message = ""
-        renderJack(request, response, "", cardback, cardback, cardback, cardback, cardback, turnsleft, message, button1, button2, button3, button4, button5)
-        // renderJack(request, response, "", jhand.cards[0].image, jhand.cards[1].image, jhand.cards[2].image, jhand.cards[3].image, jhand.cards[4].image, turnsleft, message)
+
+        var card_button = [];
+        for (var i=0; i < card_param.length; i++){
+            var card_button_obj = {
+                button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                button_id: i,
+                card: card_param[i]
+            }
+            card_button.push(card_button_obj)
+        }
+        message = "";
+        renderJack(request, response, "", turnsleft, message, card_button)
         return jhand
     }
     catch (e){
@@ -419,17 +431,28 @@ app.get('/jack', async (request, response) => {
 });
 
 app.post('/newjack', async (request, response) => {
-    var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
-    var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
-    var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
-    var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
-    var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
+    // var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
+    // var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
+    // var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
+    // var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
+    // var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
     try {
+        var card_param = [cardback, cardback, cardback, cardback, cardback];
+
         jdeck = await backend.shuffleDeck(jdeck.deck_id);
         jhand = await backend.drawDeck(jdeck.deck_id,5);
-        message = ""
-        renderJack(request, response, "", cardback, cardback, cardback, cardback, cardback, turnsleft = 3, message, button1, button2, button3, button4, button5)
-        // renderJack(request, response, "", jhand.cards[0].image, jhand.cards[1].image, jhand.cards[2].image, jhand.cards[3].image, jhand.cards[4].image, turnsleft = 3, message)
+
+        var card_button = [];
+        for (var i=0; i < card_param.length; i++){
+            var card_button_obj = {
+                button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                button_id: i,
+                card: card_param[i]
+            }
+            card_button.push(card_button_obj)
+        }
+        message = "";
+        renderJack(request, response, "", turnsleft=3, message, card_button)
         return jhand
     } catch (e) {
         console.log(e)
@@ -439,55 +462,60 @@ app.post('/newjack', async (request, response) => {
 // Is it possible for async to take parameters?
 // -> See backend.js.loginaccount for ref (uses result, not request)
 app.post('/flip/:id', async (request, response) => {
-    var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
-    var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
-    var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
-    var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
-    var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
-    var card_id = request.params.id;
     var card_param = [cardback, cardback, cardback, cardback, cardback];
+    var card_id = request.params.id;
     for (var i=0; i < card_param.length; i++){
         if (card_id == i) {
             card_param[i] = jhand.cards[i].image
+        }   
+    }
+
+
+    var card_button = [];
+    for (var i=0; i < card_param.length; i++){
+        var card_button_obj = {
+            card: card_param[i]
         }
+        card_button.push(card_button_obj)
     }
 
     message = ""
+
     if (jhand.cards[card_id].value == "JACK") {
         jscore = turnsleft;
         message = `Congradulations, you have won ${jscore} tokens!`
-        renderJack(request, response, "disabled", card_param[0], card_param[1], card_param[2], card_param[3], card_param[4], turnsleft, message)
+        renderJack(request, response, "disabled", turnsleft, message, card_button)
     }
     else{
         turnsleft -= 1;
         if (turnsleft == 0){
             message = `Out of turns! You Lose!`
-            renderJack(request, response, "disabled", card_param[0], card_param[1], card_param[2], card_param[3], card_param[4], turnsleft, message)
+            renderJack(request, response, "disabled", turnsleft, message, card_button)
         }
         else{
-            renderJack(request, response, "", card_param[0], card_param[1], card_param[2], card_param[3], card_param[4], turnsleft, message, button1, button2, button3, button4, button5)
+            // array of objects where first key is the button and second key is the cardback or card image
+            var card_button = [];
+            for (var i=0; i < card_param.length; i++){
+                var card_button_obj = {
+                    button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                    button_id: i,
+                    card: card_param[i]
+                }
+                card_button.push(card_button_obj)
+            }
+            renderJack(request, response, "", turnsleft, message, card_button)
         }
     }
 });
-
-function renderJack(request, response, state, card1, card2, card3, card4, card5, turnsleft, message, flipbutton1, flipbutton2, flipbutton3, flipbutton4, flipbutton5) {
+function renderJack(request, response, state, turnsleft, message, card_button_array) {
     response.render('jack2.hbs', {
         title: 'Jack | Play Game',
         state: state,
         jdeck: jdeck,
-        card: card1,
-        card2: card2,
-        card3: card3,
-        card4: card4,
-        card5: card5,
         turnsleft: turnsleft,
         jscore: jscore,
         message: message,
-        button1: flipbutton1,
-        button2: flipbutton2,
-        button3: flipbutton3,
-        button4: flipbutton4,
-        button5: flipbutton5
+        card_button_array: card_button_array
     });
 }
 
@@ -637,4 +665,22 @@ async function arrObjToHTMLString(array, not_user, type){
 
     return html_string
 }
+
+async function arrObjToJackString(card, cardvalue){
+    html_string = ""
+    card1
+    
+    // for loop ('X' times) 
+
+    // html_string += '1';
+
+    html_string += `<div class="guessing-card-container" style="display: inline-block;">
+        <div class="guessing-card">
+       6     <img src=${card} alt="card">
+        </div>
+        <button class="button1" name="flip" value=${cardvalue}>flip this card</button>
+    </div>`
+    return html_string
+}
+
 module.exports = app;

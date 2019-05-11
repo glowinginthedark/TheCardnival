@@ -7,6 +7,19 @@
 <body>
 <div class="container">
     <h1>{{title}}</h1>
+
+    {{#each card_button_array}}
+        <div class="guessing-card-container" style="display: inline-block;">
+            <div class="guessing-card">
+                <img src={{this.card}} alt="card">
+            </div>
+            <form class="container" method="POST" action="/flip/{{this.button_id}}">
+                {{{this.button}}}
+            </form>
+        </div>
+    {{/each}}
+
+    <!-- 
     <div class="guessing-card-container" style="display: inline-block;">
         <div class="guessing-card">
             <img src={{card}} alt="card" id="1">
@@ -15,6 +28,7 @@
             {{{button1}}}
         </form>
     </div>
+
     <div class="guessing-card-container" style="display: inline-block;">
         <div class="guessing-card">
             <img src={{card2}} alt="card" id="2">
@@ -23,6 +37,7 @@
             {{{button2}}}
         </form>
     </div>
+
     <div class="guessing-card-container" style="display: inline-block;">
         <div class="guessing-card">
             <img src={{card3}} alt="card" id="3">
@@ -31,6 +46,7 @@
             {{{button3}}}
         </form>
     </div>
+
     <div class="guessing-card-container" style="display: inline-block;">
         <div class="guessing-card">
             <img src={{card4}} alt="card" id="4">
@@ -39,6 +55,7 @@
             {{{button4}}}
         </form>
     </div>
+
     <div class="guessing-card-container" style="display: inline-block;">
         <div class="guessing-card">
             <img src={{card5}} alt="card" id="5">
@@ -46,7 +63,7 @@
         <form class="container" method="POST" action="/flip/4">
             {{{button5}}}
         </form>
-    </div>
+    </div> -->
 
     <h2>Your moves left: {{turnsleft}}</h2>
     <h2>{{message}}</h2>
