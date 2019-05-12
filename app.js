@@ -17,6 +17,8 @@ var current_user = undefined;
 var nav_email = "Guest";
 var balance = undefined;
 
+var joker = "/img/joker.jpg"
+
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
     authDomain: "bigorsmall-9c0b5.firebaseapp.com",
@@ -394,23 +396,45 @@ app.post(`/cardback`, async (request, response) => {
     }
 });
 
-var turnsleft = 3;
+var turnsleft = 10;
 var jdeck = 0;
 var jhand = 0;
 var jscore = 0;
+var cards = [];
 
+function shuffle(arra1) {
+    var ctr = arra1.length, temp, index;
 
-app.get('/jack', async (request, response) => {
-    // var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
-    // var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
-    // var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
-    // var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
-    // var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
+// While there are elements in the array
+    while (ctr > 0) {
+// Pick a random index
+        index = Math.floor(Math.random() * ctr);
+// Decrease ctr by 1
+        ctr--;
+// And swap the last element with it
+        temp = arra1[ctr];
+        arra1[ctr] = arra1[index];
+        arra1[index] = temp;
+    }
+    return arra1;
+}
+
+app.get('/joker', async (request, response) => {
     try {
-    var card_param = [cardback, cardback, cardback, cardback, cardback];
+        var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
 
         jdeck = await backend.getDeck(1);
-        jhand = await backend.drawDeck(jdeck.deck_id,5);
+        jhand = await backend.drawDeck(jdeck.deck_id, 19);
+
+        var jokercard = {"image": joker, "value": "JOKER"}
+
+        for(var i = 0; i<jhand.cards.length; i++){
+            cards.push(jhand.cards[i])
+        }
+       
+        cards.push(jokercard)
+        shuffle(cards)
+        // console.log(shuffle(cards));
 
         var card_button = [];
         for (var i=0; i < card_param.length; i++){
@@ -430,17 +454,21 @@ app.get('/jack', async (request, response) => {
     }
 });
 
-app.post('/newjack', async (request, response) => {
-    // var button1 = `<button class="button1" name="flip1">flip this card</button>\n`
-    // var button2 = `<button class="button2" name="flip2">flip this card</button>\n`
-    // var button3 = `<button class="button3" name="flip3">flip this card</button>\n`
-    // var button4 = `<button class="button4" name="flip4">flip this card</button>\n`
-    // var button5 = `<button class="button5" name="flip5">flip this card</button>\n`
+app.post('/newjoker', async (request, response) => {
     try {
-        var card_param = [cardback, cardback, cardback, cardback, cardback];
+        var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
 
         jdeck = await backend.shuffleDeck(jdeck.deck_id);
-        jhand = await backend.drawDeck(jdeck.deck_id,5);
+        jhand = await backend.drawDeck(jdeck.deck_id, 19);
+        
+        var jokercard = {"image": joker, "value": "JOKER"}
+
+        for(var i = 0; i<jhand.cards.length; i++){
+            cards.push(jhand.cards[i])
+        }
+       
+        cards.push(jokercard)
+        shuffle(cards)
 
         var card_button = [];
         for (var i=0; i < card_param.length; i++){
@@ -452,7 +480,7 @@ app.post('/newjack', async (request, response) => {
             card_button.push(card_button_obj)
         }
         message = "";
-        renderJack(request, response, "", turnsleft=3, message, card_button)
+        renderJack(request, response, "", turnsleft=10, message, card_button)
         return jhand
     } catch (e) {
         console.log(e)
@@ -462,14 +490,13 @@ app.post('/newjack', async (request, response) => {
 // Is it possible for async to take parameters?
 // -> See backend.js.loginaccount for ref (uses result, not request)
 app.post('/flip/:id', async (request, response) => {
-    var card_param = [cardback, cardback, cardback, cardback, cardback];
+    var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
     var card_id = request.params.id;
     for (var i=0; i < card_param.length; i++){
         if (card_id == i) {
-            card_param[i] = jhand.cards[i].image
+            card_param[i] = cards[i].image
         }   
     }
-
 
     var card_button = [];
     for (var i=0; i < card_param.length; i++){
@@ -480,8 +507,7 @@ app.post('/flip/:id', async (request, response) => {
     }
 
     message = ""
-
-    if (jhand.cards[card_id].value == "JACK") {
+    if (cards[card_id].value == "JOKER") {
         jscore = turnsleft;
         message = `Congradulations, you have won ${jscore} tokens!`
         renderJack(request, response, "disabled", turnsleft, message, card_button)
@@ -508,8 +534,8 @@ app.post('/flip/:id', async (request, response) => {
     }
 });
 function renderJack(request, response, state, turnsleft, message, card_button_array) {
-    response.render('jack2.hbs', {
-        title: 'Jack | Play Game',
+    response.render('joker.hbs', {
+        title: 'Joker Get | Play Game',
         state: state,
         jdeck: jdeck,
         turnsleft: turnsleft,
@@ -663,23 +689,6 @@ async function arrObjToHTMLString(array, not_user, type){
         html_string += `</div>\n`
     }
 
-    return html_string
-}
-
-async function arrObjToJackString(card, cardvalue){
-    html_string = ""
-    card1
-    
-    // for loop ('X' times) 
-
-    // html_string += '1';
-
-    html_string += `<div class="guessing-card-container" style="display: inline-block;">
-        <div class="guessing-card">
-       6     <img src=${card} alt="card">
-        </div>
-        <button class="button1" name="flip" value=${cardvalue}>flip this card</button>
-    </div>`
     return html_string
 }
 
