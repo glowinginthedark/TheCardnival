@@ -396,7 +396,7 @@ app.post(`/cardback`, async (request, response) => {
     }
 });
 
-var turnsleft = 10;
+var turnsleft = 51;
 var jdeck = 0;
 var jhand = 0;
 var jscore = 0;
@@ -662,9 +662,6 @@ async function renderProfile(user_id, request, response) {
 
     }
 }
-
-//type="button"
-//onclick="testFunction('${item}')"
 
 async function arrObjToHTMLString(array, not_user, type){
     html_string = ""
