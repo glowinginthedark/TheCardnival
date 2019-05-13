@@ -19,8 +19,6 @@ var balance = undefined;
 var joker = "/img/joker.jpg"
 var jokerCardCount = 52;
 
-var joker = "/img/joker.jpg"
-
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
     authDomain: "bigorsmall-9c0b5.firebaseapp.com",
@@ -398,136 +396,14 @@ app.post(`/cardback`, async (request, response) => {
     }
 });
 
-
-
-
-/*****************************************************************************
-
-CARDBOMB FUNCTIONS START
-
- ******************************************************************************/
-
-app.get('/cardbomb', async (request, response) => {
-    score = 0;
-
-    try {
-        deck = await backend.shuffleDeck(deck.deck_id);
-        renderCardbombGame(request, response, "", null, cardback, 52, "");
-    } catch (e) {
-        console.log(e)
-    }
-});
-
-app.post('/cardbomb_raise', async (response, request) => {
-    try {
-        if (card == 0) {
-            card = await backend.drawDeck(deck.deck_id, 1);
-            cardbombRaise(request, response);
-            return;
-        } else {
-            if (getNumeric(card.cards[0].code) != '4S') {
-                cardbombRaise(request, response);
-            } else {
-                cardbombBoom(request, response);
-            }
-        }
-    } catch (e) {
-        console.log(e)
-    }
-});
-
-app.post('/cardbomb_leavegame', async (response, request) => {
-    try {
-        cardbombLeave(request, response);
-    } catch (e) {
-        console.log(e)
-    }
-});
-
-function renderCardbombGame(request, response, state, main_card, deck_top, remaining, game_state) {
-    var name = "Guest";
-    if (current_user !== undefined) {
-        name = `${current_user.fname} ${current_user.lname}`;
-    }
-    response.render('cardbomb.hbs', {
-        title: 'Cardbomb | Play Game',
-        card: main_card,
-        deck_top: deck_top,
-        score: score,
-        remaining: remaining,
-        name: name,
-        game_state: game_state,
-        nav_email: nav_email,
-        balance: balance,
-        music: music,
-        cardback: cardback
-    });
-}
-
-async function cardbombRaise(request, response) {
-    var add = 0;
-
-    //pick one of 5 different score multipliers based on the total number of cards drawn
-    for (var n = 1; n < 6; n++){
-        if ( (52 - card.remaining) <= (n * 10) ) {    //number of total cards drawn <= 12
-            add = ((6 - n) * (52 - card.remaining));
-            score += add;
-            break;
-        }
-    }
-    
-    if (card.remaining != 51) {
-        card = await backend.drawDeck(deck.deck_id, 1);
-    }
-    
-    if (card2.remaining > 0) {
-        renderCardbombGame(request, response, "", card.cards[0].image, cardback, card.remaining, `Raising ${add}!`);
-    } else {
-        var win_message = `Congratulations, you have finished the deck with ${score} points`;
-        if (current_user !== undefined) {
-            await backend.saveCardbombHighScore(current_user.uid, current_user.email, score, true);
-            balance += score;
-        }
-        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
-    }
-}
-
-async function cardbombBoom(request, response) {
-    var lose_message = `BOOM! you lost the game`;
-    if (current_user !== undefined) {
-        lose_message = await backend.saveCardbombHighScore(current_user.uid, current_user.email, score, false);
-    }
-    renderCardbombGame(request, response, "disabled", card.cards[0].image, cardback, card.remaining, lose_message);
-    score = 0;
-}
-
-async function cardbombLeave(request, response) {
-    message = `You have decided to leave with your winnings. Congratulations you have won ${score} points!`;
-    if (current_user !== undefined) {
-        //saveCardbombHighScore() should append the high score message to the original message.
-        message = await backend.saveCardbombHighScore(current_user.uid, current_user.email, score, false);
-        balance += score;
-    }
-    renderCardbombGame(request, response, "disabled", card.cards[0].image, cardback, card.remaining, message);
-    score = 0;
-}
-
-/*****************************************************************************
-
-CARDBOMB FUNCTIONS END
-
-******************************************************************************/
-
-
+var turnsleft = 51;
 var jdeck = 0;
 var jhand = 0;
 var jscore = 0;
 var cards = [];
-var turnsleft = 51;
 
 function shuffle(arra1) {
     var ctr = arra1.length, temp, index;
-
 
     while (ctr > 0) {
         index = Math.floor(Math.random() * ctr);
@@ -541,6 +417,7 @@ function shuffle(arra1) {
 
 app.get('/joker', async (request, response) => {
     try {
+
         var card_param = [];
         for(i = 0; i < jokerCardCount; i++){
             card_param.push(cardback);
@@ -599,7 +476,6 @@ app.post('/newjoker', async (request, response) => {
         var card_button = [];
         for (var i=0; i < card_param.length; i++){
             var card_button_obj = {
-
                 button: `<button class="button${i+1}" name="flip${i+1}">Flip</button>\n`,
                 button_id: i,
                 card: card_param[i]
@@ -617,11 +493,11 @@ app.post('/newjoker', async (request, response) => {
 // Is it possible for async to take parameters?
 // -> See backend.js.loginaccount for ref (uses result, not request)
 app.post('/flip/:id', async (request, response) => {
-
     var card_param = [];
     for(i = 0; i < jokerCardCount; i++){
         card_param.push(cardback);
     }
+
     var card_id = request.params.id;
     for (var i=0; i < card_param.length; i++){
         if (card_id == i) {
@@ -820,6 +696,4 @@ async function arrObjToHTMLString(array, not_user, type){
     return html_string
 }
 
-
 module.exports = app;
-
