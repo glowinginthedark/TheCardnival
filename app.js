@@ -469,7 +469,7 @@ app.post('/newjoker', async (request, response) => {
         var card_button = [];
         for (var i=0; i < card_param.length; i++){
             var card_button_obj = {
-                button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                button: `<button class="button${i+1}" name="flip${i+1}">Flip</button>\n`,
                 button_id: i,
                 card: card_param[i]
             }
@@ -505,7 +505,7 @@ app.post('/flip/:id', async (request, response) => {
     message = ""
     if (cards[card_id].value == "JOKER") {
         jscore = turnsleft;
-        message = `Congradulations, you have won ${jscore} tokens!`
+        message = `Congratulations, you have won ${jscore} tokens!`
         renderJack(request, response, "disabled", turnsleft, message, card_button)
     }
     else{
@@ -519,7 +519,7 @@ app.post('/flip/:id', async (request, response) => {
             var card_button = [];
             for (var i=0; i < card_param.length; i++){
                 var card_button_obj = {
-                    button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                    button: `<button class="button${i+1}" name="flip${i+1}">Flip</button>\n`,
                     button_id: i,
                     card: card_param[i]
                 }
@@ -530,7 +530,7 @@ app.post('/flip/:id', async (request, response) => {
     }
 });
 function renderJack(request, response, state, turnsleft, message, card_button_array) {
-    response.render('joker.hbs', {
+    response.render('joker2.hbs', {
         title: 'Joker Get',
         state: state,
         jdeck: jdeck,

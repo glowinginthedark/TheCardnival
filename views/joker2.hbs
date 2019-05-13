@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{> head}}
+
+<body class="game_body">
+    {{> header}}
+    <br><br>
+
+    <!--center game title-->
+
+    <!--<div class="container" align="center">-->
+        <!--<br><h1 align="center">{title}}</h1><br>-->
+    <!--</div>-->
+
+    <div class="row">
+
+        <div class="col-lg-3 col-sm-6" align="center" style="position: fixed; margin-left:3px; max-width: 30%; min-width: 300px;">
+
+            <br><h1 align="center">{{title}}</h1><br>
+
+            <form class="container" method="POST" action="/newjoker">
+                <input style="margin: 0 auto;display: block;" type="submit" value="New Game">
+            </form>
+
+            <br>
+            <div class="container" align="left">
+                <ul class="list-text" style="font-size: 18pt">
+                    <li>For each turn, flip any card to find the Joker.</li>
+                    <li>Your Score will equal to the number of remaining turns.</li>
+                    <li>Once your turns reaches 0, the game is over.</li>
+                    <li><em>Good luck and have fun!</em></li>
+                </ul>
+            </div>
+            <h2>Turns remaining: {{turnsleft}}</h2>
+            <h2>{{message}}</h2>
+        </div>
+
+        <div class="col-8" style="top:25px; margin-left: 30%; right:0" >
+            <div class="container col-12" align="right">
+                {{#each card_button_array}}
+                    <div class="guessing-card-container" align="center" style="display: inline-block; width: 18%">
+                        <div class="guessing-card">
+                            <img src={{this.card}} alt="card" width="100%">
+                        </div>
+                        <form class="container" method="POST" action="/flip/{{this.button_id}}">
+                            {{{this.button}}}
+                        </form>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+
+    </div>
+
+<br><br><br><br>
+
+</body>
+{{> footer}}
+</html>
