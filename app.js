@@ -16,8 +16,8 @@ var score = 0;
 var current_user = undefined;
 var nav_email = "Guest";
 var balance = undefined;
-
 var joker = "/img/joker.jpg"
+var jokerCardCount = 52;
 
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
@@ -417,10 +417,14 @@ function shuffle(arra1) {
 
 app.get('/joker', async (request, response) => {
     try {
-        var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
+
+        var card_param = [];
+        for(i = 0; i < jokerCardCount; i++){
+            card_param.push(cardback);
+        }
 
         jdeck = await backend.getDeck(1);
-        jhand = await backend.drawDeck(jdeck.deck_id, 19);
+        jhand = await backend.drawDeck(jdeck.deck_id, jokerCardCount);
 
         var jokercard = {"image": joker, "value": "JOKER"}
 
@@ -452,10 +456,13 @@ app.get('/joker', async (request, response) => {
 
 app.post('/newjoker', async (request, response) => {
     try {
-        var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
+        var card_param = [];
+        for(i = 0; i < jokerCardCount; i++){
+            card_param.push(cardback);
+        }
 
         jdeck = await backend.shuffleDeck(jdeck.deck_id);
-        jhand = await backend.drawDeck(jdeck.deck_id, 19);
+        jhand = await backend.drawDeck(jdeck.deck_id, jokerCardCount);
         
         var jokercard = {"image": joker, "value": "JOKER"}
 
@@ -486,7 +493,11 @@ app.post('/newjoker', async (request, response) => {
 // Is it possible for async to take parameters?
 // -> See backend.js.loginaccount for ref (uses result, not request)
 app.post('/flip/:id', async (request, response) => {
-    var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
+    var card_param = [];
+    for(i = 0; i < jokerCardCount; i++){
+        card_param.push(cardback);
+    }
+
     var card_id = request.params.id;
     for (var i=0; i < card_param.length; i++){
         if (card_id == i) {
