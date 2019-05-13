@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+{{> head}}
+
+<body class="cardbomb_game">
+    {{> header}}
+    <br><br>
+    <div id='custom-jumbo' class="jumbotron container-fluid">
+        <div class="container game_screen mt-5 mb-1" id="content">
+
+            
+            
+            
+            
+            
+            
+            
+            <h4 class="game_style">Welcome {{name}}, to the game of CardBomb.</h1>
+            <h1 class="game_style">Score: {{score}} Points</h4>
+            <h4 class="game_style">Remaining Cards: {{remaining}}</h4>
+
+            CARD{{card}}
+            DECK TOP {{deck_top}}
+            BALANCE {{balance}}
+            <img src={{card}} class="gamecard" alt="NextCard" class='playcard'>
+            <img src={{deck_top}} class="gamecard" alt="NextCard" class='playcard'>
+            <img src={{balance}} class="gamecard" alt="NextCard" class='playcard'>
+
+            <form class="container" id="form1" method="POST" action="/cardbomb">
+                <button class="btn btn-dark btn-lg game_style" type="submit" value="New Game"{{cardbomb}}>New Game</button>
+            </form>
+
+            <form class="container" id="form1" method="POST" action="/cardbomb_deck">
+                <button class="btn btn-dark btn-lg game_style" type="submit" value="New Game" {{cardbomb_deck}}>New Game</button>
+            </form>
+
+            <form class="container" id="form1" method="POST" action="/cardbomb_raise">
+                <button class="btn btn-dark btn-lg game_style" type="submit" value="Raise" {{cardbomb_raise}}>Raise</button>
+            </form>
+
+            <form class="container" id="form1" method="POST" action="/cardbomb_leavegame">
+                <button class="btn btn-dark btn-lg game_style" type="submit" value="Leave Game" {{cardbomb_leavegame}}>Leave Game</button>
+            </form>
+            <form action="/cardbomb" method="post" id="cardbomb" onsubmit="return confirm('Change Cardback?')">
+            <button class="btn btn-dark btn-lg game_style" type="submit" value="Leave Game" {{cardbomb}}>Leave Game</button>
+            </form>
+
+
+
+
+
+
+        </div>
+    </div>
+    {{> footer}}
+</body>
+
+</html>
