@@ -275,7 +275,7 @@ app.post('/smaller', async (request, response) => {
 app.get(`/deck`, async (request, response) => {
     try {
         deck = await backend.getDeck(1);
-        renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "")
+        renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "");
     } catch (e) {
         console.log(e)
     }
@@ -408,14 +408,21 @@ app.get('/cardbomb', async (request, response) => {
     score = 0;
 
     try {
+
+        console.log('happend1')
         deck = await backend.shuffleDeck(deck.deck_id);
+        console.log('happend2')
         renderCardbombGame(request, response, "", null, cardback, 52, "");
+        console.log('happend3')
     } catch (e) {
+
+        console.log('happend4')
+        renderCardbombGame(request, response, "", null, cardback, 52, "");
         console.log(e)
     }
 });
 
-app.post('/cardbomb_raise', async (response, request) => {
+app.post('/cardbomb_raise', async (request, response) => {
     try {
         if (card == 0) {
             card = await backend.drawDeck(deck.deck_id, 1);
@@ -433,7 +440,7 @@ app.post('/cardbomb_raise', async (response, request) => {
     }
 });
 
-app.post('/cardbomb_leavegame', async (response, request) => {
+app.post('/cardbomb_leavegame', async (request, response) => {
     try {
         cardbombLeave(request, response);
     } catch (e) {
@@ -485,7 +492,7 @@ async function cardbombRaise(request, response) {
             await backend.saveCardbombHighScore(current_user.uid, current_user.email, score, true);
             balance += score;
         }
-        renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
+        renderCardbombGame(request, response, "", card.cards[0].image, cardback, card.remaining, win_message)
     }
 }
 
