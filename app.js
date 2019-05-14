@@ -277,9 +277,6 @@ app.get(`/deck`, async (request, response) => {
         deck = await backend.getDeck(1);
         renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "");
     } catch (e) {
-        response.render('error.hbs', {
-            error : e
-        })
         console.log(e)
     }
 });
