@@ -52,8 +52,6 @@ var loginAccount = async (email, password, result, response) => {
                 current_user = await retrieveUserData(userData.user.uid);
                 result.current_user = current_user;
                 result.current_user.uid = userData.user.uid;
-                deck = await getDeck(1);
-                result.deck = deck;
                 console.log('Login Successful')
                 return result
 
