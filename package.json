@@ -5,15 +5,14 @@
   "main": "app.js",
   "dependencies": {
     "@google-cloud/storage": "^2.5.0",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "firebase": "^5.11.1",
+    "firebase": "^5.11.0",
     "fs": "0.0.1-security",
     "hbs": "^4.0.4",
     "jquery": "^3.4.1",
     "loader": "^2.1.1",
     "lodash": "^4.17.11",
-    "path": "^0.12.7",
     "request": "^2.88.0",
     "requirejs": "^2.3.6"
   },
@@ -37,8 +36,5 @@
   "bugs": {
     "url": "https://github.com/bhhe/BigOrSmall/issues"
   },
-  "homepage": "https://github.com/bhhe/BigOrSmall#readme",
-  "directories": {
-    "test": "test"
-  }
+  "homepage": "https://github.com/bhhe/BigOrSmall#readme"
 }
