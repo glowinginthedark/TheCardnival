@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5 Card Gamble</title>
+</head>
+<body>
+<div class="container">
+    <h1>{{title}}</h1>
+
+    {{#each card_button_array}}
+        <div class="guessing-card-container" style="display: inline-block;">
+            <div class="guessing-card">
+                <img src={{this.card}} alt="card" width="80%">
+            </div>
+            <form class="container" method="POST" action="/flip/{{this.button_id}}">
+                {{{this.button}}}
+            </form>
+        </div>
+    {{/each}}
+
+    <h2>Your moves left: {{turnsleft}}</h2>
+    <h2>{{message}}</h2>
+
+    <form class="container" method="POST" action="/newjoker">
+        <input style="margin: 0 auto;display: block;" type="submit" value="New Game">
+    </form>
+
+</div>
+
+</body>
+</html>
