@@ -396,6 +396,7 @@ app.post(`/cardback`, async (request, response) => {
     }
 });
 
+
 var turnsleft = 51;
 var jdeck = 0;
 var jhand = 0;
