@@ -191,6 +191,16 @@ async function writeUserData(userId, email, fname, lname, name, imageUrl) {
             games_played: 0,
             games_won: 0,
             high_score: 0
+        },
+        cardbomb:{
+            games_played: 0,
+            games_won: 0,
+            high_score: 0
+        },
+        joker: {
+            games_played: 0,
+            games_won: 0,
+            high_score: 0
         }
     });
 }
