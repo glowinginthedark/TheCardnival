@@ -323,7 +323,7 @@ var getDeck = (count) => {
             json: true
         }, (error, response, body) => {
             if (error) {
-                reject('Cannot connect to RestCountries API')
+                reject('Cannot connect to Deck Of Cards API')
             } else if (body.status === '401') {
                 reject('Unauthorized Access to webpage')
             } else if (body.shuffled === '404') {
@@ -349,7 +349,7 @@ var drawDeck = (deck_id, count) => {
             json: true
         }, (error, response, body) => {
             if (error) {
-                reject('Cannot connect to RestCountries API')
+                reject('Cannot connect to Deck Of Cards API')
             } else if (body.status === '401') {
                 reject('Unauthorized Access to webpage')
             } else if (body.shuffled === '404') {
@@ -374,7 +374,7 @@ var shuffleDeck = (deck_id) => {
             json: true
         }, (error, response, body) => {
             if (error) {
-                reject('Cannot connect to RestCountries API')
+                reject('Cannot connect to Deck Of Cards API')
             } else if (body.status === '401') {
                 reject('Unauthorized Access to webpage')
             } else if (body.shuffled === '404') {
