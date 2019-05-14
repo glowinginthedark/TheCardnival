@@ -20,6 +20,8 @@ var balance = undefined;
 var joker = "/img/joker.jpg";
 var jokerCardCount = 52;
 
+//test comment
+
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
     authDomain: "bigorsmall-9c0b5.firebaseapp.com",
