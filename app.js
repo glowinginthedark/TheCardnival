@@ -102,6 +102,9 @@ app.post('/register', async (request, response) => {
             balance: balance
         })
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -169,6 +172,9 @@ app.post('/game', async (request, response) => {
             })
         }
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -186,6 +192,9 @@ app.post('/newgame', async (request, response) => {
         card2 = await backend.drawDeck(deck.deck_id, 1);
         renderGame(request, response, "", card.cards[0].image, cardback, card.remaining, "")
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -212,6 +221,9 @@ app.get('/rankings', async (request, response) => {
             balance: balance
         })
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e.message)
     }
 });
@@ -229,6 +241,9 @@ app.post('/bigger', async (request, response) => {
             wrongGuess(request, response);
         }
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -247,6 +262,9 @@ app.post('/tie', async (request, response) => {
             wrongGuess(request, response);
         }
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -265,6 +283,9 @@ app.post('/smaller', async (request, response) => {
             wrongGuess(request, response);
         }
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -277,6 +298,9 @@ app.get(`/deck`, async (request, response) => {
         deck = await backend.getDeck(1);
         renderGame(request, response, "disabled", cardback, cardback, deck.remaining, "");
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -408,16 +432,12 @@ app.get('/cardbomb', async (request, response) => {
     score = 0;
 
     try {
-
-        console.log('happend1')
         deck = await backend.shuffleDeck(deck.deck_id);
-        console.log('happend2')
         renderCardbombGame(request, response, "", null, cardback, 52, "");
-        console.log('happend3')
     } catch (e) {
-
-        console.log('happend4')
-        renderCardbombGame(request, response, "", null, cardback, 52, "");
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -436,6 +456,9 @@ app.post('/cardbomb_raise', async (request, response) => {
             }
         }
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -444,6 +467,9 @@ app.post('/cardbomb_leavegame', async (request, response) => {
     try {
         cardbombLeave(request, response);
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -587,6 +613,9 @@ app.get('/joker', async (request, response) => {
         return jhand
     }
     catch (e){
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e);
     }
 });
@@ -623,6 +652,9 @@ app.post('/newjoker', async (request, response) => {
         renderJoker(request, response, "", turnsleft=10, message, card_button)
         return jhand
     } catch (e) {
+        response.render('error.hbs',{
+            error: error
+        })
         console.log(e)
     }
 });
@@ -797,7 +829,9 @@ async function renderProfile(user_id, request, response) {
 
         await response.render('profile.hbs', user_info)
     }catch(error){
-
+        response.render('error.hbs',{
+            error: error
+        })
     }
 }
 
