@@ -16,8 +16,8 @@ var score = 0;
 var current_user = undefined;
 var nav_email = "Guest";
 var balance = undefined;
-
 var joker = "/img/joker.jpg"
+var jokerCardCount = 52;
 
 var config = {
     apiKey: "AIzaSyDOvbL8GIvalFiVeUKmdEL5N7Dv6qzPk-w",
@@ -396,7 +396,8 @@ app.post(`/cardback`, async (request, response) => {
     }
 });
 
-var turnsleft = 10;
+
+var turnsleft = 51;
 var jdeck = 0;
 var jhand = 0;
 var jscore = 0;
@@ -405,13 +406,9 @@ var cards = [];
 function shuffle(arra1) {
     var ctr = arra1.length, temp, index;
 
-// While there are elements in the array
     while (ctr > 0) {
-// Pick a random index
         index = Math.floor(Math.random() * ctr);
-// Decrease ctr by 1
         ctr--;
-// And swap the last element with it
         temp = arra1[ctr];
         arra1[ctr] = arra1[index];
         arra1[index] = temp;
@@ -421,10 +418,14 @@ function shuffle(arra1) {
 
 app.get('/joker', async (request, response) => {
     try {
-        var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
+
+        var card_param = [];
+        for(i = 0; i < jokerCardCount; i++){
+            card_param.push(cardback);
+        }
 
         jdeck = await backend.getDeck(1);
-        jhand = await backend.drawDeck(jdeck.deck_id, 19);
+        jhand = await backend.drawDeck(jdeck.deck_id, jokerCardCount);
 
         var jokercard = {"image": joker, "value": "JOKER"}
 
@@ -439,7 +440,7 @@ app.get('/joker', async (request, response) => {
         var card_button = [];
         for (var i=0; i < card_param.length; i++){
             var card_button_obj = {
-                button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                button: `<button class="button${i+1}" name="flip${i+1}">Flip</button>\n`,
                 button_id: i,
                 card: card_param[i]
             }
@@ -456,10 +457,13 @@ app.get('/joker', async (request, response) => {
 
 app.post('/newjoker', async (request, response) => {
     try {
-        var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
+        var card_param = [];
+        for(i = 0; i < jokerCardCount; i++){
+            card_param.push(cardback);
+        }
 
         jdeck = await backend.shuffleDeck(jdeck.deck_id);
-        jhand = await backend.drawDeck(jdeck.deck_id, 19);
+        jhand = await backend.drawDeck(jdeck.deck_id, jokerCardCount);
         
         var jokercard = {"image": joker, "value": "JOKER"}
 
@@ -473,7 +477,7 @@ app.post('/newjoker', async (request, response) => {
         var card_button = [];
         for (var i=0; i < card_param.length; i++){
             var card_button_obj = {
-                button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                button: `<button class="button${i+1}" name="flip${i+1}">Flip</button>\n`,
                 button_id: i,
                 card: card_param[i]
             }
@@ -490,7 +494,11 @@ app.post('/newjoker', async (request, response) => {
 // Is it possible for async to take parameters?
 // -> See backend.js.loginaccount for ref (uses result, not request)
 app.post('/flip/:id', async (request, response) => {
-    var card_param = [cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback, cardback];
+    var card_param = [];
+    for(i = 0; i < jokerCardCount; i++){
+        card_param.push(cardback);
+    }
+
     var card_id = request.params.id;
     for (var i=0; i < card_param.length; i++){
         if (card_id == i) {
@@ -509,7 +517,7 @@ app.post('/flip/:id', async (request, response) => {
     message = ""
     if (cards[card_id].value == "JOKER") {
         jscore = turnsleft;
-        message = `Congradulations, you have won ${jscore} tokens!`
+        message = `Congratulations, you have won ${jscore} tokens!`
         renderJack(request, response, "disabled", turnsleft, message, card_button)
     }
     else{
@@ -523,7 +531,7 @@ app.post('/flip/:id', async (request, response) => {
             var card_button = [];
             for (var i=0; i < card_param.length; i++){
                 var card_button_obj = {
-                    button: `<button class="button${i+1}" name="flip${i+1}">flip this card</button>\n`,
+                    button: `<button class="button${i+1}" name="flip${i+1}">Flip</button>\n`,
                     button_id: i,
                     card: card_param[i]
                 }
@@ -534,8 +542,8 @@ app.post('/flip/:id', async (request, response) => {
     }
 });
 function renderJack(request, response, state, turnsleft, message, card_button_array) {
-    response.render('joker.hbs', {
-        title: 'Joker Get | Play Game',
+    response.render('joker2.hbs', {
+        title: 'Joker Get',
         state: state,
         jdeck: jdeck,
         turnsleft: turnsleft,
@@ -655,9 +663,6 @@ async function renderProfile(user_id, request, response) {
 
     }
 }
-
-//type="button"
-//onclick="testFunction('${item}')"
 
 async function arrObjToHTMLString(array, not_user, type){
     html_string = ""
